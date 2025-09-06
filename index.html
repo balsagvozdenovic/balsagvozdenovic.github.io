@@ -1,0 +1,1933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=2.5">
+    <title>ASMAF - SOC Maturity Assessment Platform</title>
+    <!-- PDF & Charting Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/jspdf-autotable@3.5.23/dist/jspdf.plugin.autotable.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: radial-gradient(ellipse at top, #1e1b4b 0%, #0f0f23 50%, #000 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Custom scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #9333ea, #db2777);
+        }
+
+        /* Firefox scrollbar */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #a855f7 rgba(0, 0, 0, 0.2);
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 60px 0 40px;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 300px;
+            background: radial-gradient(ellipse, rgba(168, 85, 247, 0.4) 0%, transparent 70%);
+            filter: blur(80px);
+            z-index: -1;
+        }
+
+        .title-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .title-container::before {
+            content: 'ASMAF';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 4.5rem;
+            font-weight: 800;
+            color: rgba(0, 0, 0, 0.4);
+            z-index: -1;
+            filter: blur(3px);
+        }
+
+        .title-container::after {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+            background: linear-gradient(45deg, 
+                rgba(168, 85, 247, 0.1) 0%, 
+                rgba(236, 72, 153, 0.1) 25%,
+                rgba(59, 130, 246, 0.1) 50%,
+                rgba(168, 85, 247, 0.1) 75%,
+                rgba(236, 72, 153, 0.1) 100%);
+            border-radius: 30px;
+            filter: blur(20px);
+            z-index: -1;
+            animation: glow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            100% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        .header h1 {
+            font-size: 4.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #a855f7 0%, #ec4899 30%, #3b82f6 60%, #a855f7 100%);
+            background-size: 200% 200%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 16px;
+            letter-spacing: -2px;
+            text-shadow: 
+                0 0 30px rgba(168, 85, 247, 0.5),
+                0 0 60px rgba(236, 72, 153, 0.3),
+                0 0 90px rgba(59, 130, 246, 0.2);
+            position: relative;
+            z-index: 1;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header .subtitle {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 300;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .header .tagline {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 40px 0 60px;
+            gap: 20px;
+            overflow: visible;
+        }
+
+        .nav-pills {
+            display: flex;
+            gap: 4px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            min-width: max-content;
+            overflow: visible;
+        }
+
+        .nav-pill {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: transparent;
+            color: rgba(255, 255, 255, 0.6);
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .nav-pill:disabled {
+            color: rgba(255, 255, 255, 0.3);
+            cursor: not-allowed;
+        }
+
+        .nav-pill.active {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.8), rgba(236, 72, 153, 0.8));
+            color: white;
+            box-shadow: 0 4px 20px rgba(168, 85, 247, 0.3);
+        }
+
+        .nav-pill:hover:not(.active):not(:disabled) {
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .progress-container {
+            margin: 0 0 40px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #a855f7, #ec4899, #3b82f6);
+            border-radius: 8px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .assessment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 32px;
+            margin: 40px 0;
+        }
+
+        .domain-card {
+            padding: 32px;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .domain-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(168, 85, 247, 0.2);
+        }
+
+        .domain-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .domain-subtitle {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 24px;
+            font-style: italic;
+        }
+
+        .question-container {
+            margin-bottom: 32px;
+            padding-bottom: 28px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .question-container:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .question-header {
+            margin-bottom: 16px;
+        }
+
+        .question-title {
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.4;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .question-meta {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .question-practice {
+            font-size: 0.8rem;
+            color: #a855f7;
+            font-weight: 600;
+            background: rgba(168, 85, 247, 0.1);
+            padding: 4px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(168, 85, 247, 0.2);
+        }
+
+        .question-weight {
+            font-size: 0.8rem;
+            color: #ec4899;
+            font-weight: 600;
+            background: rgba(236, 72, 153, 0.1);
+            padding: 4px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(236, 72, 153, 0.2);
+        }
+
+        .question-evidence {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-style: italic;
+            line-height: 1.4;
+            margin-bottom: 16px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            padding: 16px 20px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.02);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .option:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(168, 85, 247, 0.3);
+            transform: translateX(4px);
+        }
+
+        .option:hover::before {
+            left: 100%;
+        }
+
+        .option.selected {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(236, 72, 153, 0.25));
+            border-color: rgba(168, 85, 247, 0.6);
+            color: white;
+            transform: translateX(8px);
+            box-shadow: 0 4px 20px rgba(168, 85, 247, 0.2);
+        }
+
+        .level-indicator {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            margin-right: 12px;
+            color: white;
+        }
+
+        .level-0 { background: #ef4444; }
+        .level-1 { background: #f97316; }
+        .level-2 { background: #eab308; }
+        .level-3 { background: #22c55e; }
+        .level-4 { background: #06d6a0; }
+
+        .vulnerability-dashboard {
+            margin: 60px 0;
+            text-align: center;
+        }
+
+        .vuln-meter-container {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            margin: 0 auto 40px;
+        }
+
+        .vuln-meter {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            background: conic-gradient(from 0deg, 
+                #ef4444 0deg 72deg,
+                #f97316 72deg 144deg,
+                #eab308 144deg 216deg,
+                #22c55e 216deg 288deg,
+                #06d6a0 288deg 360deg
+            );
+            padding: 12px;
+            filter: drop-shadow(0 0 40px rgba(168, 85, 247, 0.4));
+        }
+
+        .vuln-meter-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle, #1e1b4b 0%, #0f0f23 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            position: relative;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .vuln-score {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .vuln-level {
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin: 40px 0;
+        }
+
+        .stat-card {
+            padding: 28px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(168, 85, 247, 0.15);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .alert-container {
+            margin: 40px 0;
+        }
+
+        .alert {
+            padding: 24px 32px;
+            border-radius: 16px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            position: relative;
+            backdrop-filter: blur(20px);
+        }
+
+        .alert-critical {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.2));
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+        }
+
+        .alert-warning {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.2));
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: #fcd34d;
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(22, 163, 74, 0.2));
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #86efac;
+        }
+
+        .cta-button {
+            padding: 18px 48px;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            color: white;
+            margin: 40px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(168, 85, 247, 0.4);
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .intro-content, .references-content {
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .intro-content h3, .references-content h3 {
+            color: #a855f7;
+            font-size: 1.5rem;
+            margin-bottom: 24px;
+            font-weight: 700;
+        }
+
+        .intro-content ul, .references-content ul {
+            padding-left: 24px;
+            margin-bottom: 24px;
+        }
+
+        .intro-content li, .references-content li {
+            margin-bottom: 12px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .intro-content strong, .references-content strong {
+            color: #ec4899;
+            font-weight: 600;
+        }
+
+        .references-content li strong {
+            color: #3b82f6;
+        }
+
+        .floating-orbs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(1px);
+            animation: float 20s infinite linear;
+        }
+
+        .orb:nth-child(1) {
+            width: 4px;
+            height: 4px;
+            background: #a855f7;
+            top: 20%;
+            left: 10%;
+            animation-duration: 25s;
+        }
+
+        .orb:nth-child(2) {
+            width: 6px;
+            height: 6px;
+            background: #ec4899;
+            top: 60%;
+            left: 80%;
+            animation-duration: 30s;
+        }
+
+        .orb:nth-child(3) {
+            width: 3px;
+            height: 3px;
+            background: #3b82f6;
+            top: 80%;
+            left: 30%;
+            animation-duration: 35s;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+        
+        #pdf-loader {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            z-index: 10000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        #pdf-loader.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .action-button:disabled {
+            background: rgba(255, 255, 255, 0.03);
+            color: rgba(255, 255, 255, 0.3);
+            cursor: not-allowed;
+            transform: none;
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Dropdown menu styling */
+        #benchmarkData select {
+            padding: 10px 15px;
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(236, 72, 153, 0.2));
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            font-size: 1rem;
+            margin-bottom: 30px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095.1c3.6-3.6%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.9z%22/%3E%3C/svg%3E');
+            background-repeat: no-repeat;
+            background-position: right 15px top 50%;
+            background-size: .65em auto;
+            padding-right: 40px; /* Make space for the arrow */
+        }
+        #benchmarkData option {
+            background: #0f0f23 !important; /* Dark background for options */
+            color: white !important; /* White text for options */
+            font-size: 2rem !important;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.8rem; }
+            .assessment-grid { grid-template-columns: 1fr; }
+            .vuln-meter-container { width: 280px; height: 280px; }
+            .vuln-score { font-size: 2.8rem; }
+            .nav-pills { 
+                flex-wrap: wrap; 
+                justify-content: center;
+                overflow: visible;
+            }
+            .nav-pill {
+                font-size: 0.85rem;
+                padding: 10px 16px;
+            }
+            .question-meta { flex-direction: column; }
+            .container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="pdf-loader">Generating Report... Please Wait</div>
+
+    <div class="floating-orbs">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+    
+    <div class="container">
+        <header class="header">
+            <div class="title-container">
+                <h1>ASMAF</h1>
+            </div>
+            <p class="subtitle">Advanced SOC Maturity Assessment Framework</p>
+            <p class="tagline">Discover how ready your security operations really are</p>
+        </header>
+
+        <div class="nav-container">
+            <nav class="nav-pills">
+                <button class="nav-pill active" data-section="intro">Intro</button>
+                <button class="nav-pill" data-section="assessment">Assessment</button>
+                <button class="nav-pill" data-section="results" disabled>Results</button>
+                <button class="nav-pill" data-section="recommendations" disabled>Analysis</button>
+                <button class="nav-pill" data-section="benchmarks" disabled>Benchmarks</button>
+                <button class="nav-pill" data-section="reports" disabled>Reports</button>
+                <button class="nav-pill" data-section="references">References</button>
+            </nav>
+            <!-- Test Button - Hidden by default, enabled via JS -->
+            <button id="testBtn" class="nav-pill" style="display: none; background-color: #f97316;">Test Mode</button>
+        </div>
+
+        <!-- Intro Section -->
+        <div id="intro" class="section active">
+            <div class="glass-card" style="padding: 40px;">
+                <div class="intro-content">
+                    <h3>Welcome to ASMAF</h3>
+                    <ul>
+                        <li><strong>Purpose:</strong> This framework provides a unified SOC Maturity Grading model derived from multiple industry and government maturity models.</li>
+                        <li><strong>Scope:</strong> Covers 10 domains: Program & Governance, Risk & Threat Intelligence, Telemetry & Engineering, Monitoring & Detection, Threat Hunting, Investigation, Incident Response, Automation, Workforce, and Architecture.</li>
+                        <li><strong>Structure:</strong> Each domain includes scored questions with 0–4 maturity anchors, required evidence, and weights. KPI metrics and a scoring methodology are also defined.</li>
+                        <li><strong>Levels:</strong>
+                            <ul style="margin-top: 12px;">
+                                <li>Level 0: Not performed</li>
+                                <li>Level 1: Initial</li>
+                                <li>Level 2: Defined</li>
+                                <li>Level 3: Measured</li>
+                                <li>Level 4: Optimized</li>
+                            </ul>
+                        </li>
+                        <li><strong>Scoring:</strong> Weighted aggregation: Outcomes (40%), Coverage & Automation (30%), Governance/Workforce/Process (30%). Level cutoffs are provided in the scoring section.</li>
+                        <li><strong>Method:</strong> Conduct evidence collection, interviews, and KPI calculation for the last quarter. Score each item, then aggregate to domain and overall maturity level.</li>
+                        <li><strong>Use:</strong> Enables consistent self-assessment or third-party audit of SOC maturity, with transparent methodology and references to established frameworks.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Assessment Section -->
+        <div id="assessment" class="section">
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+                <div class="progress-text" id="progressText">0 of 0 questions completed</div>
+            </div>
+            
+            <div class="assessment-grid" id="assessmentGrid">
+                <!-- Assessment questions will be loaded here -->
+            </div>
+
+            <div style="text-align: center;">
+                <button class="cta-button" data-action="calculate" id="calculateBtn" disabled>
+                    Calculate Maturity Assessment
+                </button>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div id="results" class="section">
+            <div class="vulnerability-dashboard">
+                <div class="vuln-meter-container">
+                    <div class="vuln-meter">
+                        <div class="vuln-meter-inner">
+                            <div class="vuln-score" id="maturityScore">--</div>
+                            <div class="vuln-level" id="maturityLevel">Calculating...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert-container" id="alertContainer" style="display: none;">
+                    <!-- Alert will be inserted here -->
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card glass-card">
+                        <div class="stat-value" id="outcomesScore">--</div>
+                        <div class="stat-label">Outcomes</div>
+                    </div>
+                    <div class="stat-card glass-card">
+                        <div class="stat-value" id="coverageScore">--</div>
+                        <div class="stat-label">Coverage & Automation</div>
+                    </div>
+                    <div class="stat-card glass-card">
+                        <div class="stat-value" id="governanceScore">--</div>
+                        <div class="stat-label">Governance & Process</div>
+                    </div>
+                    <div class="stat-card glass-card">
+                        <div class="stat-value" id="overallScore">--</div>
+                        <div class="stat-label">Overall Score</div>
+                    </div>
+                </div>
+
+                <div class="glass-card" style="padding: 40px; margin: 40px 0;" id="domainBreakdownContainer">
+                    <h3 style="margin-bottom: 24px; color: #a855f7; font-size: 1.5rem;">Domain Breakdown</h3>
+                    <div id="domainBreakdown"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommendations Section -->
+        <div id="recommendations" class="section">
+            <div class="glass-card" style="padding: 40px;">
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 16px; background: linear-gradient(135deg, #a855f7, #ec4899); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                        Maturity Analysis
+                    </h2>
+                    <p id="recommendationsSubtitle" style="font-size: 1.2rem; color: rgba(255, 255, 255, 0.6);">Here's where you stand and what to focus on</p>
+                </div>
+                
+                <div id="recommendationsList" class="rec-grid">
+                    <!-- Recommendations will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Benchmarks Section -->
+        <div id="benchmarks" class="section">
+            <div class="glass-card" style="padding: 40px;">
+                <h3 style="margin-bottom: 24px; color: #a855f7; font-size: 2rem;">Industry Benchmarks</h3>
+                <div id="benchmarkData">
+                    <div style="text-align: center; padding: 40px;">
+                        <p style="color: rgba(255,255,255,0.6); font-size: 1.1rem;">Complete the assessment to see your benchmark comparison.</p>
+                    </div>
+                </div>
+                <div id="benchmarkChartContainer" style="position: relative; padding:20px; display: none; max-width: 700px; margin: 0 auto; min-height: 500px;"><canvas id="benchmarkChart"></canvas></div>
+            </div>
+        </div>
+
+        <!-- Reports Section -->
+        <div id="reports" class="section">
+            <div class="glass-card" style="padding: 40px; text-align: center;">
+                <h3 style="margin-bottom: 40px; color: #a855f7; font-size: 2rem;">Generate Reports</h3>
+                <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                    <button class="action-button" onclick="generateReport('executive')" disabled>Executive Summary</button>
+                    <button class="action-button" onclick="generateReport('technical')" disabled>Technical Report</button>
+                    <button class="action-button" onclick="generateReport('roadmap')" disabled>Improvement Roadmap</button>
+                    <button class="action-button" onclick="generateReport('metrics')" disabled>KPI Analysis</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- References Section -->
+        <div id="references" class="section">
+            <div class="glass-card" style="padding: 40px;">
+                <div class="references-content">
+                    <h3>Sources Behind the SOC Maturity Grading Framework</h3>
+                    <p style="margin-bottom: 24px; color: rgba(255, 255, 255, 0.7);">
+                        This SOC Maturity Grading Framework is a synthesis of established models and guidance from the sources listed below.
+                    </p>
+                    <ul>
+                        <li><strong>SOC-CMM v2.3.4 (Basic, Excel)</strong> — Capability Maturity Model for Security Operations Centers. Used for domain breakdown and baseline maturity anchors.</li>
+                        <li><strong>SOC-CMM Domain (Excel)</strong> — Detailed domain-level practices from SOC-CMM. Used to map specific capabilities to questions.</li>
+                        <li><strong>C2M2 v2.1 (Cybersecurity Capability Maturity Model, DOE, 2022)</strong> — Provided the Maturity Indicator Levels (MIL0–MIL3) and domain taxonomy.</li>
+                        <li><strong>MITRE – 11 Strategies of a World-Class Cybersecurity Operations Center</strong> — Guidance on SOC metrics programs, data collection, and avoiding perverse incentives.</li>
+                        <li><strong>Enterprise Detection & Response: A Simple Hunting Maturity Model</strong> — Defined progressive levels of proactive hunting capability.</li>
+                        <li><strong>Splunk Security Maturity Methodology (S2M2)</strong> — People–process–technology framing with stages from Initial to Optimized.</li>
+                        <li><strong>Exabeam – Security Operations Maturity Model (SOMM eBook)</strong> — Outcome metrics (MTTD, MTTR, etc.) and descriptors for higher maturity tied to automation and playbooks.</li>
+                        <li><strong>LogRhythm – Security Operations Maturity Model (SOMM)</strong> — Threat Lifecycle Management focus. Monitoring, hunting, investigation, and IR maturity.</li>
+                        <li><strong>NIST SP 1302 / Cybersecurity Framework</strong> — Governance and risk alignment with tiered maturity constructs.</li>
+                        <li><strong>CERT-RMM (Resilience Management Model, AD1129619)</strong> — Workforce, training, and awareness practices from the Organizational Training & Awareness (OTA) domain.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .action-button {
+            padding: 12px 28px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.03);
+            color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+        }
+
+        .action-button:hover:not(:disabled) {
+            background: rgba(168, 85, 247, 0.1);
+            border-color: rgba(168, 85, 247, 0.3);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .rec-grid {
+            display: grid;
+            gap: 24px;
+            margin: 40px 0;
+        }
+
+        .rec-item {
+            padding: 28px;
+            border-left: 4px solid transparent;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+        }
+        .rec-item.priority-critical { border-image: linear-gradient(135deg, #ef4444, #dc2626) 1; }
+        .rec-item.priority-high { border-image: linear-gradient(135deg, #f97316, #ea580c) 1; }
+        .rec-item.priority-medium { border-image: linear-gradient(135deg, #eab308, #ca8a04) 1; }
+        .rec-item.priority-low { border-image: linear-gradient(135deg, #22c55e, #16a34a) 1; }
+
+        .rec-item:hover {
+            transform: translateX(8px);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .rec-priority {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: white;
+        }
+
+        .priority-critical { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .priority-high { background: linear-gradient(135deg, #f97316, #ea580c); }
+        .priority-medium { background: linear-gradient(135deg, #eab308, #ca8a04); }
+        .priority-low { background: linear-gradient(135deg, #22c55e, #16a34a); }
+
+        .rec-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: white;
+        }
+
+        .rec-description {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+    </style>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const { jsPDF } = window.jspdf;
+
+        // --- Configuration ---
+        // Set to true to show the "Test Mode" button, false to hide it for production.
+        const isTestMode = true;
+
+        // --- DOM Elements ---
+        const navPills = document.querySelectorAll('.nav-pill');
+        const sections = document.querySelectorAll('.section');
+        const assessmentGrid = document.getElementById('assessmentGrid');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const maturityScoreEl = document.getElementById('maturityScore');
+        const maturityLevelEl = document.getElementById('maturityLevel');
+        const overallScoreEl = document.getElementById('overallScore');
+        const outcomesScoreEl = document.getElementById('outcomesScore');
+        const coverageScoreEl = document.getElementById('coverageScore');
+        const governanceScoreEl = document.getElementById('governanceScore');
+        const alertContainer = document.getElementById('alertContainer');
+        const domainBreakdownEl = document.getElementById('domainBreakdown');
+        const recommendationsListEl = document.getElementById('recommendationsList');
+        const recommendationsSubtitleEl = document.getElementById('recommendationsSubtitle');
+        const benchmarkDataEl = document.getElementById('benchmarkData');
+        const benchmarkChartContainer = document.getElementById('benchmarkChartContainer');
+        const pdfLoader = document.getElementById('pdf-loader');
+        
+        // --- App State ---
+        let questionsData = null;
+        let totalQuestions = 0;
+        const answers = {};
+        let benchmarkChart = null;
+        let lastResults = null;
+        let chartObserver = null;
+
+        // --- Main Initializer ---
+        async function init() {
+            setupNavListeners();
+            calculateBtn.addEventListener('click', handleCalculateClick);
+            setupTestMode();
+            
+            try {
+                questionsData = await loadAssessmentData();
+                renderAssessment();
+                setupAnswerListeners();
+            } catch (error) {
+                console.error("Fatal Error:", error);
+                assessmentGrid.innerHTML = `<div class="glass-card" style="padding: 20px; color: #fca5a5; text-align: center; grid-column: 1 / -1;">${error.message}</div>`;
+            }
+        }
+
+        // --- Navigation ---
+        function setupNavListeners() {
+            navPills.forEach(pill => {
+                pill.addEventListener('click', function() {
+                    if (this.disabled) return;
+                    navPills.forEach(p => p.classList.remove('active'));
+                    sections.forEach(s => s.classList.remove('active'));
+                    this.classList.add('active');
+                    const sectionId = this.getAttribute('data-section');
+                    document.getElementById(sectionId).classList.add('active');
+                });
+            });
+        }
+
+        // --- Data Loading ---
+        async function loadAssessmentData() {
+            const response = await fetch('./soc_questions.json');
+            if (!response.ok) {
+                throw new Error(`Failed to load soc_questions.json. Status: ${response.status}.<br>Please ensure the file is in the correct directory and you are running this from a web server (like XAMPP).`);
+            }
+            try {
+                return await response.json();
+            } catch (e) {
+                throw new Error("Failed to parse soc_questions.json.<br>Please ensure it is a valid JSON file.");
+            }
+        }
+
+        // --- UI Rendering ---
+        function renderAssessment() {
+            if (!questionsData || typeof questionsData.domains !== 'object') {
+                throw new Error("Invalid data format in soc_questions.json. Expected a 'domains' object.");
+            }
+            
+            assessmentGrid.innerHTML = '';
+            totalQuestions = 0;
+
+            for (const domainName in questionsData.domains) {
+                const domain = questionsData.domains[domainName];
+                const domainCard = document.createElement('div');
+                domainCard.className = 'domain-card glass-card';
+
+                let questionsHTML = '';
+                if (domain.questions && Array.isArray(domain.questions)) {
+                    domain.questions.forEach(q => {
+                        totalQuestions++;
+                        questionsHTML += createQuestionHTML(q);
+                    });
+                }
+
+                domainCard.innerHTML = `
+                    <h3 class="domain-title">${domainName}</h3>
+                    <p class="domain-subtitle">${domain.subtitle || ''}</p>
+                    ${questionsHTML}
+                `;
+                assessmentGrid.appendChild(domainCard);
+            }
+            updateProgress();
+        }
+
+        function createQuestionHTML(q) {
+            const optionsHTML = q.options.map(opt => `
+                <div class="option" data-level="${opt.level}">
+                    <span class="level-indicator level-${opt.level}">${opt.level}</span>
+                    ${opt.text}
+                </div>
+            `).join('');
+
+            return `
+                <div class="question-container" data-question-id="${q.id}">
+                    <div class="question-header">
+                        <p class="question-title">${q.question}</p>
+                        <div class="question-meta">
+                            <span class="question-practice">${q.practice}</span>
+                            <span class="question-weight">Weight: ${q.weight}</span>
+                        </div>
+                        ${q.evidence ? `<p class="question-evidence"><strong>Evidence:</strong> ${q.evidence}</p>` : ''}
+                    </div>
+                    <div class="options">${optionsHTML}</div>
+                </div>
+            `;
+        }
+
+        // --- Event Handling for Answers ---
+        function setupAnswerListeners() {
+            assessmentGrid.addEventListener('click', function(event) {
+                const option = event.target.closest('.option');
+                if (!option) return;
+
+                const questionContainer = option.closest('.question-container');
+                if (!questionContainer) return;
+                
+                const questionId = questionContainer.dataset.questionId;
+                const level = parseInt(option.dataset.level, 10);
+                
+                answers[questionId] = level;
+
+                questionContainer.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+
+                updateProgress();
+            });
+        }
+
+        // --- Progress and State Updates ---
+        function updateProgress() {
+            const answeredCount = Object.keys(answers).length;
+            const percentage = totalQuestions > 0 ? (answeredCount / totalQuestions) * 100 : 0;
+            
+            progressFill.style.width = `${percentage}%`;
+            progressText.textContent = `${answeredCount} of ${totalQuestions} questions completed`;
+            
+            calculateBtn.disabled = totalQuestions === 0 || answeredCount !== totalQuestions;
+        }
+
+        // --- Calculation ---
+        function handleCalculateClick() {
+            lastResults = calculateMaturity();
+            displayResults(lastResults);
+            prepareBenchmarks(lastResults);
+            
+            document.querySelectorAll('.nav-pill[data-section="results"], .nav-pill[data-section="recommendations"], .nav-pill[data-section="benchmarks"], .nav-pill[data-section="reports"]').forEach(pill => {
+                pill.disabled = false;
+            });
+            document.querySelectorAll('#reports .action-button').forEach(button => {
+                button.disabled = false;
+            });
+
+            document.querySelector('.nav-pill[data-section="results"]').click();
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function calculateMaturity() {
+            const pillarScores = { Outcomes: { total: 0, max: 0 }, Coverage: { total: 0, max: 0 }, Governance: { total: 0, max: 0 } };
+            const domainScores = {};
+
+            for (const domainName in questionsData.domains) {
+                const domain = questionsData.domains[domainName];
+                let domainWeightedScore = 0;
+                let domainMaxScore = 0;
+
+                if (domain.questions && Array.isArray(domain.questions)) {
+                    domain.questions.forEach(q => {
+                        const answerLevel = answers[q.id] || 0;
+                        domainWeightedScore += answerLevel * q.weight;
+                        domainMaxScore += 4 * q.weight;
+                    });
+                }
+                
+                domainScores[domainName] = (domainMaxScore > 0) ? (domainWeightedScore / domainMaxScore) * 100 : 0;
+                
+                if(domain.pillar && pillarScores[domain.pillar]) {
+                    pillarScores[domain.pillar].total += domainWeightedScore;
+                    pillarScores[domain.pillar].max += domainMaxScore;
+                }
+            }
+
+            const totalPillarScore = Object.values(pillarScores).reduce((acc, p) => acc + p.total, 0);
+            const totalPillarMax = Object.values(pillarScores).reduce((acc, p) => acc + p.max, 0);
+            const overallScore = totalPillarMax > 0 ? (totalPillarScore / totalPillarMax) * 100 : 0;
+            
+            return {
+                overall: overallScore,
+                domains: domainScores,
+                pillars: {
+                    Outcomes: (pillarScores.Outcomes.max > 0 ? (pillarScores.Outcomes.total / pillarScores.Outcomes.max) * 100 : 0),
+                    Coverage: (pillarScores.Coverage.max > 0 ? (pillarScores.Coverage.total / pillarScores.Coverage.max) * 100 : 0),
+                    Governance: (pillarScores.Governance.max > 0 ? (pillarScores.Governance.total / pillarScores.Governance.max) * 100 : 0)
+                }
+            };
+        }
+
+        function displayResults(results) {
+            outcomesScoreEl.textContent = results.pillars.Outcomes.toFixed(1);
+            coverageScoreEl.textContent = results.pillars.Coverage.toFixed(1);
+            governanceScoreEl.textContent = results.pillars.Governance.toFixed(1);
+            maturityScoreEl.textContent = results.overall.toFixed(1);
+            overallScoreEl.textContent = results.overall.toFixed(1);
+
+            let maturityLevel = "";
+            let maturityClass = "";
+            let alertHTML = '';
+
+            if (results.overall >= 80) { maturityLevel = "Optimized"; maturityClass = "alert-success"; alertHTML = `✅ Your SOC is well-developed. Focus on optimization and advanced capabilities.`;
+            } else if (results.overall >= 60) { maturityLevel = "Measured"; maturityClass = "alert-success"; alertHTML = `✅ Your SOC is making great progress. Continue to refine processes and metrics.`;
+            } else if (results.overall >= 40) { maturityLevel = "Defined"; maturityClass = "alert-warning"; alertHTML = `⚠️ Your SOC has defined processes but needs to focus on measurement and consistency.`;
+            } else if (results.overall >= 20) { maturityLevel = "Initial"; maturityClass = "alert-critical"; alertHTML = `🚨 Your SOC maturity is emerging. Focus on establishing foundational capabilities.`;
+            } else { maturityLevel = "Not Performed"; maturityClass = "alert-critical"; alertHTML = `🚨 Your SOC maturity needs immediate attention. Start with the basics.`; }
+            
+            maturityLevelEl.textContent = maturityLevel;
+            alertContainer.innerHTML = `<div class="alert ${maturityClass}">${alertHTML}</div>`;
+            alertContainer.style.display = 'block';
+
+            domainBreakdownEl.innerHTML = Object.keys(results.domains).map(name => `
+                <div style="margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: 500;">
+                        <span>${name}</span><span>${results.domains[name].toFixed(1)}%</span>
+                    </div>
+                    <div class="progress-bar" style="height: 6px;"><div class="progress-fill" style="width: ${results.domains[name]}%;"></div></div>
+                </div>`).join('');
+            
+            generateRecommendations(results.domains);
+        }
+
+        function generateRecommendations(domainScores) {
+            // Filter for domains that score less than 95% and sort them by score
+            let domainsToImprove = Object.keys(domainScores)
+                .map(name => ({ name, score: domainScores[name] }))
+                .filter(d => d.score < 95)
+                .sort((a, b) => a.score - b.score);
+
+            if (domainsToImprove.length === 0) {
+                recommendationsSubtitleEl.textContent = "Congratulations on your outstanding results!";
+                recommendationsListEl.innerHTML = `<div class="alert alert-success">All domains meet or exceed the target maturity level. Focus on continuous monitoring and staying ahead of emerging threats.</div>`;
+                return;
+            }
+
+            recommendationsSubtitleEl.textContent = "Here are your top areas for improvement, starting with the highest priority.";
+            recommendationsListEl.innerHTML = domainsToImprove.slice(0, 3).map(domain => {
+                let priorityClass = '', priorityText = '', description = '';
+
+                if (domain.score < 40) {
+                    priorityClass = 'priority-critical';
+                    priorityText = 'Critical Priority';
+                    description = `Your score of <strong>${domain.score.toFixed(1)}%</strong> indicates a critical gap. Focus on establishing and documenting foundational processes immediately.`;
+                } else if (domain.score < 60) {
+                    priorityClass = 'priority-high';
+                    priorityText = 'High Priority';
+                    description = `Your score of <strong>${domain.score.toFixed(1)}%</strong> is emerging. Prioritize developing consistent procedures and assigning clear responsibilities.`;
+                } else if (domain.score < 85) {
+                    priorityClass = 'priority-medium';
+                    priorityText = 'Medium Priority';
+                    description = `With a score of <strong>${domain.score.toFixed(1)}%</strong>, this is a good opportunity for refinement. Focus on improving metrics, consistency, and process integration.`;
+                } else { // 85 to 94.9
+                    priorityClass = 'priority-low';
+                    priorityText = 'Low Priority';
+                    description = `Your score of <strong>${domain.score.toFixed(1)}%</strong> is strong. Focus on advanced optimization, increasing automation, and fine-tuning capabilities to reach the next level.`;
+                }
+                
+                return `<div class="rec-item ${priorityClass}">
+                            <span class="rec-priority ${priorityClass}">${priorityText}</span>
+                            <h3 class="rec-title">Enhance ${domain.name}</h3>
+                            <p class="rec-description">${description}</p>
+                        </div>`;
+            }).join('');
+        }
+
+        function prepareBenchmarks(results) {
+            if (chartObserver) chartObserver.disconnect();
+            if (benchmarkChart) benchmarkChart.destroy();
+            benchmarkChart = null;
+
+            benchmarkDataEl.innerHTML = `
+                <div style="text-align: center;">
+                    <select id="industrySelector">${Object.keys(questionsData.benchmarks).map(ind => `<option value="${ind}">${ind}</option>`).join('')}</select>
+                </div>`;
+            benchmarkChartContainer.style.display = 'block';
+            
+            const selector = document.getElementById('industrySelector');
+            selector.addEventListener('change', (e) => drawBenchmarkChart(results, e.target.value));
+
+            chartObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        drawBenchmarkChart(results, selector.value);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            chartObserver.observe(benchmarkChartContainer);
+        }
+
+        function drawBenchmarkChart(results, industry) {
+            const canvas = document.getElementById('benchmarkChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const benchmarkValues = questionsData.benchmarks[industry];
+            
+            const labels = Object.keys(results.domains);
+            const userData = labels.map(label => results.domains[label]);
+            const benchmarkData = labels.map(label => benchmarkValues[label]);
+
+            if (benchmarkChart) {
+                benchmarkChart.data.datasets[0].data = userData;
+                benchmarkChart.data.datasets[1].data = benchmarkData;
+                benchmarkChart.data.datasets[1].label = `${industry} Average`;
+                benchmarkChart.update();
+                return;
+            }
+
+            benchmarkChart = new Chart(ctx, {
+                type: 'radar',
+                data: { 
+                    labels: labels, 
+                    datasets: [
+                        { 
+                            label: 'Your Score', 
+                            data: userData, 
+                            backgroundColor: 'rgba(168, 85, 247, 0.2)', 
+                            borderColor: 'rgba(168, 85, 247, 1)', 
+                            borderWidth: 2, 
+                            pointBackgroundColor: 'rgba(168, 85, 247, 1)' 
+                        },
+                        { 
+                            label: `${industry} Average`, 
+                            data: benchmarkData, 
+                            backgroundColor: 'rgba(236, 72, 153, 0.2)', 
+                            borderColor: 'rgba(236, 72, 153, 1)', 
+                            borderWidth: 2, 
+                            pointBackgroundColor: 'rgba(236, 72, 153, 1)' 
+                        }
+                    ]
+                },
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false,
+                    devicePixelRatio: 2,
+                    animation: {
+                        duration: 1200,
+                        easing: 'easeInOutCubic'
+                    },
+                    scales: { 
+                        r: {
+                            animate: true,
+                            angleLines: { color: 'rgba(255, 255, 255, 0.2)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.2)' },
+                            pointLabels: { color: 'rgba(255, 255, 255, 0.8)', font: { size: 12 } },
+                            ticks: { 
+                                backdropColor: 'rgba(0, 0, 0, 0.5)', 
+                                color: 'white', 
+                                stepSize: 20, 
+                                beginAtZero: true, 
+                                max: 100 
+                            }
+                        }
+                    },
+                    plugins: { 
+                        legend: { 
+                            labels: { 
+                                color: 'white' 
+                            } 
+                        } 
+                    }
+                }
+            });
+        }
+        
+        // --- Test Mode Functionality ---
+        function setupTestMode() {
+            if (!isTestMode) return;
+            const testBtn = document.getElementById('testBtn');
+            if (testBtn) {
+                testBtn.style.display = 'inline-block';
+                testBtn.addEventListener('click', () => runTestMode(3)); // Default level 3 for stress testing
+            }
+        }
+
+        function runTestMode(defaultLevel) {
+            if (!questionsData) {
+                alert("Assessment data not loaded yet. Please wait.");
+                return;
+            }
+
+            // Go to the assessment tab first
+            document.querySelector('.nav-pill[data-section="assessment"]').click();
+
+            for (const domainName in questionsData.domains) {
+                const domain = questionsData.domains[domainName];
+                if (domain.questions && Array.isArray(domain.questions)) {
+                    domain.questions.forEach(q => {
+                        // Set the answer in the state
+                        answers[q.id] = defaultLevel;
+
+                        // Update the UI
+                        const questionContainer = document.querySelector(`.question-container[data-question-id="${q.id}"]`);
+                        if (questionContainer) {
+                            questionContainer.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+                            const selectedOption = questionContainer.querySelector(`.option[data-level="${defaultLevel}"]`);
+                            if (selectedOption) {
+                                selectedOption.classList.add('selected');
+                            }
+                        }
+                    });
+                }
+            }
+            
+            updateProgress();
+            // Automatically click the calculate button after a short delay to allow UI to update
+            setTimeout(handleCalculateClick, 100);
+        }
+
+        // --- PDF GENERATION ENGINE ---
+        const PDF_SETTINGS = {
+            margin: { top: 60, right: 40, bottom: 60, left: 40 },
+            font: { size: 10, family: 'Helvetica' },
+            colors: { 
+                primary: '#a855f7', 
+                secondary: '#ec4899', 
+                text: '#FFFFFF', 
+                faint: '#AAAAAA',
+                background: [15, 15, 35],
+                barBg: [40, 37, 75]
+            },
+            lineHeight: 1.4
+        };
+
+        function getPageWidth(doc) { return doc.internal.pageSize.getWidth(); }
+        function getPageHeight(doc) { return doc.internal.pageSize.getHeight(); }
+        function getDrawableWidth(doc) { return getPageWidth(doc) - PDF_SETTINGS.margin.left - PDF_SETTINGS.margin.right; }
+
+        function addPdfPage(doc, title) {
+            doc.addPage();
+            addPdfHeader(doc, title);
+        }
+
+        function addPdfHeader(doc, title, bgColor = null) {
+            const pageW = getPageWidth(doc);
+            const pageH = getPageHeight(doc);
+            
+            doc.setFillColor.apply(doc, bgColor || PDF_SETTINGS.colors.background);
+            doc.rect(0, 0, pageW, pageH, 'F');
+            
+            doc.setFontSize(18).setFont(PDF_SETTINGS.font.family, 'bold').setTextColor(PDF_SETTINGS.colors.primary);
+            doc.text('ASMAF Maturity Report', PDF_SETTINGS.margin.left, 40);
+            
+            doc.setFontSize(12).setFont(PDF_SETTINGS.font.family, 'normal').setTextColor(PDF_SETTINGS.colors.faint);
+            doc.text(title, pageW - PDF_SETTINGS.margin.right, 40, { align: 'right' });
+            
+            doc.setDrawColor(PDF_SETTINGS.colors.primary);
+            doc.line(PDF_SETTINGS.margin.left, 50, pageW - PDF_SETTINGS.margin.right, 50);
+        }
+
+        function addPdfFooter(doc) {
+            const pageCount = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                doc.setFontSize(8).setTextColor(PDF_SETTINGS.colors.faint);
+                const text = `Page ${i} of ${pageCount} | Generated: ${new Date().toLocaleDateString()}`;
+                doc.text(text, getPageWidth(doc) / 2, getPageHeight(doc) - 30, { align: 'center' });
+            }
+        }
+        
+        function drawPillarChart(doc, y, pillarData) {
+            const chartX = PDF_SETTINGS.margin.left;
+            const chartWidth = getDrawableWidth(doc);
+            const barHeight = 15;
+            const barSpacing = 10;
+
+            Object.keys(pillarData).forEach((pillarName, index) => {
+                const score = pillarData[pillarName];
+                const barY = y + (index * (barHeight + barSpacing));
+                const pillarBarWidth = (score / 100) * chartWidth;
+
+                doc.setFillColor.apply(doc, PDF_SETTINGS.colors.barBg);
+                doc.rect(chartX, barY, chartWidth, barHeight, 'F');
+
+                doc.setFillColor(PDF_SETTINGS.colors.primary);
+                doc.rect(chartX, barY, pillarBarWidth, barHeight, 'F');
+                
+                doc.setFontSize(9).setTextColor(PDF_SETTINGS.colors.text);
+                doc.text(pillarName, chartX + 5, barY + barHeight / 2, { baseline: 'middle' });
+                doc.text(`${score.toFixed(1)}%`, chartX + chartWidth - 5, barY + barHeight / 2, { align: 'right', baseline: 'middle' });
+            });
+
+            return y + (Object.keys(pillarData).length * (barHeight + barSpacing));
+        }
+
+        async function generateExecutiveReport() {
+            const doc = new jsPDF();
+            let y = PDF_SETTINGS.margin.top;
+
+            addPdfHeader(doc, 'Executive Summary');
+
+            // --- Section: Overall Score ---
+            doc.setFontSize(16).setFont(PDF_SETTINGS.font.family, 'bold').setTextColor(PDF_SETTINGS.colors.text);
+            doc.text('Overall Maturity Score', PDF_SETTINGS.margin.left, y);
+            y += 25;
+
+            const scoreText = lastResults.overall.toFixed(1);
+            const levelText = `/ 100 (${maturityLevelEl.textContent})`;
+            doc.setFontSize(36).setFont(PDF_SETTINGS.font.family, 'bold').setTextColor(PDF_SETTINGS.colors.primary);
+            doc.text(scoreText, PDF_SETTINGS.margin.left, y, { baseline: 'bottom' });
+            
+            const scoreWidth = doc.getTextWidth(scoreText);
+            doc.setFontSize(14).setFont(PDF_SETTINGS.font.family, 'normal').setTextColor(PDF_SETTINGS.colors.faint);
+            doc.text(levelText, PDF_SETTINGS.margin.left + scoreWidth + 2, y, { baseline: 'bottom' });
+            y += 40;
+
+            // --- Section: Pillar Performance ---
+            doc.setFontSize(16).setFont(PDF_SETTINGS.font.family, 'bold').setTextColor(PDF_SETTINGS.colors.text);
+            doc.text('Pillar Performance', PDF_SETTINGS.margin.left, y);
+            y += 20;
+            y = drawPillarChart(doc, y, lastResults.pillars);
+
+            // --- Move to Page 2 for Findings and Recommendations ---
+            addPdfPage(doc, 'Executive Summary');
+            y = PDF_SETTINGS.margin.top;
+
+            // --- Section: Key Findings ---
+            const alertText = document.querySelector('#alertContainer .alert').textContent.replace(/✅|⚠️|🚨/g, '').trim();
+            doc.setFontSize(16).setFont(PDF_SETTINGS.font.family, 'bold').setTextColor(PDF_SETTINGS.colors.text);
+            doc.text('Key Findings', PDF_SETTINGS.margin.left, y);
+            y += 15;
+            doc.setFontSize(PDF_SETTINGS.font.size).setFont(PDF_SETTINGS.font.family, 'normal').setTextColor(PDF_SETTINGS.colors.text);
+            const findingLines = doc.splitTextToSize(alertText, getDrawableWidth(doc));
+            doc.text(findingLines, PDF_SETTINGS.margin.left, y);
+            y += doc.getTextDimensions(findingLines).h + 25;
+            
+            // --- Section: Top 3 Improvement Areas ---
+            doc.setFontSize(16).setFont(PDF_SETTINGS.font.family, 'bold').setTextColor(PDF_SETTINGS.colors.text);
+            doc.text('Top Improvement Areas', PDF_SETTINGS.margin.left, y);
+            y += 15;
+            
+            const recItems = recommendationsListEl.querySelectorAll('.rec-item');
+            if (recItems.length > 0) {
+                recItems.forEach((rec) => {
+                    const title = rec.querySelector('.rec-title').textContent;
+                    const description = rec.querySelector('.rec-description').textContent;
+                    
+                    doc.setFontSize(11).setFont(PDF_SETTINGS.font.family, 'bold').setTextColor(PDF_SETTINGS.colors.primary);
+                    const titleLines = doc.splitTextToSize('• ' + title, getDrawableWidth(doc));
+                    doc.text(titleLines, PDF_SETTINGS.margin.left, y);
+                    y += doc.getTextDimensions(titleLines).h + 2;
+                    
+                    doc.setFontSize(PDF_SETTINGS.font.size).setFont(PDF_SETTINGS.font.family, 'normal').setTextColor(PDF_SETTINGS.colors.text);
+                    const descLines = doc.splitTextToSize(description.trim(), getDrawableWidth(doc) - 10);
+                    doc.text(descLines, PDF_SETTINGS.margin.left + 10, y);
+                    y += doc.getTextDimensions(descLines).h + 10;
+                });
+            } else {
+                const congratsText = recommendationsListEl.textContent;
+                const congratsLines = doc.setFontSize(PDF_SETTINGS.font.size).setFont(PDF_SETTINGS.font.family, 'normal').setTextColor(PDF_SETTINGS.colors.text).splitTextToSize(congratsText, getDrawableWidth(doc));
+                doc.text(congratsLines, PDF_SETTINGS.margin.left, y);
+            }
+
+
+            addPdfFooter(doc);
+            doc.save('ASMAF_Executive_Summary.pdf');
+        }
+        
+        async function generateRoadmapReport() {
+            const doc = new jsPDF();
+            let y = PDF_SETTINGS.margin.top;
+
+            addPdfHeader(doc, 'Improvement Roadmap');
+            const recItems = recommendationsListEl.querySelectorAll('.rec-item');
+
+            if (recItems.length === 0) {
+                 const congratsText = recommendationsListEl.textContent;
+                const congratsLines = doc.setFontSize(PDF_SETTINGS.font.size).setFont(PDF_SETTINGS.font.family, 'normal').setTextColor(PDF_SETTINGS.colors.text).splitTextToSize(congratsText, getDrawableWidth(doc));
+                doc.text(congratsLines, PDF_SETTINGS.margin.left, y);
+            } else {
+                recItems.forEach(rec => {
+                    const priorityText = rec.querySelector('.rec-priority').textContent.trim().toUpperCase();
+                    const title = rec.querySelector('.rec-title').textContent;
+                    const description = rec.querySelector('.rec-description').textContent.trim();
+                    const priorityColors = { 
+                        'CRITICAL PRIORITY': '#ef4444', 
+                        'HIGH PRIORITY': '#f97316', 
+                        'MEDIUM PRIORITY': '#eab308',
+                        'LOW PRIORITY': '#22c55e'
+                    };
+                    const color = priorityColors[priorityText] || '#22c55e';
+
+                    // Calculate height of the entire block before drawing
+                    const titleLines = doc.setFontSize(14).setFont(PDF_SETTINGS.font.family, 'bold').splitTextToSize(title, getDrawableWidth(doc));
+                    const descLines = doc.setFontSize(PDF_SETTINGS.font.size).setFont(PDF_SETTINGS.font.family, 'normal').splitTextToSize(description, getDrawableWidth(doc));
+                    const itemHeight = 20 + 5 + doc.getTextDimensions(titleLines).h + 5 + doc.getTextDimensions(descLines).h + 15;
+
+                    if (y + itemHeight > getPageHeight(doc) - PDF_SETTINGS.margin.bottom) { 
+                        addPdfPage(doc, 'Improvement Roadmap'); 
+                        y = PDF_SETTINGS.margin.top; 
+                    }
+                    
+                    doc.setFontSize(10).setFont(PDF_SETTINGS.font.family, 'bold');
+                    doc.setFillColor(color).rect(PDF_SETTINGS.margin.left, y, getDrawableWidth(doc), 20, 'F');
+                    doc.setTextColor(PDF_SETTINGS.colors.text).text(priorityText, PDF_SETTINGS.margin.left + 5, y + 10, { baseline: 'middle'});
+                    y += 25;
+
+                    doc.setFontSize(14).setFont(PDF_SETTINGS.font.family, 'bold').setTextColor(PDF_SETTINGS.colors.text).text(titleLines, PDF_SETTINGS.margin.left, y);
+                    y += doc.getTextDimensions(titleLines).h + 5;
+
+                    doc.setFontSize(PDF_SETTINGS.font.size).setFont(PDF_SETTINGS.font.family, 'normal').setTextColor(PDF_SETTINGS.colors.text).text(descLines, PDF_SETTINGS.margin.left, y);
+                    y += doc.getTextDimensions(descLines).h + 15;
+                });
+            }
+
+            addPdfFooter(doc);
+            doc.save('ASMAF_Improvement_Roadmap.pdf');
+        }
+
+        async function generateTechnicalReport() {
+            const doc = new jsPDF();
+            
+            Object.keys(lastResults.domains).forEach((domainName, index) => {
+                // Start a new page for each domain
+                if (index === 0) {
+                    addPdfHeader(doc, 'Technical Report');
+                } else {
+                    addPdfPage(doc, 'Technical Report');
+                }
+                let y = PDF_SETTINGS.margin.top;
+
+                const domainData = questionsData.domains[domainName];
+                const score = lastResults.domains[domainName];
+
+                doc.setFontSize(16).setFont(PDF_SETTINGS.font.family, 'bold').setTextColor(PDF_SETTINGS.colors.primary);
+                doc.text(domainName, PDF_SETTINGS.margin.left, y);
+                y += 15;
+                
+                const scoreBarHeight = 10;
+                const scoreBarWidth = getDrawableWidth(doc);
+                doc.setFillColor.apply(doc, PDF_SETTINGS.colors.barBg);
+                doc.rect(PDF_SETTINGS.margin.left, y, scoreBarWidth, scoreBarHeight, 'F');
+                doc.setFillColor(PDF_SETTINGS.colors.primary);
+                doc.rect(PDF_SETTINGS.margin.left, y, score * (scoreBarWidth/100), scoreBarHeight, 'F');
+                doc.setFontSize(8).setFont(PDF_SETTINGS.font.family, 'bold').setTextColor(PDF_SETTINGS.colors.text);
+                doc.text(`${score.toFixed(1)}%`, PDF_SETTINGS.margin.left + scoreBarWidth / 2, y + scoreBarHeight / 2, { align: 'center', baseline: 'middle'});
+                y += scoreBarHeight + 20;
+
+                domainData.questions.forEach(q => {
+                    const answerLevel = answers[q.id];
+                    const answerText = q.options.find(opt => opt.level === answerLevel).text;
+
+                    const qLines = doc.setFontSize(10).setFont(PDF_SETTINGS.font.family, 'bold').splitTextToSize(`Q: ${q.question}`, getDrawableWidth(doc));
+                    const aLines = doc.setFontSize(10).setFont(PDF_SETTINGS.font.family, 'normal').splitTextToSize(`A: [${answerLevel}] ${answerText}`, getDrawableWidth(doc) - 10);
+                    const questionHeight = doc.getTextDimensions(qLines).h + doc.getTextDimensions(aLines).h + 17;
+
+                    if (y + questionHeight > getPageHeight(doc) - PDF_SETTINGS.margin.bottom) { 
+                        addPdfPage(doc, 'Technical Report'); 
+                        y = PDF_SETTINGS.margin.top; 
+                    }
+
+                    doc.setFontSize(10).setFont(PDF_SETTINGS.font.family, 'bold').setTextColor(PDF_SETTINGS.colors.text);
+                    doc.text(qLines, PDF_SETTINGS.margin.left, y);
+                    y += doc.getTextDimensions(qLines).h + 2;
+
+                    doc.setFont(PDF_SETTINGS.font.family, 'normal').setTextColor(PDF_SETTINGS.colors.faint);
+                    doc.text(aLines, PDF_SETTINGS.margin.left + 10, y);
+                    y += doc.getTextDimensions(aLines).h + 15;
+                });
+            });
+
+            addPdfFooter(doc);
+            doc.save('ASMAF_Technical_Report.pdf');
+        }
+
+        async function generateKpiReport() {
+            if (!lastResults || !questionsData.benchmarks) {
+                throw new Error("Data for KPI report is not ready.");
+            }
+
+            const doc = new jsPDF('p', 'pt');
+            const pageW = getPageWidth(doc);
+            const pageH = getPageHeight(doc);
+            const industries = Object.keys(questionsData.benchmarks);
+            
+            const canvasBgPlugin = {
+                id: 'canvasBackgroundColor',
+                beforeDraw: (chart, args, options) => {
+                    const { ctx } = chart;
+                    ctx.save();
+                    ctx.globalCompositeOperation = 'destination-over';
+                    ctx.fillStyle = options.color || '#0f0f23';
+                    ctx.fillRect(0, 0, chart.width, chart.height);
+                    ctx.restore();
+                }
+            };
+
+            // --- Create all chart images first ---
+            const chartImages = [];
+            for (const industry of industries) {
+                const offscreenCanvas = document.createElement('canvas');
+                offscreenCanvas.width = 600;
+                offscreenCanvas.height = 600;
+                
+                const benchmarkValues = questionsData.benchmarks[industry];
+                if (!benchmarkValues) continue;
+
+                const labels = Object.keys(lastResults.domains);
+                const userData = labels.map(label => lastResults.domains[label]);
+                const benchmarkData = labels.map(label => benchmarkValues[label]);
+
+                new Chart(offscreenCanvas.getContext('2d'), {
+                    type: 'radar',
+                    data: { labels: labels, datasets: [
+                        { label: 'Your Score', data: userData, backgroundColor: 'rgba(168, 85, 247, 0.3)', borderColor: 'rgba(168, 85, 247, 1)', borderWidth: 2, pointBackgroundColor: 'rgba(168, 85, 247, 1)' },
+                        { label: `${industry} Avg.`, data: benchmarkData, backgroundColor: 'rgba(236, 72, 153, 0.3)', borderColor: 'rgba(236, 72, 153, 1)', borderWidth: 2, pointBackgroundColor: 'rgba(236, 72, 153, 1)' }
+                    ]},
+                    plugins: [canvasBgPlugin],
+                    options: {
+                        animation: false,
+                        responsive: false,
+                        devicePixelRatio: 2,
+                        plugins: { 
+                            canvasBackgroundColor: { color: '#0f0f23' },
+                            legend: { 
+                                display: true,
+                                position: 'top',
+                                labels: { color: 'white', font: { size: 14 } }
+                             }
+                        },
+                        scales: { r: {
+                            angleLines: { color: 'rgba(255, 255, 255, 0.4)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.4)' },
+                            pointLabels: { color: 'rgba(255, 255, 255, 0.9)', font: { size: 12 } },
+                            ticks: { 
+                                display: true, color: 'white', backdropColor: 'transparent', stepSize: 20
+                             }
+                        }}
+                    }
+                });
+
+                const dataUrl = await new Promise(resolve => setTimeout(() => {
+                    resolve(offscreenCanvas.toDataURL('image/jpeg', 0.8));
+                }, 300));
+                
+                chartImages.push({ industry, image: dataUrl });
+            }
+
+            // --- Front Page ---
+            addPdfHeader(doc, 'Benchmark Comparison', [15, 15, 35]);
+            
+            doc.saveGraphicsState();
+            doc.setGState(new doc.GState({opacity: 0.15}));
+            const chartSize = 600;
+            if (chartImages.length > 0) doc.addImage(chartImages[0].image, 'JPEG', pageW - chartSize * 0.7, 0 - chartSize * 0.4, chartSize, chartSize);
+            if (chartImages.length > 1) doc.addImage(chartImages[1].image, 'JPEG', 0 - chartSize * 0.5, pageH/2 - chartSize/2, chartSize, chartSize);
+            if (chartImages.length > 2) doc.addImage(chartImages[2].image, 'JPEG', pageW - chartSize * 0.55, pageH - chartSize * 0.6, chartSize, chartSize);
+            doc.restoreGraphicsState();
+
+            doc.setFontSize(28).setFont('Helvetica', 'bold').setTextColor(PDF_SETTINGS.colors.text);
+            doc.text("KPI Benchmark Analysis", pageW / 2, pageH / 2 - 100, { align: 'center' });
+
+            doc.setFontSize(11).setFont('Helvetica', 'normal').setTextColor(PDF_SETTINGS.colors.faint);
+            const introText = "This report visualizes your SOC maturity scores against various industry benchmarks, providing context for your performance and identifying areas for strategic improvement.";
+            doc.text(introText, pageW / 2, pageH / 2, { align: 'center', maxWidth: getDrawableWidth(doc) - 100 });
+
+            // --- Content Pages (One per sector) ---
+            for (let i = 0; i < chartImages.length; i++) {
+                const chart = chartImages[i];
+                
+                doc.addPage();
+                addPdfHeader(doc, `Benchmark Data - ${chart.industry}`);
+
+                let yPos = PDF_SETTINGS.margin.top + 20;
+
+                // Add Chart
+                const chartHeight = 280;
+                doc.addImage(chart.image, 'JPEG', (pageW - chartHeight) / 2, yPos, chartHeight, chartHeight);
+                yPos += chartHeight + 20;
+
+                // Add Chart Description
+                doc.setFontSize(9).setTextColor(PDF_SETTINGS.colors.faint);
+                const chartDesc = `The radar chart above illustrates a direct comparison of your maturity scores (purple) against the average scores for the ${chart.industry} sector (pink).`;
+                const chartDescLines = doc.splitTextToSize(chartDesc, getDrawableWidth(doc));
+                doc.text(chartDescLines, PDF_SETTINGS.margin.left, yPos);
+                yPos += doc.getTextDimensions(chartDescLines).h + 25;
+
+                // Add Table
+                const benchmarkValues = questionsData.benchmarks[chart.industry];
+                const tableBody = Object.keys(lastResults.domains).map(domainName => {
+                    const yourScore = lastResults.domains[domainName];
+                    const benchmarkScore = benchmarkValues[domainName];
+                    const delta = yourScore - benchmarkScore;
+                    return [domainName, `${yourScore.toFixed(1)}%`, `${benchmarkScore.toFixed(1)}%`, `${delta >= 0 ? '+' : ''}${delta.toFixed(1)}%`];
+                });
+                
+                doc.autoTable({
+                    head: [['Domain', 'Your Score', `${chart.industry} Avg.`, 'Delta']],
+                    body: tableBody,
+                    startY: yPos,
+                    theme: 'grid',
+                    styles: { fillColor: false, textColor: PDF_SETTINGS.colors.text, lineColor: [40, 37, 75], lineWidth: 0.5, font: 'Helvetica' },
+                    headStyles: { fillColor: [168, 85, 247], textColor: [255,255,255] },
+                    didParseCell: (data) => {
+                        if (data.column.index === 3 && data.cell.section === 'body') {
+                            const delta = parseFloat(data.cell.raw);
+                            if (delta < -10) data.cell.styles.textColor = '#ef4444';
+                            else if (delta > 10) data.cell.styles.textColor = '#22c55e';
+                        }
+                    }
+                });
+                let finalY = doc.autoTable.previous.finalY;
+
+                // Add Table Description
+                doc.setFontSize(9).setTextColor(PDF_SETTINGS.colors.faint);
+                const tableDesc = `The table above provides a detailed breakdown of the scores. The 'Delta' column highlights the variance between your score and the industry average.`;
+                const tableDescLines = doc.splitTextToSize(tableDesc, getDrawableWidth(doc));
+                doc.text(tableDescLines, PDF_SETTINGS.margin.left, finalY + 15);
+            }
+
+            addPdfFooter(doc);
+            doc.save('ASMAF_Benchmark_Analysis.pdf');
+        }
+        
+        window.generateReport = async function(type) {
+            if (!lastResults) return;
+            pdfLoader.classList.add('visible');
+            try {
+                await new Promise(resolve => setTimeout(resolve, 50));
+                switch(type) {
+                    case 'executive': await generateExecutiveReport(); break;
+                    case 'roadmap': await generateRoadmapReport(); break;
+                    case 'technical': await generateTechnicalReport(); break;
+                    case 'metrics': await generateKpiReport(); break;
+                }
+            } catch (e) {
+                console.error("PDF Generation failed:", e);
+                alert("An error occurred while generating the PDF. See console for details.");
+            } finally {
+                pdfLoader.classList.remove('visible');
+            }
+        }
+
+        init();
+    });
+    </script>
+    <script>
+        // Aggressive layout correction script
+        const correctLayout = () => {
+            const bodyWidth = document.body.getBoundingClientRect().width;
+            const windowWidth = window.innerWidth;
+            if (bodyWidth !== windowWidth) {
+                document.body.style.width = windowWidth + 'px';
+            }
+        };
+        const observer = new ResizeObserver(correctLayout);
+        observer.observe(document.body);
+        correctLayout();
+    </script>
+</body>
+</html>

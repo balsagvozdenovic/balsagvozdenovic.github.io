@@ -1,0 +1,532 @@
+{
+  "domains": {
+    "Program & Governance": {
+      "pillar": "Governance",
+      "weight": 1.0,
+      "subtitle": "Establishing strategy, metrics, and accountability.",
+      "questions": [
+        {
+          "id": "pr1",
+          "practice": "Cybersecurity Program",
+          "question": "Is there an enterprise cybersecurity program that aligns objectives with business strategy and risk?",
+          "evidence": "Review program charter, risk assessments, and executive reports.",
+          "weight": 1.0,
+          "options": [
+            { "level": 0, "text": "Not performed or ad hoc. Limited visibility. No ownership." },
+            { "level": 1, "text": "Initial and compliance-driven. Some centralization or basic practice. Inconsistent." },
+            { "level": 2, "text": "Documented and resourced. Targeted coverage and defined workflow. Basic metrics." },
+            { "level": 3, "text": "Policy-guided and accountable. Holistic coverage. Effectiveness tracked. Skilled staff." },
+            { "level": 4, "text": "Optimized and proactive. 24/7 operations. Extensive automation. Continuous improvement." }
+          ]
+        },
+        {
+          "id": "pr2",
+          "practice": "Metrics Program",
+          "question": "Do you run a SOC metrics program with clear objectives, data sources, synthesis, and decisioning?",
+          "evidence": "Review KPI/KRI dashboards and records of metric-driven decisions.",
+          "weight": 1.2,
+          "options": [
+            { "level": 0, "text": "Not performed or ad hoc." },
+            { "level": 1, "text": "Basic, inconsistent metrics (e.g., ticket volume)." },
+            { "level": 2, "text": "Defined operational metrics (MTTD, MTTR) are tracked." },
+            { "level": 3, "text": "Metrics are tied to risk and influence priorities." },
+            { "level": 4, "text": "Metrics program is predictive and drives automated actions." }
+          ]
+        },
+        {
+          "id": "pr3",
+          "practice": "Target Levels",
+          "question": "Do you set target maturity levels per domain and track progress against them?",
+          "evidence": "Review maturity assessment reports and strategic roadmaps.",
+          "weight": 1.0,
+          "options": [
+            { "level": 0, "text": "No targets are set." },
+            { "level": 1, "text": "Informal goals exist but are not tracked." },
+            { "level": 2, "text": "Target maturity levels are documented for some domains." },
+            { "level": 3, "text": "Targets are set for all domains and progress is reviewed quarterly." },
+            { "level": 4, "text": "Targets are continuously adjusted based on threat landscape and business risk." }
+          ]
+        }
+      ]
+    },
+    "Risk & Threat Intelligence": {
+      "pillar": "Governance",
+      "weight": 1.0,
+      "subtitle": "Integrating risk context and threat intelligence.",
+      "questions": [
+        {
+          "id": "ri1",
+          "practice": "Enterprise Risk",
+          "question": "Is risk management used to prioritize SOC use cases and investments?",
+          "evidence": "Show mapping of detection use cases to enterprise risk register.",
+          "weight": 1.0,
+          "options": [
+            { "level": 0, "text": "Not performed or ad hoc." },
+            { "level": 1, "text": "Risk is considered informally." },
+            { "level": 2, "text": "Use cases are loosely mapped to general risks." },
+            { "level": 3, "text": "A formal process aligns SOC priorities with the enterprise risk register." },
+            { "level": 4, "text": "Risk models dynamically adjust detection and response priorities." }
+          ]
+        },
+        {
+          "id": "ri2",
+          "practice": "Threat Intelligence",
+          "question": "Is threat intelligence integrated into detections and investigations?",
+          "evidence": "Demonstrate automated TI enrichment in alerts and hunting queries.",
+          "weight": 1.2,
+          "options": [
+            { "level": 0, "text": "No TI is used." },
+            { "level": 1, "text": "Analysts manually consult public TI feeds." },
+            { "level": 2, "text": "TI feeds are ingested, but integration is manual or limited." },
+            { "level": 3, "text": "TI is automatically correlated with logs and enriches alerts." },
+            { "level": 4, "text": "Proactive threat hunting is driven by tailored, predictive intelligence." }
+          ]
+        },
+        {
+          "id": "ri3",
+          "practice": "Third-Party Risk",
+          "question": "Are third-party risks monitored and incidents coordinated with suppliers?",
+          "evidence": "Review third-party incident response plans and communication records.",
+          "weight": 0.8,
+          "options": [
+            { "level": 0, "text": "No monitoring of third-party risk." },
+            { "level": 1, "text": "Informal awareness of supplier incidents." },
+            { "level": 2, "text": "Third-party security is assessed, but not actively monitored." },
+            { "level": 3, "text": "There is a formal program for third-party IR coordination." },
+            { "level": 4, "text": "Automated monitoring of the external attack surface of key suppliers." }
+          ]
+        }
+      ]
+    },
+    "Telemetry & Engineering": {
+      "pillar": "Coverage",
+      "weight": 1.4,
+      "subtitle": "Ensuring visibility and data quality.",
+      "questions": [
+        {
+          "id": "te1",
+          "practice": "Centralized Logging",
+          "question": "What is your centralized logging coverage across endpoint, server, network, identity, SaaS, and cloud?",
+          "evidence": "Show logging coverage dashboard and data source inventory.",
+          "weight": 1.4,
+          "options": [
+            { "level": 0, "text": "No centralized logging." },
+            { "level": 1, "text": "Only critical infrastructure logs are centralized." },
+            { "level": 2, "text": "Majority of security-relevant logs are centralized with basic retention." },
+            { "level": 3, "text": "Comprehensive logging coverage across all key asset types." },
+            { "level": 4, "text": "Coverage is continuously validated and gaps are automatically flagged." }
+          ]
+        },
+        {
+          "id": "te2",
+          "practice": "EDR/NDR Visibility",
+          "question": "What endpoint and network detection coverage and configuration is in place?",
+          "evidence": "Review EDR/NDR deployment stats and configuration policies.",
+          "weight": 1.2,
+          "options": [
+            { "level": 0, "text": "No EDR/NDR tools." },
+            { "level": 1, "text": "Deployed on some critical assets, default configuration." },
+            { "level": 2, "text": "Widely deployed with some policy tuning." },
+            { "level": 3, "text": "Fully deployed with tailored policies and regular health checks." },
+            { "level": 4, "text": "Integrated EDR/NDR telemetry drives automated response actions." }
+          ]
+        },
+        {
+          "id": "te3",
+          "practice": "Data Quality",
+          "question": "Do you monitor and normalize telemetry quality with schema and parsing guards?",
+          "evidence": "Show data quality dashboards and examples of parsing rules.",
+          "weight": 1.0,
+          "options": [
+            { "level": 0, "text": "No data quality monitoring." },
+            { "level": 1, "text": "Ad-hoc fixes for parsing errors." },
+            { "level": 2, "text": "A process exists to handle common parsing issues." },
+            { "level": 3, "text": "Data is normalized to a common schema; quality is monitored." },
+            { "level": 4, "text": "Automated data quality validation with self-healing capabilities." }
+          ]
+        }
+      ]
+    },
+    "Monitoring & Detection": {
+      "pillar": "Outcomes",
+      "weight": 1.2,
+      "subtitle": "Developing and managing detection content.",
+      "questions": [
+        {
+          "id": "mo1",
+          "practice": "Use Case Catalog",
+          "question": "Do you maintain a versioned detection catalog mapped to ATT&CK and risks?",
+          "evidence": "Show the detection catalog in a repository or management tool.",
+          "weight": 1.2,
+          "options": [
+            { "level": 0, "text": "No catalog exists." },
+            { "level": 1, "text": "Informal list of detections." },
+            { "level": 2, "text": "A catalog exists, but is not consistently maintained or mapped." },
+            { "level": 3, "text": "Version-controlled catalog mapped to ATT&CK is actively used." },
+            { "level": 4, "text": "Catalog is integrated with automated testing and coverage analysis." }
+          ]
+        },
+        {
+          "id": "mo2",
+          "practice": "Content Lifecycle",
+          "question": "Are detections tested, tuned, and retired through a managed lifecycle?",
+          "evidence": "Show change logs and testing procedures for detection rules.",
+          "weight": 1.2,
+          "options": [
+            { "level": 0, "text": "No defined lifecycle." },
+            { "level": 1, "text": "Detections are created but rarely tuned or retired." },
+            { "level": 2, "text": "A manual process for tuning and review exists." },
+            { "level": 3, "text": "A formal CI/CD-like lifecycle for detection content is implemented." },
+            { "level": 4, "text": "Lifecycle is fully automated, including simulated attack testing." }
+          ]
+        },
+        {
+          "id": "mo3",
+          "practice": "Alert Fidelity",
+          "question": "Is alert fidelity measured and improved via precision/recall or SNR?",
+          "evidence": "Review alert fidelity metrics and reports showing tuning effectiveness.",
+          "weight": 1.0,
+          "options": [
+            { "level": 0, "text": "Fidelity is not measured." },
+            { "level": 1, "text": "Analysts provide informal feedback on noisy alerts." },
+            { "level": 2, "text": "Alerts are manually tagged as false positives; basic stats are kept." },
+            { "level": 3, "text": "Formal Signal-to-Noise Ratio (SNR) is tracked per detection." },
+            { "level": 4, "text": "Automated feedback loops adjust alert scores based on analyst actions." }
+          ]
+        }
+      ]
+    },
+    "Threat Hunting": {
+      "pillar": "Outcomes",
+      "weight": 1.0,
+      "subtitle": "Proactively searching for adversaries.",
+      "questions": [
+        {
+          "id": "th1",
+          "practice": "Cadence & Scope",
+          "question": "Is there a hypothesis-led hunting program with scheduled cadence?",
+          "evidence": "Show hunt calendar, hypothesis backlog, and post-hunt reports.",
+          "weight": 1.2,
+          "options": [
+            { "level": 0, "text": "No threat hunting." },
+            { "level": 1, "text": "Ad-hoc, unstructured hunting occurs occasionally." },
+            { "level": 2, "text": "Scheduled hunts occur, but may lack formal hypotheses." },
+            { "level": 3, "text": "A formal program with hypothesis-driven hunts is established." },
+            { "level": 4, "text": "Hunting is continuous and integrated with intelligence." }
+          ]
+        },
+        {
+          "id": "th2",
+          "practice": "Data & Tools",
+          "question": "Do hunters have access to rich historical data and flexible query tools?",
+          "evidence": "Demonstrate hunting platform and access to diverse datasets.",
+          "weight": 1.0,
+          "options": [
+            { "level": 0, "text": "No dedicated tools or data access." },
+            { "level": 1, "text": "Hunters use SIEM, but access is limited." },
+            { "level": 2, "text": "Hunters have access to most relevant data, but tools are not specialized." },
+            { "level": 3, "text": "Dedicated hunting platform with broad data access and long retention." },
+            { "level": 4, "text": "Hunters have programmatic access to all data and can build custom tools." }
+          ]
+        },
+        {
+          "id": "th3",
+          "practice": "Operationalization",
+          "question": "Are hunt findings converted into detections and playbooks?",
+          "evidence": "Trace a hunt finding to a new detection rule and updated playbook.",
+          "weight": 1.2,
+          "options": [
+            { "level": 0, "text": "Findings are not formally documented or used." },
+            { "level": 1, "text": "Findings are noted, but not systematically converted." },
+            { "level": 2, "text": "A manual process exists to create detections from hunt findings." },
+            { "level": 3, "text": "A formal, tracked process ensures findings become new detections." },
+            { "level": 4, "text": "The process is semi-automated, with templates for new detections." }
+          ]
+        }
+      ]
+    },
+    "Investigation & Case Management": {
+      "pillar": "Outcomes",
+      "weight": 1.0,
+      "subtitle": "Managing analysis and workflow.",
+      "questions": [
+        {
+          "id": "in1",
+          "practice": "Case Platform",
+          "question": "Do analysts use a case platform with evidence, linkage, and audit trail?",
+          "evidence": "Show an example case with linked artifacts and analyst notes.",
+          "weight": 1.0,
+          "options": [
+            { "level": 0, "text": "No case management platform." },
+            { "level": 1, "text": "Shared spreadsheets or documents are used." },
+            { "level": 2, "text": "A ticketing system is used, but not tailored for security cases." },
+            { "level": 3, "text": "A dedicated case management platform is used consistently." },
+            { "level": 4, "text": "Case platform is integrated with all tools for full audit trail." }
+          ]
+        },
+        {
+          "id": "in2",
+          "practice": "Enrichment & Triage",
+          "question": "Is triage enriched automatically and consistently?",
+          "evidence": "Show an alert automatically enriched with user, asset, and TI data.",
+          "weight": 1.0,
+          "options": [
+            { "level": 0, "text": "No enrichment." },
+            { "level": 1, "text": "Analysts manually gather context for alerts." },
+            { "level": 2, "text": "Basic, inconsistent automated enrichment." },
+            { "level": 3, "text": "Consistent, automated enrichment for all alerts." },
+            { "level": 4, "text": "Dynamic enrichment that adapts based on the alert type." }
+          ]
+        },
+        {
+          "id": "in3",
+          "practice": "Collaboration & Knowledge",
+          "question": "Is there shared knowledge, runbooks, and cross-team collaboration?",
+          "evidence": "Show wiki/knowledge base, runbooks, and collaboration channels.",
+          "weight": 0.8,
+          "options": [
+            { "level": 0, "text": "No shared knowledge or collaboration." },
+            { "level": 1, "text": "Informal collaboration (e.g., chat)." },
+            { "level": 2, "text": "Some runbooks and a basic knowledge base exist." },
+            { "level": 3, "text": "A comprehensive, actively maintained knowledge base and runbooks are used." },
+            { "level": 4, "text": "Knowledge is captured automatically from investigations." }
+          ]
+        }
+      ]
+    },
+    "Incident Response & Recovery": {
+      "pillar": "Outcomes",
+      "weight": 1.2,
+      "subtitle": "Containing and remediating threats.",
+      "questions": [
+        {
+          "id": "ic1",
+          "practice": "IR Playbooks & Exercises",
+          "question": "Are IR plans/playbooks documented, tested, and exercised?",
+          "evidence": "Show IR playbooks and reports from recent tabletop or live-fire exercises.",
+          "weight": 1.2,
+          "options": [
+            { "level": 0, "text": "No documented playbooks." },
+            { "level": 1, "text": "Basic playbooks exist but are not tested." },
+            { "level": 2, "text": "Playbooks are documented and occasionally tested via tabletops." },
+            { "level": 3, "text": "Playbooks are regularly tested and updated after live-fire exercises." },
+            { "level": 4, "text": "Playbooks are executable (SOAR) and tested automatically." }
+          ]
+        },
+        {
+          "id": "ic2",
+          "practice": "Coverage & On-call",
+          "question": "Do you provide 24/7 coverage with defined roles and escalation?",
+          "evidence": "Show on-call schedule, escalation matrix, and role definitions.",
+          "weight": 1.0,
+          "options": [
+            { "level": 0, "text": "No 24/7 coverage or formal on-call." },
+            { "level": 1, "text": "Best-effort on-call, no formal escalation." },
+            { "level": 2, "text": "Formal on-call rotation with basic escalation path." },
+            { "level": 3, "text": "24/7 coverage with well-defined roles and multi-tiered escalation." },
+            { "level": 4, "text": "Follow-the-sun model with fully staffed shifts." }
+          ]
+        },
+        {
+          "id": "ic3",
+          "practice": "Post-Incident Improvement",
+          "question": "Are PIRs conducted and improvements tracked to closure?",
+          "evidence": "Show a Post-Incident Report (PIR) and the associated tracking ticket.",
+          "weight": 1.0,
+          "options": [
+            { "level": 0, "text": "No PIR process." },
+            { "level": 1, "text": "Informal lessons learned are sometimes discussed." },
+            { "level": 2, "text": "A formal PIR process exists but follow-up is inconsistent." },
+            { "level": 3, "text": "PIRs are consistently conducted and action items are tracked to closure." },
+            { "level": 4, "text": "PIR findings feed directly into risk management and automated control testing." }
+          ]
+        }
+      ]
+    },
+    "Automation & SOAR": {
+      "pillar": "Coverage",
+      "weight": 1.2,
+      "subtitle": "Automating security operations.",
+      "questions": [
+        {
+          "id": "au1",
+          "practice": "Triage Automation",
+          "question": "Is triage automated for common alerts with guardrails?",
+          "evidence": "Show a SOAR playbook that automates triage for phishing alerts.",
+          "weight": 1.0,
+          "options": [
+            { "level": 0, "text": "No automation." },
+            { "level": 1, "text": "Basic scripts exist for simple tasks." },
+            { "level": 2, "text": "Some triage tasks are automated for high-volume, low-risk alerts." },
+            { "level": 3, "text": "A SOAR platform is used to automate triage for multiple alert types." },
+            { "level": 4, "text": "Most triage is automated, with analysts handling only exceptions." }
+          ]
+        },
+        {
+          "id": "au2",
+          "practice": "Investigation Automation",
+          "question": "Are data gathering and enrichment automated during investigations?",
+          "evidence": "Show a playbook that gathers context from multiple tools for an investigation.",
+          "weight": 1.0,
+          "options": [
+            { "level": 0, "text": "No automation." },
+            { "level": 1, "text": "Analysts use scripts to query some tools." },
+            { "level": 2, "text": "Some data gathering is automated within the SIEM/case tool." },
+            { "level": 3, "text": "SOAR automates data gathering from multiple sources (e.g., EDR, logs, TI)." },
+            { "level": 4, "text": "Automated investigation proposes root cause and next steps." }
+          ]
+        },
+        {
+          "id": "au3",
+          "practice": "Response Automation",
+          "question": "Is mitigation automated for low-risk patterns and semi-automated for higher risk?",
+          "evidence": "Show a playbook that blocks an IP or isolates a host.",
+          "weight": 1.2,
+          "options": [
+            { "level": 0, "text": "No automated response." },
+            { "level": 1, "text": "Scripts exist but require manual execution." },
+            { "level": 2, "text": "Fully automated response for very specific, low-impact events." },
+            { "level": 3, "text": "Semi-automated response (human-in-the-loop) for critical actions." },
+            { "level": 4, "text": "Fully automated response for a wide range of threats with strong guardrails." }
+          ]
+        }
+      ]
+    },
+    "Workforce & Training": {
+      "pillar": "Governance",
+      "weight": 0.8,
+      "subtitle": "Managing and developing SOC staff.",
+      "questions": [
+        {
+          "id": "wo1",
+          "practice": "Staffing & Skills",
+          "question": "Do you have adequate staffing and a role-based skills matrix?",
+          "evidence": "Show staffing plan, org chart, and skills matrix.",
+          "weight": 1.0,
+          "options": [
+            { "level": 0, "text": "No formal staffing plan or skills tracking." },
+            { "level": 1, "text": "Staffing is reactive; skills are not formally defined." },
+            { "level": 2, "text": "A staffing plan and basic role definitions exist." },
+            { "level": 3, "text": "A skills matrix is used to guide hiring and training." },
+            { "level": 4, "text": "Skills matrix is linked to career progression and automated training." }
+          ]
+        },
+        {
+          "id": "wo2",
+          "practice": "Training & Certs",
+          "question": "Is there a formal training program and budget for SOC roles?",
+          "evidence": "Show training budget, plan, and records of completed training.",
+          "weight": 0.8,
+          "options": [
+            { "level": 0, "text": "No training budget or program." },
+            { "level": 1, "text": "Training is ad-hoc and self-directed." },
+            { "level": 2, "text": "A training budget exists, but no formal program." },
+            { "level": 3, "text": "A formal, role-based training program is in place." },
+            { "level": 4, "text": "Training effectiveness is measured and tied to performance." }
+          ]
+        },
+        {
+          "id": "wo3",
+          "practice": "Exercises & Drills",
+          "question": "Do you run regular tabletop and live-fire exercises?",
+          "evidence": "Show schedule and reports from recent exercises.",
+          "weight": 1.0,
+          "options": [
+            { "level": 0, "text": "No exercises are performed." },
+            { "level": 1, "text": "Occasional, informal tabletops." },
+            { "level": 2, "text": "Scheduled tabletop exercises are conducted annually." },
+            { "level": 3, "text": "Regular tabletop and live-fire exercises for the whole team." },
+            { "level": 4, "text": "Exercises are based on specific threat intelligence and results are tracked." }
+          ]
+        }
+      ]
+    },
+    "Architecture & Resilience": {
+      "pillar": "Coverage",
+      "weight": 1.0,
+      "subtitle": "Building a resilient security posture.",
+      "questions": [
+        {
+          "id": "ar1",
+          "practice": "Zero Trust & Segmentation",
+          "question": "Is detection and response aligned with segmentation and zero-trust design?",
+          "evidence": "Show detection rules that leverage network segments or identity context.",
+          "weight": 0.8,
+          "options": [
+            { "level": 0, "text": "Flat network, no zero-trust principles applied." },
+            { "level": 1, "text": "Some network segmentation exists but is not used by SOC." },
+            { "level": 2, "text": "Alerts are manually correlated with network location." },
+            { "level": 3, "text": "Detection logic and asset criticality are based on network segments." },
+            { "level": 4, "text": "Zero-trust signals (e.g., device health) are integral to detection and response." }
+          ]
+        },
+        {
+          "id": "ar2",
+          "practice": "Asset Criticality",
+          "question": "Are crown jewels identified and instrumented with priority detections?",
+          "evidence": "Show inventory of critical assets and associated high-priority detections.",
+          "weight": 1.0,
+          "options": [
+            { "level": 0, "text": "No asset criticality defined." },
+            { "level": 1, "text": "Informal understanding of critical assets." },
+            { "level": 2, "text": "Critical assets are tagged, but monitoring is not differentiated." },
+            { "level": 3, "text": "Critical assets have heightened monitoring and faster response SLAs." },
+            { "level": 4, "text": "Asset criticality dynamically adjusts monitoring and response automation." }
+          ]
+        },
+        {
+          "id": "ar3",
+          "practice": "Resilient Logging",
+          "question": "Can you withstand outages with resilient, tamper-evident logging?",
+          "evidence": "Show architecture for log pipeline redundancy and immutability.",
+          "weight": 1.0,
+          "options": [
+            { "level": 0, "text": "Single point of failure in logging pipeline." },
+            { "level": 1, "text": "Some redundancy, but no tamper-evidence." },
+            { "level": 2, "text": "Logging pipeline is redundant." },
+            { "level": 3, "text": "Logs are stored in immutable, tamper-evident storage." },
+            { "level": 4, "text": "Automated failover and integrity checks for the entire logging pipeline." }
+          ]
+        }
+      ]
+    }
+  },
+  "benchmarks": {
+    "Finance": {
+      "Program & Governance": 85,
+      "Risk & Threat Intelligence": 80,
+      "Telemetry & Engineering": 90,
+      "Monitoring & Detection": 75,
+      "Threat Hunting": 70,
+      "Investigation & Case Management": 80,
+      "Incident Response & Recovery": 85,
+      "Automation & SOAR": 65,
+      "Workforce & Training": 75,
+      "Architecture & Resilience": 90
+    },
+    "Healthcare": {
+      "Program & Governance": 70,
+      "Risk & Threat Intelligence": 75,
+      "Telemetry & Engineering": 80,
+      "Monitoring & Detection": 65,
+      "Threat Hunting": 55,
+      "Investigation & Case Management": 70,
+      "Incident Response & Recovery": 75,
+      "Automation & SOAR": 50,
+      "Workforce & Training": 65,
+      "Architecture & Resilience": 80
+    },
+    "Tech": {
+      "Program & Governance": 90,
+      "Risk & Threat Intelligence": 85,
+      "Telemetry & Engineering": 95,
+      "Monitoring & Detection": 85,
+      "Threat Hunting": 80,
+      "Investigation & Case Management": 85,
+      "Incident Response & Recovery": 90,
+      "Automation & SOAR": 80,
+      "Workforce & Training": 85,
+      "Architecture & Resilience": 95
+    }
+  }
+}
