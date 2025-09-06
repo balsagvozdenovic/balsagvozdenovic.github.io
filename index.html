@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=2.5">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ASMAF - SOC Maturity Assessment Platform</title>
     <!-- PDF & Charting Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -761,23 +761,134 @@
             font-size: 2rem !important;
         }
 
+        /* --- Mobile Responsiveness --- */
+        @media (max-width: 900px) {
+            .assessment-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         @media (max-width: 768px) {
-            .header h1 { font-size: 2.8rem; }
-            .assessment-grid { grid-template-columns: 1fr; }
-            .vuln-meter-container { width: 280px; height: 280px; }
-            .vuln-score { font-size: 2.8rem; }
+            .container {
+                padding: 15px;
+            }
+            .header {
+                padding: 40px 0 30px;
+            }
+            .header h1 { 
+                font-size: 2.8rem; 
+                letter-spacing: -1px;
+            }
+            .title-container::before {
+                font-size: 2.8rem;
+            }
+            .header .subtitle {
+                font-size: 1.1rem;
+            }
+            .header .tagline {
+                font-size: 0.9rem;
+            }
+            .nav-container {
+                margin: 30px 0 40px;
+                flex-direction: column;
+            }
             .nav-pills { 
                 flex-wrap: wrap; 
                 justify-content: center;
-                overflow: visible;
+                min-width: 0;
+                width: 100%;
             }
             .nav-pill {
                 font-size: 0.85rem;
                 padding: 10px 16px;
             }
-            .question-meta { flex-direction: column; }
-            .container {
-                padding: 15px;
+            .assessment-grid { 
+                /* This is now in the 900px breakpoint to trigger earlier */
+                gap: 24px;
+            }
+            .domain-card {
+                padding: 24px;
+            }
+            .question-meta { 
+                gap: 12px;
+                align-items: flex-start;
+            }
+            .vuln-meter-container { 
+                width: 280px; 
+                height: 280px; 
+            }
+            .vuln-score { 
+                font-size: 2.8rem; 
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .stat-value {
+                font-size: 2rem;
+            }
+            .cta-button {
+                font-size: 1rem;
+                padding: 16px 32px;
+            }
+            .glass-card[style*="padding: 40px"] {
+                padding: 25px !important;
+            }
+            .intro-content h3, .references-content h3 {
+                font-size: 1.3rem;
+            }
+            #recommendations h2 {
+                font-size: 2rem;
+            }
+            #benchmarks h3 {
+                font-size: 1.5rem;
+            }
+            #benchmarkChartContainer {
+                min-height: 400px;
+            }
+            #reports h3 {
+                font-size: 1.5rem;
+            }
+            #reports .action-button {
+                width: calc(50% - 10px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .assessment-grid {
+                /* On very small screens, use an even smaller minmax if needed, or stick with 1fr */
+                grid-template-columns: 1fr;
+            }
+            .header {
+                padding: 30px 0 20px;
+            }
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            .title-container::before {
+                font-size: 2.2rem;
+            }
+            .header::before {
+                width: 100%;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .vuln-meter-container { 
+                width: 240px; 
+                height: 240px; 
+            }
+            .vuln-score {
+                font-size: 2.4rem;
+            }
+            .option {
+                padding: 14px 16px;
+                font-size: 0.85rem;
+            }
+            .rec-title {
+                font-size: 1.1rem;
+            }
+            #reports .action-button {
+                width: 100%;
             }
         }
     </style>
