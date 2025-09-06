@@ -761,24 +761,65 @@
 
         @media (max-width: 768px) {
             .container {
-                padding: 15px;
+                padding: 0 15px 15px;
             }
             .header {
                 padding: 40px 0 30px;
+                /* Mobile transition */
+                transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             }
             .header h1 { 
                 font-size: 3.2rem;
                 letter-spacing: -1px;
+                transition: font-size 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .header .subtitle, .header .tagline {
+                transition: opacity 0.3s ease, transform 0.3s ease;
             }
             .title-container {
                 padding: 15px 25px;
+                transition: padding 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             }
-            .header .subtitle {
-                font-size: 1.2rem;
+            
+            /* Mobile Content View */
+            body.mobile-content-view .header {
+                position: sticky;
+                top: 0;
+                padding: 10px 15px;
+                text-align: left;
+                background: rgba(15, 15, 35, 0.8);
+                backdrop-filter: blur(10px);
+                z-index: 100;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             }
-            .header .tagline {
-                font-size: 1rem;
+             body.mobile-content-view .header::before {
+                display: none;
             }
+            body.mobile-content-view .header h1 {
+                font-size: 1.5rem;
+            }
+            body.mobile-content-view .title-container {
+                padding: 0;
+                display: inline;
+            }
+            body.mobile-content-view .title-container::before {
+                display: none;
+            }
+            body.mobile-content-view .header .subtitle,
+            body.mobile-content-view .header .tagline {
+                opacity: 0;
+                transform: translateY(-10px);
+                pointer-events: none;
+                display: none;
+            }
+            
+            .nav-pill[data-section="home"] {
+                display: none;
+            }
+            body.mobile-content-view .nav-pill[data-section="home"] {
+                display: block;
+            }
+
             .nav-container {
                 margin: 30px 0 40px;
                 flex-direction: column;
@@ -826,6 +867,11 @@
             .intro-content h3, .references-content h3 {
                 font-size: 1.3rem;
             }
+            /* Reduced mobile text size */
+            .intro-content p, .intro-content li, 
+            .references-content p, .references-content li {
+                font-size: 0.95rem;
+            }
             #recommendations h2 {
                 font-size: 2rem;
             }
@@ -853,6 +899,9 @@
             }
             .header h1 {
                 font-size: 2.8rem;
+            }
+            body.mobile-content-view .header h1 {
+                font-size: 1.4rem;
             }
             .header::before {
                 width: 100%;
@@ -900,6 +949,7 @@
 
         <div class="nav-container">
             <nav class="nav-pills">
+                <button class="nav-pill" data-section="home">Home</button>
                 <button class="nav-pill active" data-section="intro">Intro</button>
                 <button class="nav-pill" data-section="assessment">Assessment</button>
                 <button class="nav-pill" data-section="results" disabled>Results</button>
@@ -1148,8 +1198,8 @@
         const { jsPDF } = window.jspdf;
 
         // --- Configuration ---
-        // Set to true to show the "Test Mode" button, false to hide it for production.
         const isTestMode = true;
+        const MOBILE_BREAKPOINT = 768;
 
         // --- DOM Elements ---
         const navPills = document.querySelectorAll('.nav-pill');
@@ -1183,6 +1233,7 @@
         // --- Main Initializer ---
         async function init() {
             setupNavListeners();
+            setupMobileHome();
             calculateBtn.addEventListener('click', handleCalculateClick);
             setupTestMode();
             
@@ -1195,17 +1246,48 @@
                 assessmentGrid.innerHTML = `<div class="glass-card" style="padding: 20px; color: #fca5a5; text-align: center; grid-column: 1 / -1;">${error.message}</div>`;
             }
         }
+        
+        // --- Mobile UX ---
+        function isMobile() {
+            return window.innerWidth <= MOBILE_BREAKPOINT;
+        }
 
+        function setupMobileHome() {
+            if (isMobile()) {
+                // Start on the "Home" screen
+                document.body.classList.remove('mobile-content-view');
+                document.querySelectorAll('.nav-pill.active').forEach(p => p.classList.remove('active'));
+                document.querySelectorAll('.section.active').forEach(s => s.classList.remove('active'));
+            }
+        }
+        
         // --- Navigation ---
         function setupNavListeners() {
             navPills.forEach(pill => {
                 pill.addEventListener('click', function() {
                     if (this.disabled) return;
+                    
+                    const sectionId = this.getAttribute('data-section');
+
+                    if (isMobile()) {
+                        if (sectionId === 'home') {
+                            document.body.classList.remove('mobile-content-view');
+                            navPills.forEach(p => p.classList.remove('active'));
+                            sections.forEach(s => s.classList.remove('active'));
+                            return;
+                        } else {
+                            document.body.classList.add('mobile-content-view');
+                        }
+                    }
+
                     navPills.forEach(p => p.classList.remove('active'));
                     sections.forEach(s => s.classList.remove('active'));
+                    
                     this.classList.add('active');
-                    const sectionId = this.getAttribute('data-section');
-                    document.getElementById(sectionId).classList.add('active');
+                    const sectionEl = document.getElementById(sectionId);
+                    if (sectionEl) {
+                        sectionEl.classList.add('active');
+                    }
                 });
             });
         }
@@ -1324,7 +1406,13 @@
             });
 
             document.querySelector('.nav-pill[data-section="results"]').click();
-            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            
+            setTimeout(() => {
+                const resultsEl = document.getElementById('results');
+                if(resultsEl) {
+                    resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 100);
         }
 
         function calculateMaturity() {
@@ -1344,11 +1432,12 @@
                     });
                 }
                 
+                const domainPillar = domain.pillar || "Governance"; // Default pillar
                 domainScores[domainName] = (domainMaxScore > 0) ? (domainWeightedScore / domainMaxScore) * 100 : 0;
                 
-                if(domain.pillar && pillarScores[domain.pillar]) {
-                    pillarScores[domain.pillar].total += domainWeightedScore;
-                    pillarScores[domain.pillar].max += domainMaxScore;
+                if(pillarScores[domainPillar]) {
+                    pillarScores[domainPillar].total += domainWeightedScore;
+                    pillarScores[domainPillar].max += domainMaxScore;
                 }
             }
 
@@ -1476,7 +1565,7 @@
             
             const labels = Object.keys(results.domains);
             const userData = labels.map(label => results.domains[label]);
-            const benchmarkData = labels.map(label => benchmarkValues[label]);
+            const benchmarkData = labels.map(label => benchmarkValues[label] || 0);
 
             if (benchmarkChart) {
                 benchmarkChart.data.datasets[0].data = userData;
@@ -1522,7 +1611,7 @@
                             animate: true,
                             angleLines: { color: 'rgba(255, 255, 255, 0.2)' },
                             grid: { color: 'rgba(255, 255, 255, 0.2)' },
-                            pointLabels: { color: 'rgba(255, 255, 255, 0.8)', font: { size: 12 } },
+                            pointLabels: { color: 'rgba(255, 255, 255, 0.8)', font: { size: isMobile() ? 9 : 12 } },
                             ticks: { 
                                 backdropColor: 'rgba(0, 0, 0, 0.5)', 
                                 color: 'white', 
@@ -1816,27 +1905,29 @@
                 doc.text(`${score.toFixed(1)}%`, PDF_SETTINGS.margin.left + scoreBarWidth / 2, y + scoreBarHeight / 2, { align: 'center', baseline: 'middle'});
                 y += scoreBarHeight + 20;
 
-                domainData.questions.forEach(q => {
-                    const answerLevel = answers[q.id];
-                    const answerText = q.options.find(opt => opt.level === answerLevel).text;
+                if (domainData.questions) {
+                    domainData.questions.forEach(q => {
+                        const answerLevel = answers[q.id];
+                        const answerText = q.options.find(opt => opt.level === answerLevel).text;
 
-                    const qLines = doc.setFontSize(10).setFont(PDF_SETTINGS.font.family, 'bold').splitTextToSize(`Q: ${q.question}`, getDrawableWidth(doc));
-                    const aLines = doc.setFontSize(10).setFont(PDF_SETTINGS.font.family, 'normal').splitTextToSize(`A: [${answerLevel}] ${answerText}`, getDrawableWidth(doc) - 10);
-                    const questionHeight = doc.getTextDimensions(qLines).h + doc.getTextDimensions(aLines).h + 17;
+                        const qLines = doc.setFontSize(10).setFont(PDF_SETTINGS.font.family, 'bold').splitTextToSize(`Q: ${q.question}`, getDrawableWidth(doc));
+                        const aLines = doc.setFontSize(10).setFont(PDF_SETTINGS.font.family, 'normal').splitTextToSize(`A: [${answerLevel}] ${answerText}`, getDrawableWidth(doc) - 10);
+                        const questionHeight = doc.getTextDimensions(qLines).h + doc.getTextDimensions(aLines).h + 17;
 
-                    if (y + questionHeight > getPageHeight(doc) - PDF_SETTINGS.margin.bottom) { 
-                        addPdfPage(doc, 'Technical Report'); 
-                        y = PDF_SETTINGS.margin.top; 
-                    }
+                        if (y + questionHeight > getPageHeight(doc) - PDF_SETTINGS.margin.bottom) { 
+                            addPdfPage(doc, 'Technical Report'); 
+                            y = PDF_SETTINGS.margin.top; 
+                        }
 
-                    doc.setFontSize(10).setFont(PDF_SETTINGS.font.family, 'bold').setTextColor(PDF_SETTINGS.colors.text);
-                    doc.text(qLines, PDF_SETTINGS.margin.left, y);
-                    y += doc.getTextDimensions(qLines).h + 2;
+                        doc.setFontSize(10).setFont(PDF_SETTINGS.font.family, 'bold').setTextColor(PDF_SETTINGS.colors.text);
+                        doc.text(qLines, PDF_SETTINGS.margin.left, y);
+                        y += doc.getTextDimensions(qLines).h + 2;
 
-                    doc.setFont(PDF_SETTINGS.font.family, 'normal').setTextColor(PDF_SETTINGS.colors.faint);
-                    doc.text(aLines, PDF_SETTINGS.margin.left + 10, y);
-                    y += doc.getTextDimensions(aLines).h + 15;
-                });
+                        doc.setFont(PDF_SETTINGS.font.family, 'normal').setTextColor(PDF_SETTINGS.colors.faint);
+                        doc.text(aLines, PDF_SETTINGS.margin.left + 10, y);
+                        y += doc.getTextDimensions(aLines).h + 15;
+                    });
+                }
             });
 
             addPdfFooter(doc);
@@ -1877,7 +1968,7 @@
 
                 const labels = Object.keys(lastResults.domains);
                 const userData = labels.map(label => lastResults.domains[label]);
-                const benchmarkData = labels.map(label => benchmarkValues[label]);
+                const benchmarkData = labels.map(label => benchmarkValues[label] || 0);
 
                 new Chart(offscreenCanvas.getContext('2d'), {
                     type: 'radar',
@@ -1959,7 +2050,7 @@
                 const benchmarkValues = questionsData.benchmarks[chart.industry];
                 const tableBody = Object.keys(lastResults.domains).map(domainName => {
                     const yourScore = lastResults.domains[domainName];
-                    const benchmarkScore = benchmarkValues[domainName];
+                    const benchmarkScore = benchmarkValues[domainName] || 0;
                     const delta = yourScore - benchmarkScore;
                     return [domainName, `${yourScore.toFixed(1)}%`, `${benchmarkScore.toFixed(1)}%`, `${delta >= 0 ? '+' : ''}${delta.toFixed(1)}%`];
                 });
