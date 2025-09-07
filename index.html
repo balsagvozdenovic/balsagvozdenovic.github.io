@@ -747,11 +747,10 @@
             padding-right: 40px; /* Make space for the arrow */
         }
         #benchmarkData option {
-            background: #0f0f23 !important; /* Dark background for options */
-            color: white !important; /* White text for options */
-            font-size: 2rem !important;
+            background: #0f0f23 !important;
+            color: white !important;
         }
-
+        
         /* --- Mobile Responsiveness --- */
         @media (max-width: 900px) {
             .assessment-grid {
@@ -785,20 +784,23 @@
             body.mobile-content-view .header {
                 position: sticky;
                 top: 0;
-                padding: 10px 15px;
-                text-align: center; /* FIX: Center the header content */
+                padding: 0 15px; /* FIX: Remove vertical padding */
+                height: 60px; /* FIX: Give header a fixed height */
+                display: flex; /* FIX: Use flexbox for centering */
+                align-items: center; /* FIX: Vertically center */
+                justify-content: center; /* FIX: Horizontally center */
                 background: rgba(15, 15, 35, 0.8);
                 backdrop-filter: blur(10px);
                 z-index: 100;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-                border-bottom-left-radius: 16px; /* FIX: Add border radius */
-                border-bottom-right-radius: 16px; /* FIX: Add border radius */
+                border-bottom-left-radius: 20px; /* FIX: Rounded corners */
+                border-bottom-right-radius: 20px; /* FIX: Rounded corners */
             }
              body.mobile-content-view .header::before {
                 display: none;
             }
             body.mobile-content-view .header h1 {
-                font-size: 1.5rem;
+                font-size: 1.6rem; /* FIX: Slightly larger font */
             }
             body.mobile-content-view .title-container {
                 padding: 0;
@@ -864,7 +866,7 @@
                 padding: 16px 32px;
             }
             .glass-card {
-                border-radius: 16px; /* FIX: Slightly smaller radius for mobile */
+                border-radius: 16px;
             }
             .glass-card[style*="padding: 40px"] {
                 padding: 25px !important;
@@ -884,15 +886,19 @@
                 font-size: 1.5rem;
             }
             #benchmarkChartContainer {
-                min-height: 350px; /* FIX: Adjusted height for mobile */
-                max-width: 100%; /* FIX: Use full width */
-                padding: 0; /* FIX: Remove padding to give chart space */
+                min-height: 400px; /* FIX: Adjusted height */
+                max-width: 100%;
+                padding: 0;
             }
             #reports h3 {
                 font-size: 1.5rem;
             }
             #reports .action-button {
                 width: calc(50% - 10px);
+            }
+            /* FIX: Rule for large dropdown text on mobile only */
+            #benchmarkData option {
+                font-size: 1.5rem !important;
             }
         }
 
@@ -907,7 +913,7 @@
                 font-size: 2.8rem;
             }
             body.mobile-content-view .header h1 {
-                font-size: 1.4rem;
+                font-size: 1.5rem; /* FIX: Adjust size */
             }
             .header::before {
                 width: 100%;
@@ -1568,17 +1574,30 @@
             chartObserver.observe(benchmarkChartContainer);
         }
 
+        // FIX: Function to wrap long labels for the chart
+        function formatChartLabels(labels) {
+            if (!isMobile()) {
+                return labels; // Only wrap on mobile
+            }
+            return labels.map(label => {
+                // Add newlines to long labels for better wrapping
+                return label.replace(' & ', ' &\n').replace(' and ', ' and\n');
+            });
+        }
+
         function drawBenchmarkChart(results, industry) {
             const canvas = document.getElementById('benchmarkChart');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
             const benchmarkValues = questionsData.benchmarks[industry];
             
-            const labels = Object.keys(results.domains);
-            const userData = labels.map(label => results.domains[label]);
-            const benchmarkData = labels.map(label => benchmarkValues[label] || 0);
+            const originalLabels = Object.keys(results.domains);
+            const formattedLabels = formatChartLabels(originalLabels); // Use the new formatting function
+            const userData = originalLabels.map(label => results.domains[label]);
+            const benchmarkData = originalLabels.map(label => benchmarkValues[label] || 0);
 
             if (benchmarkChart) {
+                benchmarkChart.data.labels = formattedLabels;
                 benchmarkChart.data.datasets[0].data = userData;
                 benchmarkChart.data.datasets[1].data = benchmarkData;
                 benchmarkChart.data.datasets[1].label = `${industry} Average`;
@@ -1589,7 +1608,7 @@
             benchmarkChart = new Chart(ctx, {
                 type: 'radar',
                 data: { 
-                    labels: labels, 
+                    labels: formattedLabels, 
                     datasets: [
                         { 
                             label: 'Your Score', 
@@ -1621,11 +1640,10 @@
                         r: {
                             animate: true,
                             angleLines: { color: 'rgba(255, 255, 255, 0.2)' },
-                            grid: { color: 'rgba(255, 255, 255, 0.2)', circular: true },
+                            grid: { color: 'rgba(255, 255, 255, 0.2)' },
                             pointLabels: { 
                                 color: 'rgba(255, 255, 255, 0.8)', 
-                                font: { size: isMobile() ? 9 : 12 },
-                                padding: isMobile() ? 10 : 0
+                                font: { size: isMobile() ? 10 : 12, lineHeight: 1.2 }, // FIX: Increased font size and line height
                             },
                             ticks: { 
                                 backdropColor: 'rgba(0, 0, 0, 0.5)', 
