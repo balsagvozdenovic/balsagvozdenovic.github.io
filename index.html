@@ -771,7 +771,7 @@
             .header h1 { 
                 font-size: 3.2rem;
                 letter-spacing: -1px;
-                transition: font-size 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+                transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             }
             .header .subtitle, .header .tagline {
                 transition: opacity 0.3s ease, transform 0.3s ease;
@@ -786,11 +786,13 @@
                 position: sticky;
                 top: 0;
                 padding: 10px 15px;
-                text-align: left;
+                text-align: center; /* FIX: Center the header content */
                 background: rgba(15, 15, 35, 0.8);
                 backdrop-filter: blur(10px);
                 z-index: 100;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                border-bottom-left-radius: 16px; /* FIX: Add border radius */
+                border-bottom-right-radius: 16px; /* FIX: Add border radius */
             }
              body.mobile-content-view .header::before {
                 display: none;
@@ -861,6 +863,9 @@
                 font-size: 1rem;
                 padding: 16px 32px;
             }
+            .glass-card {
+                border-radius: 16px; /* FIX: Slightly smaller radius for mobile */
+            }
             .glass-card[style*="padding: 40px"] {
                 padding: 25px !important;
             }
@@ -879,8 +884,9 @@
                 font-size: 1.5rem;
             }
             #benchmarkChartContainer {
-                min-height: 450px;
-                max-width: 95%;
+                min-height: 350px; /* FIX: Adjusted height for mobile */
+                max-width: 100%; /* FIX: Use full width */
+                padding: 0; /* FIX: Remove padding to give chart space */
             }
             #reports h3 {
                 font-size: 1.5rem;
@@ -1615,8 +1621,12 @@
                         r: {
                             animate: true,
                             angleLines: { color: 'rgba(255, 255, 255, 0.2)' },
-                            grid: { color: 'rgba(255, 255, 255, 0.2)' },
-                            pointLabels: { color: 'rgba(255, 255, 255, 0.8)', font: { size: isMobile() ? 9 : 12 } },
+                            grid: { color: 'rgba(255, 255, 255, 0.2)', circular: true },
+                            pointLabels: { 
+                                color: 'rgba(255, 255, 255, 0.8)', 
+                                font: { size: isMobile() ? 9 : 12 },
+                                padding: isMobile() ? 10 : 0
+                            },
                             ticks: { 
                                 backdropColor: 'rgba(0, 0, 0, 0.5)', 
                                 color: 'white', 
@@ -1740,9 +1750,9 @@
 
             Object.keys(pillarData).forEach((pillarName, index) => {
                 const score = pillarData[pillarName];
-                const barY = y + (index * (barHeight + barSpacing));
                 const pillarBarWidth = (score / 100) * chartWidth;
 
+                const barY = y + (index * (barHeight + barSpacing));
                 doc.setFillColor.apply(doc, PDF_SETTINGS.colors.barBg);
                 doc.rect(chartX, barY, chartWidth, barHeight, 'F');
 
