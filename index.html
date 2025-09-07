@@ -619,7 +619,7 @@
         }
 
         .intro-content, .references-content {
-            max-width: 800px;
+            max-width: 100%;
             margin: 0 auto;
             line-height: 1.7;
         }
@@ -896,7 +896,8 @@
             #benchmarkChartContainer {
                 min-height: 350px; /* FIX: Adjusted height for mobile */
                 max-width: 100%; /* FIX: Use full width */
-                padding: 0; /* FIX: Remove padding to give chart space */
+                padding: 20px; /* FIX: Consistent padding */
+                margin: 0 auto; /* FIX: Center the container */
             }
             #reports h3 {
                 font-size: 1.5rem;
@@ -1141,7 +1142,7 @@
                         <p style="color: rgba(255,255,255,0.6); font-size: 1.1rem;">Complete the assessment to see your benchmark comparison.</p>
                     </div>
                 </div>
-                <div id="benchmarkChartContainer" style="position: relative; padding:20px; display: none; max-width: 700px; margin: 0 auto; min-height: 500px;"><canvas id="benchmarkChart"></canvas></div>
+                <div id="benchmarkChartContainer" style="position: relative; padding: 20px; display: none; min-height: 500px;"><canvas id="benchmarkChart"></canvas></div>
             </div>
         </div>
 
