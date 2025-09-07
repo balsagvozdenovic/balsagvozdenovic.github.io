@@ -73,7 +73,7 @@
         }
 
         .glass-card {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(240, 240, 255, 0.03);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 20px;
@@ -788,24 +788,31 @@
             body.mobile-content-view .header {
                 position: sticky;
                 top: 0;
-                padding: 10px 15px;
-                text-align: center; /* FIX: Center the header content */
-                background: rgba(15, 15, 35, 0.8);
+                padding: 15px 15px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 70px;
+                text-align: center;
+                background: rgba(15, 15, 35, 0.85);
                 backdrop-filter: blur(10px);
                 z-index: 100;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-                border-bottom-left-radius: 16px; /* FIX: Add border radius */
-                border-bottom-right-radius: 16px; /* FIX: Add border radius */
+                border-bottom-left-radius: 16px;
+                border-bottom-right-radius: 16px;
             }
              body.mobile-content-view .header::before {
                 display: none;
             }
             body.mobile-content-view .header h1 {
-                font-size: 1.5rem;
+                font-size: 1.8rem;
             }
             body.mobile-content-view .title-container {
-                padding: 0;
-                display: inline;
+                padding: 8px 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0;
             }
             body.mobile-content-view .title-container::before {
                 display: none;
