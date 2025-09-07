@@ -794,7 +794,7 @@
                 justify-content: center;
                 min-height: 70px;
                 text-align: center;
-                background: rgba(15, 15, 35, 0.85);
+                background: rgba(15, 15, 35, 0.70);
                 backdrop-filter: blur(10px);
                 z-index: 100;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -805,7 +805,7 @@
                 display: none;
             }
             body.mobile-content-view .header h1 {
-                font-size: 1.8rem;
+                font-size: 2.1rem;
             }
             body.mobile-content-view .title-container {
                 padding: 8px 20px;
@@ -848,9 +848,15 @@
             }
             .assessment-grid { 
                 gap: 24px;
+                justify-items: center;
             }
             .domain-card {
                 padding: 24px;
+                width: 100%;
+                max-width: 500px;
+            }
+            .domain-title {
+                text-align: center;
             }
             .question-meta { 
                 gap: 12px;
@@ -917,7 +923,7 @@
                 font-size: 2.8rem;
             }
             body.mobile-content-view .header h1 {
-                font-size: 1.4rem;
+                font-size: 1.6rem;
             }
             .header::before {
                 width: 100%;
@@ -1268,7 +1274,15 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const { jsPDF } = window.jspdf;
+        // Fallback for blocked CDN resources
+        let jsPDF = null;
+        try {
+            if (window.jspdf) {
+                jsPDF = window.jspdf.jsPDF;
+            }
+        } catch (e) {
+            console.warn('jsPDF not available, PDF generation will be disabled');
+        }
 
         // --- Configuration ---
         const isTestMode = true;
@@ -1835,6 +1849,10 @@
         }
 
         async function generateExecutiveReport() {
+            if (!jsPDF) {
+                alert('PDF generation is not available due to missing dependencies.');
+                return;
+            }
             const doc = new jsPDF();
             let y = PDF_SETTINGS.margin.top;
 
@@ -1908,6 +1926,10 @@
         }
         
         async function generateRoadmapReport() {
+            if (!jsPDF) {
+                alert('PDF generation is not available due to missing dependencies.');
+                return;
+            }
             const doc = new jsPDF();
             let y = PDF_SETTINGS.margin.top;
 
@@ -1959,6 +1981,10 @@
         }
 
         async function generateTechnicalReport() {
+            if (!jsPDF) {
+                alert('PDF generation is not available due to missing dependencies.');
+                return;
+            }
             const doc = new jsPDF();
             
             Object.keys(lastResults.domains).forEach((domainName, index) => {
@@ -2019,6 +2045,11 @@
         async function generateKpiReport() {
             if (!lastResults || !questionsData.benchmarks) {
                 throw new Error("Data for KPI report is not ready.");
+            }
+
+            if (!jsPDF) {
+                alert('PDF generation is not available due to missing dependencies.');
+                return;
             }
 
             const doc = new jsPDF('p', 'pt');
