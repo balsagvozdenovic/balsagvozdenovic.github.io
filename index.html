@@ -21,14 +21,13 @@
 
         html {
             overflow-x: hidden;
-            height: 100%;
         }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: radial-gradient(ellipse at top, #1e1b4b 0%, #0f0f23 50%, #000 100%);
             color: #ffffff;
-            min-height: 100%;
+            min-height: 100vh;
             position: relative;
             display: flex;
             flex-direction: column;
@@ -36,7 +35,6 @@
 
         .container {
             flex-grow: 1;
-            width: 100%;
         }
 
         /* Custom scrollbar styling */
@@ -113,6 +111,7 @@
             z-index: -1;
         }
 
+        /* --- NEW: Neon Box Title Styling --- */
         .title-container {
             position: relative;
             display: inline-block;
@@ -147,18 +146,19 @@
         }
 
         .header h1 {
-            font-size: 4.8rem;
+            font-size: 4.8rem; /* Increased PC size */
             font-weight: 800;
             background: linear-gradient(135deg, #a855f7 0%, #ec4899 30%, #3b82f6 60%, #a855f7 100%);
             background-size: 200% 200%;
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin: 0;
+            margin: 0; /* Removed margin */
             letter-spacing: -2px;
             position: relative;
             z-index: 1;
             animation: shimmer 3s ease-in-out infinite;
+            /* Text shadow removed */
         }
 
         @keyframes shimmer {
@@ -171,7 +171,7 @@
             font-size: 1.2rem;
             color: rgba(255, 255, 255, 0.7);
             font-weight: 300;
-            margin-top: 24px;
+            margin-top: 24px; /* Added margin-top */
             margin-bottom: 8px;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
@@ -293,7 +293,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
             gap: 28px;
-            margin-top: 40px;
+            margin: 40px 0;
         }
 
         .domain-card {
@@ -452,7 +452,7 @@
         .level-4 { background: #06d6a0; }
 
         .vulnerability-dashboard {
-            margin: 0;
+            margin: 50px 0;
             text-align: center;
         }
 
@@ -589,7 +589,7 @@
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             background: linear-gradient(135deg, #a855f7, #ec4899);
             color: white;
-            margin-top: 40px;
+            margin: 40px 0;
             position: relative;
             overflow: hidden;
         }
@@ -734,6 +734,7 @@
             border-color: rgba(255, 255, 255, 0.05);
         }
         
+        /* Dropdown menu styling */
         #benchmarkData select {
             padding: 10px 15px;
             background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(236, 72, 153, 0.2));
@@ -749,12 +750,12 @@
             background-repeat: no-repeat;
             background-position: right 15px top 50%;
             background-size: .65em auto;
-            padding-right: 40px;
+            padding-right: 40px; /* Make space for the arrow */
         }
         #benchmarkData option {
             background: #0f0f23 !important;
             color: white !important;
-            font-size: 1rem !important;
+            font-size: 1rem !important; /* FIX: Reset font size for desktop */
         }
         
         .main-footer {
@@ -762,7 +763,6 @@
             text-align: center;
             font-size: 0.85rem;
             color: rgba(255, 255, 255, 0.4);
-            margin-top: auto;
         }
         .main-footer a {
             color: rgba(255, 255, 255, 0.6);
@@ -774,6 +774,7 @@
             color: #a855f7;
         }
 
+        /* --- Mobile Responsiveness --- */
         @media (max-width: 900px) {
             .assessment-grid {
                 grid-template-columns: 1fr;
@@ -786,6 +787,7 @@
             }
             .header {
                 padding: 40px 0 30px;
+                /* Mobile transition */
                 transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             }
             .header h1 { 
@@ -801,6 +803,7 @@
                 transition: padding 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             }
             
+            /* Mobile Content View */
             body.mobile-content-view .header {
                 position: sticky;
                 top: 0;
@@ -894,6 +897,7 @@
             .intro-content h3, .references-content h3 {
                 font-size: 1.3rem;
             }
+            /* Reduced mobile text size */
             .intro-content p, .intro-content li, 
             .references-content p, .references-content li {
                 font-size: 0.95rem;
@@ -905,7 +909,8 @@
                 font-size: 1.5rem;
             }
             #benchmarkChartContainer {
-                min-height: 400px;
+                min-height: 450px; /* FIX: Greatly increase min-height */
+                aspect-ratio: 1 / 1; /* FIX: Maintain square shape to prevent shifting */
                 max-width: 100%;
                 padding: 0;
                 margin: 20px auto 0;
@@ -922,6 +927,12 @@
         }
 
         @media (max-width: 480px) {
+            .assessment-grid {
+                grid-template-columns: 1fr;
+            }
+            .header {
+                padding: 30px 0 20px;
+            }
             .header h1 {
                 font-size: 2.8rem;
             }
@@ -975,7 +986,7 @@
         <div class="nav-container">
             <nav class="nav-pills">
                 <button class="nav-pill" data-section="home">Home</button>
-                <button class="nav-pill" data-section="intro">Intro</button>
+                <button class="nav-pill active" data-section="intro">Intro</button>
                 <button class="nav-pill" data-section="assessment">Assessment</button>
                 <button class="nav-pill" data-section="results" disabled>Results</button>
                 <button class="nav-pill" data-section="recommendations" disabled>Analysis</button>
@@ -983,10 +994,12 @@
                 <button class="nav-pill" data-section="reports" disabled>Reports</button>
                 <button class="nav-pill" data-section="references">References</button>
             </nav>
+            <!-- Test Button - Hidden by default, enabled via JS -->
             <button id="testBtn" class="nav-pill" style="display: none; background-color: #f97316;">Test Mode</button>
         </div>
 
-        <div id="intro" class="section">
+        <!-- Intro Section -->
+        <div id="intro" class="section active">
             <div class="glass-card" style="padding: 40px;">
                 <div class="intro-content">
                     <h3>Welcome to ASMAF</h3>
@@ -1011,66 +1024,69 @@
             </div>
         </div>
 
+        <!-- Assessment Section -->
         <div id="assessment" class="section">
-            <div class="glass-card" style="padding: 40px;">
-                <div class="progress-container">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
-                    </div>
-                    <div class="progress-text" id="progressText">0 of 0 questions completed</div>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
                 </div>
-                
-                <div class="assessment-grid" id="assessmentGrid"></div>
+                <div class="progress-text" id="progressText">0 of 0 questions completed</div>
+            </div>
+            
+            <div class="assessment-grid" id="assessmentGrid">
+                <!-- Assessment questions will be loaded here -->
+            </div>
 
-                <div style="text-align: center;">
-                    <button class="cta-button" data-action="calculate" id="calculateBtn" disabled>
-                        Calculate Maturity Assessment
-                    </button>
-                </div>
+            <div style="text-align: center;">
+                <button class="cta-button" data-action="calculate" id="calculateBtn" disabled>
+                    Calculate Maturity Assessment
+                </button>
             </div>
         </div>
 
+        <!-- Results Section -->
         <div id="results" class="section">
-            <div class="glass-card" style="padding: 40px;">
-                <div class="vulnerability-dashboard">
-                    <div class="vuln-meter-container">
-                        <div class="vuln-meter">
-                            <div class="vuln-meter-inner">
-                                <div class="vuln-score" id="maturityScore">--</div>
-                                <div class="vuln-level" id="maturityLevel">Calculating...</div>
-                            </div>
+            <div class="vulnerability-dashboard">
+                <div class="vuln-meter-container">
+                    <div class="vuln-meter">
+                        <div class="vuln-meter-inner">
+                            <div class="vuln-score" id="maturityScore">--</div>
+                            <div class="vuln-level" id="maturityLevel">Calculating...</div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="alert-container" id="alertContainer" style="display: none;"></div>
+                <div class="alert-container" id="alertContainer" style="display: none;">
+                    <!-- Alert will be inserted here -->
+                </div>
 
-                    <div class="stats-grid">
-                        <div class="stat-card glass-card">
-                            <div class="stat-value" id="outcomesScore">--</div>
-                            <div class="stat-label">Outcomes</div>
-                        </div>
-                        <div class="stat-card glass-card">
-                            <div class="stat-value" id="coverageScore">--</div>
-                            <div class="stat-label">Coverage & Automation</div>
-                        </div>
-                        <div class="stat-card glass-card">
-                            <div class="stat-value" id="governanceScore">--</div>
-                            <div class="stat-label">Governance & Process</div>
-                        </div>
-                        <div class="stat-card glass-card">
-                            <div class="stat-value" id="overallScore">--</div>
-                            <div class="stat-label">Overall Score</div>
-                        </div>
+                <div class="stats-grid">
+                    <div class="stat-card glass-card">
+                        <div class="stat-value" id="outcomesScore">--</div>
+                        <div class="stat-label">Outcomes</div>
                     </div>
-
-                    <div class="glass-card" style="padding: 40px; margin-top: 40px;" id="domainBreakdownContainer">
-                        <h3 style="margin-bottom: 24px; color: #a855f7; font-size: 1.5rem;">Domain Breakdown</h3>
-                        <div id="domainBreakdown"></div>
+                    <div class="stat-card glass-card">
+                        <div class="stat-value" id="coverageScore">--</div>
+                        <div class="stat-label">Coverage & Automation</div>
                     </div>
+                    <div class="stat-card glass-card">
+                        <div class="stat-value" id="governanceScore">--</div>
+                        <div class="stat-label">Governance & Process</div>
+                    </div>
+                    <div class="stat-card glass-card">
+                        <div class="stat-value" id="overallScore">--</div>
+                        <div class="stat-label">Overall Score</div>
+                    </div>
+                </div>
+
+                <div class="glass-card" style="padding: 40px; margin: 40px 0;" id="domainBreakdownContainer">
+                    <h3 style="margin-bottom: 24px; color: #a855f7; font-size: 1.5rem;">Domain Breakdown</h3>
+                    <div id="domainBreakdown"></div>
                 </div>
             </div>
         </div>
 
+        <!-- Recommendations Section -->
         <div id="recommendations" class="section">
             <div class="glass-card" style="padding: 40px;">
                 <div style="text-align: center; margin-bottom: 40px;">
@@ -1080,10 +1096,13 @@
                     <p id="recommendationsSubtitle" style="font-size: 1.2rem; color: rgba(255, 255, 255, 0.6);">Here's where you stand and what to focus on</p>
                 </div>
                 
-                <div id="recommendationsList" class="rec-grid"></div>
+                <div id="recommendationsList" class="rec-grid">
+                    <!-- Recommendations will be populated here -->
+                </div>
             </div>
         </div>
 
+        <!-- Benchmarks Section -->
         <div id="benchmarks" class="section">
             <div class="glass-card" style="padding: 40px;">
                 <h3 style="margin-bottom: 24px; color: #a855f7; font-size: 2rem;">Industry Benchmarks</h3>
@@ -1092,10 +1111,11 @@
                         <p style="color: rgba(255,255,255,0.6); font-size: 1.1rem;">Complete the assessment to see your benchmark comparison.</p>
                     </div>
                 </div>
-                <div id="benchmarkChartContainer" style="position: relative; display: none; max-width: 700px; margin: 0 auto;"><canvas id="benchmarkChart"></canvas></div>
+                <div id="benchmarkChartContainer" style="position: relative; padding:20px; display: none; max-width: 700px; margin: 0 auto; min-height: 500px;"><canvas id="benchmarkChart"></canvas></div>
             </div>
         </div>
 
+        <!-- Reports Section -->
         <div id="reports" class="section">
             <div class="glass-card" style="padding: 40px; text-align: center;">
                 <h3 style="margin-bottom: 40px; color: #a855f7; font-size: 2rem;">Generate Reports</h3>
@@ -1108,6 +1128,7 @@
             </div>
         </div>
 
+        <!-- References Section -->
         <div id="references" class="section">
             <div class="glass-card" style="padding: 40px;">
                 <div class="references-content">
@@ -1133,8 +1154,8 @@
     </div>
 
     <footer class="main-footer">
-        <p>&copy; <span id="footer-year">2025</span> <a href="https://github.com/balsagvozdenovic" target="_blank">balsagvozdenovic</a>. All Rights Reserved.</p>
-        <p>ASMAF <a href="https://github.com/balsagvozdenovic/asmaf" target="_blank" id="version-link">v1.2.0</a></p>
+        <p>&copy; 2025 <a href="https://github.com/balsagvozdenovic" target="_blank">balsagvozdenovic</a>. All Rights Reserved.</p>
+        <p>ASMAF <a href="https://github.com/balsagvozdenovic/asmaf/commit/a08f7da852b86c29a8a7593671542387143c7438" target="_blank" id="version-link">v1.2.0-a08f7da</a></p>
     </footer>
 
     <style>
@@ -1217,9 +1238,11 @@
     document.addEventListener('DOMContentLoaded', function() {
         const { jsPDF } = window.jspdf;
 
+        // --- Configuration ---
         const isTestMode = true;
         const MOBILE_BREAKPOINT = 768;
 
+        // --- DOM Elements ---
         const navPills = document.querySelectorAll('.nav-pill');
         const sections = document.querySelectorAll('.section');
         const assessmentGrid = document.getElementById('assessmentGrid');
@@ -1240,6 +1263,7 @@
         const benchmarkChartContainer = document.getElementById('benchmarkChartContainer');
         const pdfLoader = document.getElementById('pdf-loader');
         
+        // --- App State ---
         let questionsData = null;
         let totalQuestions = 0;
         const answers = {};
@@ -1247,10 +1271,10 @@
         let lastResults = null;
         let chartObserver = null;
 
+        // --- Main Initializer ---
         async function init() {
             setupNavListeners();
             setupInitialView();
-            updateFooter();
             calculateBtn.addEventListener('click', handleCalculateClick);
             setupTestMode();
             
@@ -1264,23 +1288,24 @@
             }
         }
         
+        // --- Mobile UX ---
         function isMobile() {
             return window.innerWidth <= MOBILE_BREAKPOINT;
         }
 
         function setupInitialView() {
             if (isMobile()) {
+                // On mobile, start on the "Home" screen (which is empty)
                 document.body.classList.remove('mobile-content-view');
                 document.querySelectorAll('.nav-pill.active').forEach(p => p.classList.remove('active'));
                 document.querySelectorAll('.section.active').forEach(s => s.classList.remove('active'));
-                document.querySelector('.nav-pill[data-section="home"]').style.display = 'inline-block';
             } else {
+                // On desktop, "Intro" is the default starting page.
                 document.querySelector('.nav-pill[data-section="home"]').style.display = 'none';
-                document.querySelector('.nav-pill[data-section="intro"]').classList.add('active');
-                document.querySelector('#intro').classList.add('active');
             }
         }
         
+        // --- Navigation ---
         function setupNavListeners() {
             navPills.forEach(pill => {
                 pill.addEventListener('click', function() {
@@ -1291,8 +1316,10 @@
                     if (isMobile()) {
                         if (sectionId === 'home') {
                             document.body.classList.remove('mobile-content-view');
+                            // Hide all sections and remove active state from pills
                             navPills.forEach(p => p.classList.remove('active'));
                             sections.forEach(s => s.classList.remove('active'));
+                            // No section is active on the mobile home screen
                             return; 
                         } else {
                             document.body.classList.add('mobile-content-view');
@@ -1311,10 +1338,11 @@
             });
         }
 
+        // --- Data Loading ---
         async function loadAssessmentData() {
             const response = await fetch('./soc_questions.json');
             if (!response.ok) {
-                throw new Error(`Failed to load soc_questions.json. Status: ${response.status}.<br>Please ensure the file is in the correct directory and you are running this from a web server.`);
+                throw new Error(`Failed to load soc_questions.json. Status: ${response.status}.<br>Please ensure the file is in the correct directory and you are running this from a web server (like XAMPP).`);
             }
             try {
                 return await response.json();
@@ -1323,6 +1351,7 @@
             }
         }
 
+        // --- UI Rendering ---
         function renderAssessment() {
             if (!questionsData || typeof questionsData.domains !== 'object') {
                 throw new Error("Invalid data format in soc_questions.json. Expected a 'domains' object.");
@@ -1377,6 +1406,7 @@
             `;
         }
 
+        // --- Event Handling for Answers ---
         function setupAnswerListeners() {
             assessmentGrid.addEventListener('click', function(event) {
                 const option = event.target.closest('.option');
@@ -1397,6 +1427,7 @@
             });
         }
 
+        // --- Progress and State Updates ---
         function updateProgress() {
             const answeredCount = Object.keys(answers).length;
             const percentage = totalQuestions > 0 ? (answeredCount / totalQuestions) * 100 : 0;
@@ -1407,6 +1438,7 @@
             calculateBtn.disabled = totalQuestions === 0 || answeredCount !== totalQuestions;
         }
 
+        // --- Calculation ---
         function handleCalculateClick() {
             lastResults = calculateMaturity();
             displayResults(lastResults);
@@ -1446,7 +1478,7 @@
                     });
                 }
                 
-                const domainPillar = domain.pillar || "Governance";
+                const domainPillar = domain.pillar || "Governance"; // Default pillar
                 domainScores[domainName] = (domainMaxScore > 0) ? (domainWeightedScore / domainMaxScore) * 100 : 0;
                 
                 if(pillarScores[domainPillar]) {
@@ -1503,6 +1535,7 @@
         }
 
         function generateRecommendations(domainScores) {
+            // Filter for domains that score less than 95% and sort them by score
             let domainsToImprove = Object.keys(domainScores)
                 .map(name => ({ name, score: domainScores[name] }))
                 .filter(d => d.score < 95)
@@ -1530,7 +1563,7 @@
                     priorityClass = 'priority-medium';
                     priorityText = 'Medium Priority';
                     description = `With a score of <strong>${domain.score.toFixed(1)}%</strong>, this is a good opportunity for refinement. Focus on improving metrics, consistency, and process integration.`;
-                } else {
+                } else { // 85 to 94.9
                     priorityClass = 'priority-low';
                     priorityText = 'Low Priority';
                     description = `Your score of <strong>${domain.score.toFixed(1)}%</strong> is strong. Focus on advanced optimization, increasing automation, and fine-tuning capabilities to reach the next level.`;
@@ -1574,7 +1607,8 @@
             if (!isMobile()) {
                 return labels;
             }
-            return labels.map(label => label.replace(/ (&|and) /g, '\n&\n'));
+            // Replace spaces or ampersands between words with newlines
+            return labels.map(label => label.replace(/ (&|and) /g, '\n&\n').replace(/ /g, ' '));
         }
 
         function drawBenchmarkChart(results, industry) {
@@ -1623,10 +1657,7 @@
                 options: { 
                     responsive: true, 
                     maintainAspectRatio: false,
-                    devicePixelRatio: window.devicePixelRatio || 1,
-                    layout: {
-                        padding: isMobile() ? 10 : 0
-                    },
+                    devicePixelRatio: 2,
                     animation: {
                         duration: 1200,
                         easing: 'easeInOutCubic'
@@ -1638,7 +1669,8 @@
                             grid: { color: 'rgba(255, 255, 255, 0.2)' },
                             pointLabels: { 
                                 color: 'rgba(255, 255, 255, 0.8)', 
-                                font: { size: isMobile() ? 10 : 12, lineHeight: 1.2 },
+                                font: { size: isMobile() ? 11 : 12, lineHeight: 1.2 },
+                                padding: isMobile() ? 15 : 5 // FIX: Add more padding on mobile
                             },
                             ticks: { 
                                 backdropColor: 'rgba(0, 0, 0, 0.5)', 
@@ -1660,35 +1692,13 @@
             });
         }
         
-        function updateFooter() {
-            document.getElementById('footer-year').textContent = new Date().getFullYear();
-            fetch('https://api.github.com/repos/balsagvozdenovic/asmaf/commits/main')
-                .then(response => {
-                    if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
-                    return response.json();
-                })
-                .then(data => {
-                    if (data && data.sha) {
-                        const commitHash = data.sha.substring(0, 7);
-                        const versionLink = document.getElementById('version-link');
-                        const version = `v1.2.0-${commitHash}`;
-                        versionLink.textContent = version;
-                        versionLink.href = data.html_url;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching commit hash:', error);
-                    const versionLink = document.getElementById('version-link');
-                    versionLink.textContent = 'v1.2.0';
-                });
-        }
-
+        // --- Test Mode Functionality ---
         function setupTestMode() {
             if (!isTestMode) return;
             const testBtn = document.getElementById('testBtn');
             if (testBtn) {
                 testBtn.style.display = 'inline-block';
-                testBtn.addEventListener('click', () => runTestMode(3));
+                testBtn.addEventListener('click', () => runTestMode(3)); // Default level 3 for stress testing
             }
         }
 
@@ -1698,13 +1708,17 @@
                 return;
             }
 
+            // Go to the assessment tab first
             document.querySelector('.nav-pill[data-section="assessment"]').click();
 
             for (const domainName in questionsData.domains) {
                 const domain = questionsData.domains[domainName];
                 if (domain.questions && Array.isArray(domain.questions)) {
                     domain.questions.forEach(q => {
+                        // Set the answer in the state
                         answers[q.id] = defaultLevel;
+
+                        // Update the UI
                         const questionContainer = document.querySelector(`.question-container[data-question-id="${q.id}"]`);
                         if (questionContainer) {
                             questionContainer.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
@@ -1718,9 +1732,11 @@
             }
             
             updateProgress();
+            // Automatically click the calculate button after a short delay to allow UI to update
             setTimeout(handleCalculateClick, 100);
         }
 
+        // --- PDF GENERATION ENGINE ---
         const PDF_SETTINGS = {
             margin: { top: 60, right: 40, bottom: 60, left: 40 },
             font: { size: 10, family: 'Helvetica' },
@@ -1802,6 +1818,7 @@
 
             addPdfHeader(doc, 'Executive Summary');
 
+            // --- Section: Overall Score ---
             doc.setFontSize(16).setFont(PDF_SETTINGS.font.family, 'bold').setTextColor(PDF_SETTINGS.colors.text);
             doc.text('Overall Maturity Score', PDF_SETTINGS.margin.left, y);
             y += 25;
@@ -1816,14 +1833,17 @@
             doc.text(levelText, PDF_SETTINGS.margin.left + scoreWidth + 2, y, { baseline: 'bottom' });
             y += 40;
 
+            // --- Section: Pillar Performance ---
             doc.setFontSize(16).setFont(PDF_SETTINGS.font.family, 'bold').setTextColor(PDF_SETTINGS.colors.text);
             doc.text('Pillar Performance', PDF_SETTINGS.margin.left, y);
             y += 20;
             y = drawPillarChart(doc, y, lastResults.pillars);
 
+            // --- Move to Page 2 for Findings and Recommendations ---
             addPdfPage(doc, 'Executive Summary');
             y = PDF_SETTINGS.margin.top;
 
+            // --- Section: Key Findings ---
             const alertText = document.querySelector('#alertContainer .alert').textContent.replace(/✅|⚠️|🚨/g, '').trim();
             doc.setFontSize(16).setFont(PDF_SETTINGS.font.family, 'bold').setTextColor(PDF_SETTINGS.colors.text);
             doc.text('Key Findings', PDF_SETTINGS.margin.left, y);
@@ -1833,6 +1853,7 @@
             doc.text(findingLines, PDF_SETTINGS.margin.left, y);
             y += doc.getTextDimensions(findingLines).h + 25;
             
+            // --- Section: Top 3 Improvement Areas ---
             doc.setFontSize(16).setFont(PDF_SETTINGS.font.family, 'bold').setTextColor(PDF_SETTINGS.colors.text);
             doc.text('Top Improvement Areas', PDF_SETTINGS.margin.left, y);
             y += 15;
@@ -1858,6 +1879,7 @@
                 const congratsLines = doc.setFontSize(PDF_SETTINGS.font.size).setFont(PDF_SETTINGS.font.family, 'normal').setTextColor(PDF_SETTINGS.colors.text).splitTextToSize(congratsText, getDrawableWidth(doc));
                 doc.text(congratsLines, PDF_SETTINGS.margin.left, y);
             }
+
 
             addPdfFooter(doc);
             doc.save('ASMAF_Executive_Summary.pdf');
@@ -1887,6 +1909,7 @@
                     };
                     const color = priorityColors[priorityText] || '#22c55e';
 
+                    // Calculate height of the entire block before drawing
                     const titleLines = doc.setFontSize(14).setFont(PDF_SETTINGS.font.family, 'bold').splitTextToSize(title, getDrawableWidth(doc));
                     const descLines = doc.setFontSize(PDF_SETTINGS.font.size).setFont(PDF_SETTINGS.font.family, 'normal').splitTextToSize(description, getDrawableWidth(doc));
                     const itemHeight = 20 + 5 + doc.getTextDimensions(titleLines).h + 5 + doc.getTextDimensions(descLines).h + 15;
@@ -1917,6 +1940,7 @@
             const doc = new jsPDF();
             
             Object.keys(lastResults.domains).forEach((domainName, index) => {
+                // Start a new page for each domain
                 if (index === 0) {
                     addPdfHeader(doc, 'Technical Report');
                 } else {
@@ -1992,6 +2016,7 @@
                 }
             };
 
+            // --- Create all chart images first ---
             const chartImages = [];
             for (const industry of industries) {
                 const offscreenCanvas = document.createElement('canvas');
@@ -2042,6 +2067,7 @@
                 chartImages.push({ industry, image: dataUrl });
             }
 
+            // --- Front Page ---
             addPdfHeader(doc, 'Benchmark Comparison', [15, 15, 35]);
             
             doc.saveGraphicsState();
@@ -2059,6 +2085,7 @@
             const introText = "This report visualizes your SOC maturity scores against various industry benchmarks, providing context for your performance and identifying areas for strategic improvement.";
             doc.text(introText, pageW / 2, pageH / 2, { align: 'center', maxWidth: getDrawableWidth(doc) - 100 });
 
+            // --- Content Pages (One per sector) ---
             for (let i = 0; i < chartImages.length; i++) {
                 const chart = chartImages[i];
                 
@@ -2067,16 +2094,19 @@
 
                 let yPos = PDF_SETTINGS.margin.top + 20;
 
+                // Add Chart
                 const chartHeight = 280;
                 doc.addImage(chart.image, 'JPEG', (pageW - chartHeight) / 2, yPos, chartHeight, chartHeight);
                 yPos += chartHeight + 20;
 
+                // Add Chart Description
                 doc.setFontSize(9).setTextColor(PDF_SETTINGS.colors.faint);
                 const chartDesc = `The radar chart above illustrates a direct comparison of your maturity scores (purple) against the average scores for the ${chart.industry} sector (pink).`;
                 const chartDescLines = doc.splitTextToSize(chartDesc, getDrawableWidth(doc));
                 doc.text(chartDescLines, PDF_SETTINGS.margin.left, yPos);
                 yPos += doc.getTextDimensions(chartDescLines).h + 25;
 
+                // Add Table
                 const benchmarkValues = questionsData.benchmarks[chart.industry];
                 const tableBody = Object.keys(lastResults.domains).map(domainName => {
                     const yourScore = lastResults.domains[domainName];
@@ -2102,6 +2132,7 @@
                 });
                 let finalY = doc.autoTable.previous.finalY;
 
+                // Add Table Description
                 doc.setFontSize(9).setTextColor(PDF_SETTINGS.colors.faint);
                 const tableDesc = `The table above provides a detailed breakdown of the scores. The 'Delta' column highlights the variance between your score and the industry average.`;
                 const tableDescLines = doc.splitTextToSize(tableDesc, getDrawableWidth(doc));
