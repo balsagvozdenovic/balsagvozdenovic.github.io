@@ -933,6 +933,53 @@
                 width: 100%;
             }
         }
+        
+        /* Footer Styling */
+        .footer {
+            margin-top: 60px;
+            padding: 30px 0;
+            text-align: center;
+            position: relative;
+        }
+        
+        .footer-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px 40px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-content p {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Mobile responsive footer */
+        @media (max-width: 768px) {
+            .footer {
+                margin-top: 40px;
+                padding: 20px 15px;
+            }
+            
+            .footer-content {
+                padding: 15px 25px;
+                border-radius: 16px;
+            }
+            
+            .footer-content p {
+                font-size: 0.85rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1122,6 +1169,13 @@
             </div>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2025 balsagvozdenovic. All Rights Reserved.</p>
+        </div>
+    </footer>
 
     <style>
         .action-button {
