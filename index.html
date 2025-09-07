@@ -19,7 +19,7 @@
             box-sizing: border-box;
         }
 
-        html {
+        html, body {
             overflow-x: hidden;
         }
 
@@ -37,10 +37,15 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
+            width: 100%;
         }
         
-        .section-wrapper {
+        .content-wrapper {
             flex-grow: 1;
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
         
         body.home-view .container {
@@ -96,12 +101,6 @@
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
         .header {
             text-align: center;
             padding: 60px 0 40px;
@@ -121,7 +120,6 @@
             z-index: -1;
         }
 
-        /* --- NEW: Neon Box Title Styling --- */
         .title-container {
             position: relative;
             display: inline-block;
@@ -156,19 +154,18 @@
         }
 
         .header h1 {
-            font-size: 4.8rem; /* Increased PC size */
+            font-size: 4.8rem; 
             font-weight: 800;
             background: linear-gradient(135deg, #a855f7 0%, #ec4899 30%, #3b82f6 60%, #a855f7 100%);
             background-size: 200% 200%;
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin: 0; /* Removed margin */
+            margin: 0; 
             letter-spacing: -2px;
             position: relative;
             z-index: 1;
             animation: shimmer 3s ease-in-out infinite;
-            /* Text shadow removed */
         }
 
         @keyframes shimmer {
@@ -181,7 +178,7 @@
             font-size: 1.2rem;
             color: rgba(255, 255, 255, 0.7);
             font-weight: 300;
-            margin-top: 24px; /* Added margin-top */
+            margin-top: 24px; 
             margin-bottom: 8px;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
@@ -522,11 +519,10 @@
         }
 
         .stats-grid {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             margin: 40px 0;
-            justify-content: center;
         }
 
         .stat-card {
@@ -534,8 +530,6 @@
             text-align: center;
             position: relative;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            flex: 1 1 200px; /* Flex-grow, flex-shrink, basis */
-            max-width: 240px;
         }
 
         .stat-card:hover {
@@ -635,7 +629,7 @@
             box-shadow: none;
         }
 
-        .intro-content, .references-content, .section .glass-card > div {
+        .intro-content, .references-content, .section .glass-card > div:not(#benchmarkChartContainer) {
              max-width: 800px;
              margin-left: auto;
              margin-right: auto;
@@ -685,32 +679,9 @@
             animation: float 20s infinite linear;
         }
 
-        .orb:nth-child(1) {
-            width: 4px;
-            height: 4px;
-            background: #a855f7;
-            top: 20%;
-            left: 10%;
-            animation-duration: 25s;
-        }
-
-        .orb:nth-child(2) {
-            width: 6px;
-            height: 6px;
-            background: #ec4899;
-            top: 60%;
-            left: 80%;
-            animation-duration: 30s;
-        }
-
-        .orb:nth-child(3) {
-            width: 3px;
-            height: 3px;
-            background: #3b82f6;
-            top: 80%;
-            left: 30%;
-            animation-duration: 35s;
-        }
+        .orb:nth-child(1) { width: 4px; height: 4px; background: #a855f7; top: 20%; left: 10%; animation-duration: 25s; }
+        .orb:nth-child(2) { width: 6px; height: 6px; background: #ec4899; top: 60%; left: 80%; animation-duration: 30s; }
+        .orb:nth-child(3) { width: 3px; height: 3px; background: #3b82f6; top: 80%; left: 30%; animation-duration: 35s; }
 
         @keyframes float {
             0% { transform: translateY(0) rotate(0deg); opacity: 0; }
@@ -735,10 +706,7 @@
             pointer-events: none;
             transition: opacity 0.3s ease;
         }
-        #pdf-loader.visible {
-            opacity: 1;
-            pointer-events: all;
-        }
+        #pdf-loader.visible { opacity: 1; pointer-events: all; }
 
         .action-button:disabled {
             background: rgba(255, 255, 255, 0.03);
@@ -748,7 +716,6 @@
             border-color: rgba(255, 255, 255, 0.05);
         }
         
-        /* Dropdown menu styling */
         #benchmarkData select {
             padding: 10px 15px;
             background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(236, 72, 153, 0.2));
@@ -764,12 +731,12 @@
             background-repeat: no-repeat;
             background-position: right 15px top 50%;
             background-size: .65em auto;
-            padding-right: 40px; /* Make space for the arrow */
+            padding-right: 40px;
         }
         #benchmarkData option {
             background: #0f0f23 !important;
             color: white !important;
-            font-size: 1rem !important; /* FIX: Reset font size for desktop */
+            font-size: 1rem !important; 
         }
         
         .main-footer {
@@ -777,6 +744,13 @@
             text-align: center;
             font-size: 0.85rem;
             color: rgba(255, 255, 255, 0.4);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 5px 15px;
+        }
+        .main-footer p {
+            white-space: nowrap;
         }
         .main-footer a {
             color: rgba(255, 255, 255, 0.6);
@@ -784,35 +758,32 @@
             font-weight: 500;
             transition: color 0.3s ease;
         }
-        .main-footer a:hover {
-            color: #a855f7;
-        }
+        .main-footer a:hover { color: #a855f7; }
         
         .reports-buttons {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             justify-content: center;
-            flex-wrap: wrap;
         }
-        .reports-buttons .action-button {
-            flex: 1 1 200px;
-            max-width: 240px;
+        
+        #benchmarkChartContainer {
+            position: relative; 
+            margin: 0 auto;
+            max-width: 700px; 
+            width: 100%;
         }
 
         /* --- Mobile Responsiveness --- */
         @media (max-width: 900px) {
-            .assessment-grid {
-                grid-template-columns: 1fr;
-            }
+            .assessment-grid { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 768px) {
-            .container {
-                padding: 0 15px 15px;
-            }
+            .content-wrapper { padding: 0 15px; }
+            
             .header {
                 padding: 40px 0 30px;
-                /* Mobile transition */
                 transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             }
             .header h1 { 
@@ -828,7 +799,6 @@
                 transition: padding 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             }
             
-            /* Mobile Content View */
             body.mobile-content-view .header {
                 position: sticky;
                 top: 0;
@@ -844,19 +814,10 @@
                 border-bottom-left-radius: 20px;
                 border-bottom-right-radius: 20px;
             }
-             body.mobile-content-view .header::before {
-                display: none;
-            }
-            body.mobile-content-view .header h1 {
-                font-size: 1.6rem;
-            }
-            body.mobile-content-view .title-container {
-                padding: 0;
-                display: inline;
-            }
-            body.mobile-content-view .title-container::before {
-                display: none;
-            }
+            body.mobile-content-view .header::before { display: none; }
+            body.mobile-content-view .header h1 { font-size: 1.6rem; }
+            body.mobile-content-view .title-container { padding: 0; display: inline; }
+            body.mobile-content-view .title-container::before { display: none; }
             body.mobile-content-view .header .subtitle,
             body.mobile-content-view .header .tagline {
                 opacity: 0;
@@ -865,129 +826,53 @@
                 display: none;
             }
             
-            .nav-pill[data-section="home"] {
-                display: none;
-            }
+            .nav-pill[data-section="home"] { display: none; }
             body.mobile-content-view .nav-pill[data-section="home"],
             body.home-view .nav-pill[data-section="home"] {
                 display: block;
             }
 
-            .nav-container {
-                margin: 30px 0 40px;
-                flex-direction: column;
-            }
-            .nav-pills { 
-                flex-wrap: wrap; 
-                justify-content: center;
-                min-width: 0;
-                width: 100%;
-            }
-            .nav-pill {
-                font-size: 0.85rem;
-                padding: 10px 14px;
-            }
-            .assessment-grid { 
-                gap: 24px;
-            }
-            .domain-card {
-                padding: 24px;
-            }
-            .question-meta { 
-                gap: 12px;
-                align-items: flex-start;
-            }
-            .vuln-meter-container { 
-                width: 260px;
-                height: 260px;
-            }
-            .vuln-score { 
-                font-size: 2.6rem;
-            }
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .stat-value {
-                font-size: 1.8rem;
-            }
-            .cta-button {
-                font-size: 1rem;
-                padding: 16px 32px;
-            }
-            .glass-card {
-                border-radius: 16px;
-            }
-            .glass-card[style*="padding: 40px"] {
-                padding: 25px !important;
-            }
-            .intro-content h3, .references-content h3 {
-                font-size: 1.3rem;
-            }
-            /* Reduced mobile text size */
+            .nav-container { margin: 30px 0 40px; flex-direction: column; }
+            .nav-pills { flex-wrap: wrap; justify-content: center; min-width: 0; width: 100%; }
+            .nav-pill { font-size: 0.85rem; padding: 10px 14px; }
+            .assessment-grid { gap: 24px; }
+            .domain-card { padding: 24px; }
+            .question-meta { gap: 12px; align-items: flex-start; }
+            .vuln-meter-container { width: 260px; height: 260px; }
+            .vuln-score { font-size: 2.6rem; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .stat-value { font-size: 1.8rem; }
+            .cta-button { font-size: 1rem; padding: 16px 32px; }
+            .glass-card { border-radius: 16px; }
+            .glass-card[style*="padding: 40px"] { padding: 25px !important; }
+            .intro-content h3, .references-content h3 { font-size: 1.3rem; }
             .intro-content p, .intro-content li, 
-            .references-content p, .references-content li {
-                font-size: 0.95rem;
-            }
-            #recommendations h2 {
-                font-size: 2rem;
-            }
-            #benchmarks h3 {
-                font-size: 1.5rem;
-            }
+            .references-content p, .references-content li { font-size: 0.95rem; }
+            
+            #recommendations h2 { font-size: 2rem; }
+            #benchmarks h3 { font-size: 1.5rem; }
+            
             #benchmarkChartContainer {
-                min-height: 400px; 
-                aspect-ratio: 1 / 1;
-                max-width: 100%;
-                padding: 0;
-                margin: 20px auto 0;
+                min-height: 350px;
+                height: 80vw;
             }
-            #reports h3 {
-                font-size: 1.5rem;
-            }
-            .reports-buttons .action-button {
-                width: calc(50% - 10px);
-            }
-            #benchmarkData option {
-                font-size: 1.5rem !important;
-            }
+            
+            #reports h3 { font-size: 1.5rem; }
+            .reports-buttons { grid-template-columns: 1fr; }
+            
+            #benchmarkData option { font-size: 1.5rem !important; }
         }
 
         @media (max-width: 480px) {
-            .assessment-grid {
-                grid-template-columns: 1fr;
-            }
-            .header {
-                padding: 30px 0 20px;
-            }
-            .header h1 {
-                font-size: 2.8rem;
-            }
-            body.mobile-content-view .header h1 {
-                font-size: 1.5rem;
-            }
-            .header::before {
-                width: 100%;
-            }
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-            .vuln-meter-container { 
-                width: 220px;
-                height: 220px;
-            }
-            .vuln-score {
-                font-size: 2.2rem;
-            }
-            .option {
-                padding: 14px 16px;
-                font-size: 0.85rem;
-            }
-            .rec-title {
-                font-size: 1.1rem;
-            }
-            .reports-buttons .action-button {
-                width: 100%;
-            }
+            .header { padding: 30px 0 20px; }
+            .header h1 { font-size: 2.8rem; }
+            body.mobile-content-view .header h1 { font-size: 1.5rem; }
+            .header::before { width: 100%; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .vuln-meter-container { width: 220px; height: 220px; }
+            .vuln-score { font-size: 2.2rem; }
+            .option { padding: 14px 16px; font-size: 0.85rem; }
+            .rec-title { font-size: 1.1rem; }
         }
     </style>
 </head>
@@ -1001,7 +886,7 @@
     </div>
     
     <div class="container">
-        <div class="section-wrapper">
+        <div class="content-wrapper">
             <header class="header">
                 <div class="title-container">
                     <h1>ASMAF</h1>
@@ -1021,167 +906,149 @@
                     <button class="nav-pill" data-section="reports" disabled>Reports</button>
                     <button class="nav-pill" data-section="references">References</button>
                 </nav>
-                <!-- Test Button - Hidden by default, enabled via JS -->
                 <button id="testBtn" class="nav-pill" style="display: none; background-color: #f97316;">Test Mode</button>
             </div>
 
-            <!-- Intro Section -->
-            <div id="intro" class="section active">
-                <div class="glass-card" style="padding: 40px;">
-                    <div class="intro-content">
-                        <h3>Welcome to ASMAF</h3>
-                        <ul>
-                            <li><strong>Purpose:</strong> This framework provides a unified SOC Maturity Grading model derived from multiple industry and government maturity models.</li>
-                            <li><strong>Scope:</strong> Covers 10 domains: Program & Governance, Risk & Threat Intelligence, Telemetry & Engineering, Monitoring & Detection, Threat Hunting, Investigation, Incident Response, Automation, Workforce, and Architecture.</li>
-                            <li><strong>Structure:</strong> Each domain includes scored questions with 0–4 maturity anchors, required evidence, and weights. KPI metrics and a scoring methodology are also defined.</li>
-                            <li><strong>Levels:</strong>
-                                <ul style="margin-top: 12px;">
-                                    <li>Level 0: Not performed</li>
-                                    <li>Level 1: Initial</li>
-                                    <li>Level 2: Defined</li>
-                                    <li>Level 3: Measured</li>
-                                    <li>Level 4: Optimized</li>
-                                </ul>
-                            </li>
-                            <li><strong>Scoring:</strong> Weighted aggregation: Outcomes (40%), Coverage & Automation (30%), Governance/Workforce/Process (30%). Level cutoffs are provided in the scoring section.</li>
-                            <li><strong>Method:</strong> Conduct evidence collection, interviews, and KPI calculation for the last quarter. Score each item, then aggregate to domain and overall maturity level.</li>
-                            <li><strong>Use:</strong> Enables consistent self-assessment or third-party audit of SOC maturity, with transparent methodology and references to established frameworks.</li>
-                        </ul>
+            <div class="sections-container">
+                <div id="intro" class="section active">
+                    <div class="glass-card" style="padding: 40px;">
+                        <div class="intro-content">
+                            <h3>Welcome to ASMAF</h3>
+                            <ul>
+                                <li><strong>Purpose:</strong> This framework provides a unified SOC Maturity Grading model derived from multiple industry and government maturity models.</li>
+                                <li><strong>Scope:</strong> Covers 10 domains: Program & Governance, Risk & Threat Intelligence, Telemetry & Engineering, Monitoring & Detection, Threat Hunting, Investigation, Incident Response, Automation, Workforce, and Architecture.</li>
+                                <li><strong>Structure:</strong> Each domain includes scored questions with 0–4 maturity anchors, required evidence, and weights. KPI metrics and a scoring methodology are also defined.</li>
+                                <li><strong>Levels:</strong>
+                                    <ul style="margin-top: 12px;">
+                                        <li>Level 0: Not performed</li>
+                                        <li>Level 1: Initial</li>
+                                        <li>Level 2: Defined</li>
+                                        <li>Level 3: Measured</li>
+                                        <li>Level 4: Optimized</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Scoring:</strong> Weighted aggregation: Outcomes (40%), Coverage & Automation (30%), Governance/Workforce/Process (30%). Level cutoffs are provided in the scoring section.</li>
+                                <li><strong>Method:</strong> Conduct evidence collection, interviews, and KPI calculation for the last quarter. Score each item, then aggregate to domain and overall maturity level.</li>
+                                <li><strong>Use:</strong> Enables consistent self-assessment or third-party audit of SOC maturity, with transparent methodology and references to established frameworks.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Assessment Section -->
-            <div id="assessment" class="section">
-                <div class="progress-container">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                <div id="assessment" class="section">
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text" id="progressText">0 of 0 questions completed</div>
                     </div>
-                    <div class="progress-text" id="progressText">0 of 0 questions completed</div>
-                </div>
-                
-                <div class="assessment-grid" id="assessmentGrid">
-                    <!-- Assessment questions will be loaded here -->
+                    <div class="assessment-grid" id="assessmentGrid"></div>
+                    <div style="text-align: center;">
+                        <button class="cta-button" data-action="calculate" id="calculateBtn" disabled>
+                            Calculate Maturity Assessment
+                        </button>
+                    </div>
                 </div>
 
-                <div style="text-align: center;">
-                    <button class="cta-button" data-action="calculate" id="calculateBtn" disabled>
-                        Calculate Maturity Assessment
-                    </button>
-                </div>
-            </div>
-
-            <!-- Results Section -->
-            <div id="results" class="section">
-                <div class="vulnerability-dashboard">
-                    <div class="vuln-meter-container">
-                        <div class="vuln-meter">
-                            <div class="vuln-meter-inner">
-                                <div class="vuln-score" id="maturityScore">--</div>
-                                <div class="vuln-level" id="maturityLevel">Calculating...</div>
+                <div id="results" class="section">
+                    <div class="vulnerability-dashboard">
+                        <div class="vuln-meter-container">
+                            <div class="vuln-meter">
+                                <div class="vuln-meter-inner">
+                                    <div class="vuln-score" id="maturityScore">--</div>
+                                    <div class="vuln-level" id="maturityLevel">Calculating...</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="alert-container" id="alertContainer" style="display: none;">
-                        <!-- Alert will be inserted here -->
-                    </div>
-
-                    <div class="stats-grid">
-                        <div class="stat-card glass-card">
-                            <div class="stat-value" id="outcomesScore">--</div>
-                            <div class="stat-label">Outcomes</div>
+                        <div class="alert-container" id="alertContainer" style="display: none;"></div>
+                        <div class="stats-grid">
+                            <div class="stat-card glass-card">
+                                <div class="stat-value" id="outcomesScore">--</div>
+                                <div class="stat-label">Outcomes</div>
+                            </div>
+                            <div class="stat-card glass-card">
+                                <div class="stat-value" id="coverageScore">--</div>
+                                <div class="stat-label">Coverage & Automation</div>
+                            </div>
+                            <div class="stat-card glass-card">
+                                <div class="stat-value" id="governanceScore">--</div>
+                                <div class="stat-label">Governance & Process</div>
+                            </div>
+                            <div class="stat-card glass-card">
+                                <div class="stat-value" id="overallScore">--</div>
+                                <div class="stat-label">Overall Score</div>
+                            </div>
                         </div>
-                        <div class="stat-card glass-card">
-                            <div class="stat-value" id="coverageScore">--</div>
-                            <div class="stat-label">Coverage & Automation</div>
+                        <div class="glass-card" style="padding: 40px; margin: 40px 0;" id="domainBreakdownContainer">
+                            <h3 style="margin-bottom: 24px; color: #a855f7; font-size: 1.5rem;">Domain Breakdown</h3>
+                            <div id="domainBreakdown"></div>
                         </div>
-                        <div class="stat-card glass-card">
-                            <div class="stat-value" id="governanceScore">--</div>
-                            <div class="stat-label">Governance & Process</div>
-                        </div>
-                        <div class="stat-card glass-card">
-                            <div class="stat-value" id="overallScore">--</div>
-                            <div class="stat-label">Overall Score</div>
-                        </div>
-                    </div>
-
-                    <div class="glass-card" style="padding: 40px; margin: 40px 0;" id="domainBreakdownContainer">
-                        <h3 style="margin-bottom: 24px; color: #a855f7; font-size: 1.5rem;">Domain Breakdown</h3>
-                        <div id="domainBreakdown"></div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Recommendations Section -->
-            <div id="recommendations" class="section">
-                <div class="glass-card" style="padding: 40px;">
-                    <div style="text-align: center; margin-bottom: 40px;">
-                        <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 16px; background: linear-gradient(135deg, #a855f7, #ec4899); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-                            Maturity Analysis
-                        </h2>
-                        <p id="recommendationsSubtitle" style="font-size: 1.2rem; color: rgba(255, 255, 255, 0.6);">Here's where you stand and what to focus on</p>
-                    </div>
-                    
-                    <div id="recommendationsList" class="rec-grid">
-                        <!-- Recommendations will be populated here -->
+                <div id="recommendations" class="section">
+                    <div class="glass-card" style="padding: 40px;">
+                        <div style="text-align: center; margin-bottom: 40px;">
+                            <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 16px; background: linear-gradient(135deg, #a855f7, #ec4899); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                                Maturity Analysis
+                            </h2>
+                            <p id="recommendationsSubtitle" style="font-size: 1.2rem; color: rgba(255, 255, 255, 0.6);">Here's where you stand and what to focus on</p>
+                        </div>
+                        <div id="recommendationsList" class="rec-grid"></div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Benchmarks Section -->
-            <div id="benchmarks" class="section">
-                <div class="glass-card" style="padding: 40px;">
-                    <h3 style="margin-bottom: 24px; color: #a855f7; font-size: 2rem;">Industry Benchmarks</h3>
-                    <div id="benchmarkData">
-                        <div style="text-align: center; padding: 40px;">
-                            <p style="color: rgba(255,255,255,0.6); font-size: 1.1rem;">Complete the assessment to see your benchmark comparison.</p>
+                <div id="benchmarks" class="section">
+                    <div class="glass-card" style="padding: 40px;">
+                        <h3 style="margin-bottom: 24px; color: #a855f7; font-size: 2rem;">Industry Benchmarks</h3>
+                        <div id="benchmarkData">
+                            <div style="text-align: center; padding: 40px;">
+                                <p style="color: rgba(255,255,255,0.6); font-size: 1.1rem;">Complete the assessment to see your benchmark comparison.</p>
+                            </div>
+                        </div>
+                        <div id="benchmarkChartContainer"><canvas id="benchmarkChart"></canvas></div>
+                    </div>
+                </div>
+
+                <div id="reports" class="section">
+                    <div class="glass-card" style="padding: 40px; text-align: center;">
+                        <h3 style="margin-bottom: 40px; color: #a855f7; font-size: 2rem;">Generate Reports</h3>
+                        <div class="reports-buttons">
+                            <button class="action-button" onclick="generateReport('executive')" disabled>Executive Summary</button>
+                            <button class="action-button" onclick="generateReport('technical')" disabled>Technical Report</button>
+                            <button class="action-button" onclick="generateReport('roadmap')" disabled>Improvement Roadmap</button>
+                            <button class="action-button" onclick="generateReport('metrics')" disabled>KPI Analysis</button>
                         </div>
                     </div>
-                    <div id="benchmarkChartContainer" style="position: relative; padding:0; display: none; max-width: 700px; margin: 0 auto; "><canvas id="benchmarkChart"></canvas></div>
                 </div>
-            </div>
 
-            <!-- Reports Section -->
-            <div id="reports" class="section">
-                <div class="glass-card" style="padding: 40px; text-align: center;">
-                    <h3 style="margin-bottom: 40px; color: #a855f7; font-size: 2rem;">Generate Reports</h3>
-                    <div class="reports-buttons">
-                        <button class="action-button" onclick="generateReport('executive')" disabled>Executive Summary</button>
-                        <button class="action-button" onclick="generateReport('technical')" disabled>Technical Report</button>
-                        <button class="action-button" onclick="generateReport('roadmap')" disabled>Improvement Roadmap</button>
-                        <button class="action-button" onclick="generateReport('metrics')" disabled>KPI Analysis</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- References Section -->
-            <div id="references" class="section">
-                <div class="glass-card" style="padding: 40px;">
-                    <div class="references-content">
-                        <h3>Sources Behind the SOC Maturity Grading Framework</h3>
-                        <p style="margin-bottom: 24px; color: rgba(255, 255, 255, 0.7);">
-                            This SOC Maturity Grading Framework is a synthesis of established models and guidance from the sources listed below.
-                        </p>
-                        <ul>
-                            <li><strong>SOC-CMM v2.3.4 (Basic, Excel)</strong> — Capability Maturity Model for Security Operations Centers. Used for domain breakdown and baseline maturity anchors.</li>
-                            <li><strong>SOC-CMM Domain (Excel)</strong> — Detailed domain-level practices from SOC-CMM. Used to map specific capabilities to questions.</li>
-                            <li><strong>C2M2 v2.1 (Cybersecurity Capability Maturity Model, DOE, 2022)</strong> — Provided the Maturity Indicator Levels (MIL0–MIL3) and domain taxonomy.</li>
-                            <li><strong>MITRE – 11 Strategies of a World-Class Cybersecurity Operations Center</strong> — Guidance on SOC metrics programs, data collection, and avoiding perverse incentives.</li>
-                            <li><strong>Enterprise Detection & Response: A Simple Hunting Maturity Model</strong> — Defined progressive levels of proactive hunting capability.</li>
-                            <li><strong>Splunk Security Maturity Methodology (S2M2)</strong> — People–process–technology framing with stages from Initial to Optimized.</li>
-                            <li><strong>Exabeam – Security Operations Maturity Model (SOMM eBook)</strong> — Outcome metrics (MTTD, MTTR, etc.) and descriptors for higher maturity tied to automation and playbooks.</li>
-                            <li><strong>LogRhythm – Security Operations Maturity Model (SOMM)</strong> — Threat Lifecycle Management focus. Monitoring, hunting, investigation, and IR maturity.</li>
-                            <li><strong>NIST SP 1302 / Cybersecurity Framework</strong> — Governance and risk alignment with tiered maturity constructs.</li>
-                            <li><strong>CERT-RMM (Resilience Management Model, AD1129619)</strong> — Workforce, training, and awareness practices from the Organizational Training & Awareness (OTA) domain.</li>
-                        </ul>
+                <div id="references" class="section">
+                    <div class="glass-card" style="padding: 40px;">
+                        <div class="references-content">
+                            <h3>Sources Behind the SOC Maturity Grading Framework</h3>
+                            <p style="margin-bottom: 24px; color: rgba(255, 255, 255, 0.7);">
+                                This SOC Maturity Grading Framework is a synthesis of established models and guidance from the sources listed below.
+                            </p>
+                            <ul>
+                                <li><strong>SOC-CMM v2.3.4 (Basic, Excel)</strong> — Capability Maturity Model for Security Operations Centers. Used for domain breakdown and baseline maturity anchors.</li>
+                                <li><strong>SOC-CMM Domain (Excel)</strong> — Detailed domain-level practices from SOC-CMM. Used to map specific capabilities to questions.</li>
+                                <li><strong>C2M2 v2.1 (Cybersecurity Capability Maturity Model, DOE, 2022)</strong> — Provided the Maturity Indicator Levels (MIL0–MIL3) and domain taxonomy.</li>
+                                <li><strong>MITRE – 11 Strategies of a World-Class Cybersecurity Operations Center</strong> — Guidance on SOC metrics programs, data collection, and avoiding perverse incentives.</li>
+                                <li><strong>Enterprise Detection & Response: A Simple Hunting Maturity Model</strong> — Defined progressive levels of proactive hunting capability.</li>
+                                <li><strong>Splunk Security Maturity Methodology (S2M2)</strong> — People–process–technology framing with stages from Initial to Optimized.</li>
+                                <li><strong>Exabeam – Security Operations Maturity Model (SOMM eBook)</strong> — Outcome metrics (MTTD, MTTR, etc.) and descriptors for higher maturity tied to automation and playbooks.</li>
+                                <li><strong>LogRhythm – Security Operations Maturity Model (SOMM)</strong> — Threat Lifecycle Management focus. Monitoring, hunting, investigation, and IR maturity.</li>
+                                <li><strong>NIST SP 1302 / Cybersecurity Framework</strong> — Governance and risk alignment with tiered maturity constructs.</li>
+                                <li><strong>CERT-RMM (Resilience Management Model, AD1129619)</strong> — Workforce, training, and awareness practices from the Organizational Training & Awareness (OTA) domain.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <footer class="main-footer">
             <p>&copy; 2025 <a href="https://github.com/balsagvozdenovic" target="_blank">balsagvozdenovic</a>. All Rights Reserved.</p>
-            <p>ASMAF <a href="https://github.com/balsagvozdenovic/asmaf/commits/main" target="_blank" id="version-link">checking version...</a></p>
+            <p>ASMAF <a href="https://github.com/balsagvozdenovic/asmaf/commit/a08f7da852b86c29a8a7593671542387143c7438" target="_blank" id="version-link">v1.2.0-a08f7da</a></p>
         </footer>
     </div>
 
@@ -1206,12 +1073,7 @@
             transform: translateY(-2px);
         }
 
-        .rec-grid {
-            display: grid;
-            gap: 24px;
-            margin: 40px 0;
-        }
-
+        .rec-grid { display: grid; gap: 24px; margin: 40px 0; }
         .rec-item {
             padding: 28px;
             border-left: 4px solid transparent;
@@ -1224,11 +1086,7 @@
         .rec-item.priority-high { border-image: linear-gradient(135deg, #f97316, #ea580c) 1; }
         .rec-item.priority-medium { border-image: linear-gradient(135deg, #eab308, #ca8a04) 1; }
         .rec-item.priority-low { border-image: linear-gradient(135deg, #22c55e, #16a34a) 1; }
-
-        .rec-item:hover {
-            transform: translateX(8px);
-            background: rgba(255, 255, 255, 0.04);
-        }
+        .rec-item:hover { transform: translateX(8px); background: rgba(255, 255, 255, 0.04); }
 
         .rec-priority {
             display: inline-block;
@@ -1247,18 +1105,8 @@
         .priority-medium { background: linear-gradient(135deg, #eab308, #ca8a04); }
         .priority-low { background: linear-gradient(135deg, #22c55e, #16a34a); }
 
-        .rec-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: white;
-        }
-
-        .rec-description {
-            color: rgba(255, 255, 255, 0.7);
-            line-height: 1.6;
-            margin-bottom: 12px;
-        }
+        .rec-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; color: white; }
+        .rec-description { color: rgba(255, 255, 255, 0.7); line-height: 1.6; margin-bottom: 12px; }
     </style>
 
     <script>
@@ -1304,7 +1152,6 @@
             setupInitialView();
             calculateBtn.addEventListener('click', handleCalculateClick);
             setupTestMode();
-            updateVersion();
             
             try {
                 questionsData = await loadAssessmentData();
@@ -1316,21 +1163,29 @@
             }
         }
         
-        // --- Mobile UX ---
+        // --- Mobile UX & View Management ---
         function isMobile() {
             return window.innerWidth <= MOBILE_BREAKPOINT;
         }
 
         function setupInitialView() {
+            const homePill = document.querySelector('.nav-pill[data-section="home"]');
+            const introPill = document.querySelector('.nav-pill[data-section="intro"]');
+            const introSection = document.getElementById('intro');
+
+            navPills.forEach(p => p.classList.remove('active'));
+            sections.forEach(s => s.classList.remove('active'));
+
             if (isMobile()) {
                 document.body.classList.add('home-view');
                 document.body.classList.remove('mobile-content-view');
-                document.querySelectorAll('.nav-pill.active').forEach(p => p.classList.remove('active'));
-                document.querySelectorAll('.section.active').forEach(s => s.classList.remove('active'));
-                document.querySelector('.nav-pill[data-section="home"]').classList.add('active');
+                homePill.classList.add('active');
             } else {
                 document.body.classList.remove('home-view');
-                document.querySelector('.nav-pill[data-section="home"]').style.display = 'none';
+                document.body.classList.remove('mobile-content-view');
+                homePill.style.display = 'none';
+                introPill.classList.add('active');
+                introSection.classList.add('active');
             }
         }
         
@@ -1341,57 +1196,33 @@
                     if (this.disabled) return;
                     
                     const sectionId = this.getAttribute('data-section');
+                    
+                    navPills.forEach(p => p.classList.remove('active'));
+                    sections.forEach(s => s.classList.remove('active'));
 
                     if (isMobile()) {
                         if (sectionId === 'home') {
                             document.body.classList.add('home-view');
                             document.body.classList.remove('mobile-content-view');
-                            navPills.forEach(p => p.classList.remove('active'));
-                            sections.forEach(s => s.classList.remove('active'));
-                            this.classList.add('active');
-                            return; 
                         } else {
                             document.body.classList.remove('home-view');
                             document.body.classList.add('mobile-content-view');
+                            document.getElementById(sectionId)?.classList.add('active');
                         }
+                    } else { // Desktop
+                        document.getElementById(sectionId)?.classList.add('active');
                     }
 
-                    navPills.forEach(p => p.classList.remove('active'));
-                    sections.forEach(s => s.classList.remove('active'));
-                    
                     this.classList.add('active');
-                    const sectionEl = document.getElementById(sectionId);
-                    if (sectionEl) {
-                        sectionEl.classList.add('active');
-                    }
                 });
             });
-        }
-        
-        async function updateVersion() {
-            const versionLink = document.getElementById('version-link');
-            try {
-                const response = await fetch('https://api.github.com/repos/balsagvozdenovic/asmaf/commits/main');
-                if (!response.ok) {
-                    throw new Error(`GitHub API request failed: ${response.status}`);
-                }
-                const commit = await response.json();
-                const hash = commit.sha.substring(0, 7);
-                const date = new Date(commit.commit.author.date);
-                const versionString = `v${date.getFullYear()}.${date.getMonth()+1}.${date.getDate()}-${hash}`;
-                versionLink.textContent = versionString;
-                versionLink.href = commit.html_url;
-            } catch (error) {
-                console.error('Failed to update version:', error);
-                versionLink.textContent = 'v1.2.x';
-            }
         }
 
         // --- Data Loading ---
         async function loadAssessmentData() {
             const response = await fetch('./soc_questions.json');
             if (!response.ok) {
-                throw new Error(`Failed to load soc_questions.json. Status: ${response.status}.<br>Please ensure the file is in the correct directory and you are running this from a web server (like XAMPP).`);
+                throw new Error(`Failed to load soc_questions.json. Status: ${response.status}.<br>Please ensure the file is in the correct directory and you are running this from a web server.`);
             }
             try {
                 return await response.json();
@@ -1496,7 +1327,7 @@
             document.querySelectorAll('.nav-pill[data-section="results"], .nav-pill[data-section="recommendations"], .nav-pill[data-section="benchmarks"], .nav-pill[data-section="reports"]').forEach(pill => {
                 pill.disabled = false;
             });
-            document.querySelectorAll('#reports .action-button').forEach(button => {
+            document.querySelectorAll('.reports-buttons .action-button').forEach(button => {
                 button.disabled = false;
             });
 
@@ -1584,7 +1415,6 @@
         }
 
         function generateRecommendations(domainScores) {
-            // Filter for domains that score less than 95% and sort them by score
             let domainsToImprove = Object.keys(domainScores)
                 .map(name => ({ name, score: domainScores[name] }))
                 .filter(d => d.score < 95)
@@ -1596,27 +1426,14 @@
                 return;
             }
 
-            recommendationsSubtitleEl.textContent = "Here are your top areas for improvement, a an starting with the highest priority.";
+            recommendationsSubtitleEl.textContent = "Here are your top areas for improvement, starting with the highest priority.";
             recommendationsListEl.innerHTML = domainsToImprove.slice(0, 3).map(domain => {
                 let priorityClass = '', priorityText = '', description = '';
 
-                if (domain.score < 40) {
-                    priorityClass = 'priority-critical';
-                    priorityText = 'Critical Priority';
-                    description = `Your score of <strong>${domain.score.toFixed(1)}%</strong> indicates a critical gap. Focus on establishing and documenting foundational processes immediately.`;
-                } else if (domain.score < 60) {
-                    priorityClass = 'priority-high';
-                    priorityText = 'High Priority';
-                    description = `Your score of <strong>${domain.score.toFixed(1)}%</strong> is emerging. Prioritize developing consistent procedures and assigning clear responsibilities.`;
-                } else if (domain.score < 85) {
-                    priorityClass = 'priority-medium';
-                    priorityText = 'Medium Priority';
-                    description = `With a score of <strong>${domain.score.toFixed(1)}%</strong>, this is a good opportunity for refinement. Focus on improving metrics, consistency, and process integration.`;
-                } else { // 85 to 94.9
-                    priorityClass = 'priority-low';
-                    priorityText = 'Low Priority';
-                    description = `Your score of <strong>${domain.score.toFixed(1)}%</strong> is strong. Focus on advanced optimization, increasing automation, and fine-tuning capabilities to reach the next level.`;
-                }
+                if (domain.score < 40) { priorityClass = 'priority-critical'; priorityText = 'Critical Priority'; description = `Your score of <strong>${domain.score.toFixed(1)}%</strong> indicates a critical gap. Focus on establishing and documenting foundational processes immediately.`;
+                } else if (domain.score < 60) { priorityClass = 'priority-high'; priorityText = 'High Priority'; description = `Your score of <strong>${domain.score.toFixed(1)}%</strong> is emerging. Prioritize developing consistent procedures and assigning clear responsibilities.`;
+                } else if (domain.score < 85) { priorityClass = 'priority-medium'; priorityText = 'Medium Priority'; description = `With a score of <strong>${domain.score.toFixed(1)}%</strong>, this is a good opportunity for refinement. Focus on improving metrics, consistency, and process integration.`;
+                } else { priorityClass = 'priority-low'; priorityText = 'Low Priority'; description = `Your score of <strong>${domain.score.toFixed(1)}%</strong> is strong. Focus on advanced optimization, increasing automation, and fine-tuning capabilities to reach the next level.`; }
                 
                 return `<div class="rec-item ${priorityClass}">
                             <span class="rec-priority ${priorityClass}">${priorityText}</span>
@@ -1631,11 +1448,13 @@
             if (benchmarkChart) benchmarkChart.destroy();
             benchmarkChart = null;
 
+            benchmarkDataEl.style.display = 'block';
+            benchmarkChartContainer.style.display = 'block';
+            
             benchmarkDataEl.innerHTML = `
                 <div style="text-align: center;">
                     <select id="industrySelector">${Object.keys(questionsData.benchmarks).map(ind => `<option value="${ind}">${ind}</option>`).join('')}</select>
                 </div>`;
-            benchmarkChartContainer.style.display = 'block';
             
             const selector = document.getElementById('industrySelector');
             selector.addEventListener('change', (e) => drawBenchmarkChart(results, e.target.value));
@@ -1684,41 +1503,21 @@
                 data: { 
                     labels: formattedLabels, 
                     datasets: [
-                        { 
-                            label: 'Your Score', 
-                            data: userData, 
-                            backgroundColor: 'rgba(168, 85, 247, 0.2)', 
-                            borderColor: 'rgba(168, 85, 247, 1)', 
-                            borderWidth: 2, 
-                            pointBackgroundColor: 'rgba(168, 85, 247, 1)' 
-                        },
-                        { 
-                            label: `${industry} Average`, 
-                            data: benchmarkData, 
-                            backgroundColor: 'rgba(236, 72, 153, 0.2)', 
-                            borderColor: 'rgba(236, 72, 153, 1)', 
-                            borderWidth: 2, 
-                            pointBackgroundColor: 'rgba(236, 72, 153, 1)' 
-                        }
+                        { label: 'Your Score', data: userData, backgroundColor: 'rgba(168, 85, 247, 0.2)', borderColor: 'rgba(168, 85, 247, 1)', borderWidth: 2, pointBackgroundColor: 'rgba(168, 85, 247, 1)' },
+                        { label: `${industry} Average`, data: benchmarkData, backgroundColor: 'rgba(236, 72, 153, 0.2)', borderColor: 'rgba(236, 72, 153, 1)', borderWidth: 2, pointBackgroundColor: 'rgba(236, 72, 153, 1)' }
                     ]
                 },
                 options: { 
                     responsive: true, 
                     maintainAspectRatio: false,
-                    devicePixelRatio: window.devicePixelRatio || 1,
-                    animation: {
-                        duration: 800,
-                        easing: 'easeOutQuart'
-                    },
+                    animation: { duration: 800, easing: 'easeOutQuart' },
                     scales: { 
                         r: {
-                            animate: true,
                             angleLines: { color: 'rgba(255, 255, 255, 0.2)' },
                             grid: { color: 'rgba(255, 255, 255, 0.2)' },
                             pointLabels: { 
                                 color: 'rgba(255, 255, 255, 0.8)', 
-                                font: { size: isMobile() ? 9 : 12, lineHeight: 1.1 },
-                                padding: isMobile() ? 15 : 5
+                                font: { size: isMobile() ? 10 : 12, lineHeight: 1.1 },
                             },
                             ticks: { 
                                 backdropColor: 'rgba(0, 0, 0, 0.5)', 
@@ -1730,11 +1529,7 @@
                         }
                     },
                     plugins: { 
-                        legend: { 
-                            labels: { 
-                                color: 'white' 
-                            } 
-                        } 
+                        legend: { labels: { color: 'white' } } 
                     }
                 }
             });
@@ -1746,41 +1541,28 @@
             const testBtn = document.getElementById('testBtn');
             if (testBtn) {
                 testBtn.style.display = 'inline-block';
-                testBtn.addEventListener('click', () => runTestMode(3)); // Default level 3 for stress testing
+                testBtn.addEventListener('click', () => runTestMode(3));
             }
         }
 
         function runTestMode(defaultLevel) {
-            if (!questionsData) {
-                alert("Assessment data not loaded yet. Please wait.");
-                return;
-            }
-
-            // Go to the assessment tab first
+            if (!questionsData) { alert("Assessment data not loaded yet."); return; }
             document.querySelector('.nav-pill[data-section="assessment"]').click();
-
             for (const domainName in questionsData.domains) {
                 const domain = questionsData.domains[domainName];
                 if (domain.questions && Array.isArray(domain.questions)) {
                     domain.questions.forEach(q => {
-                        // Set the answer in the state
                         answers[q.id] = defaultLevel;
-
-                        // Update the UI
                         const questionContainer = document.querySelector(`.question-container[data-question-id="${q.id}"]`);
                         if (questionContainer) {
                             questionContainer.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
                             const selectedOption = questionContainer.querySelector(`.option[data-level="${defaultLevel}"]`);
-                            if (selectedOption) {
-                                selectedOption.classList.add('selected');
-                            }
+                            if (selectedOption) { selectedOption.classList.add('selected'); }
                         }
                     });
                 }
             }
-            
             updateProgress();
-            // Automatically click the calculate button after a short delay to allow UI to update
             setTimeout(handleCalculateClick, 100);
         }
 
@@ -1866,7 +1648,6 @@
 
             addPdfHeader(doc, 'Executive Summary');
 
-            // --- Section: Overall Score ---
             doc.setFontSize(16).setFont(PDF_SETTINGS.font.family, 'bold').setTextColor(PDF_SETTINGS.colors.text);
             doc.text('Overall Maturity Score', PDF_SETTINGS.margin.left, y);
             y += 25;
@@ -1881,17 +1662,14 @@
             doc.text(levelText, PDF_SETTINGS.margin.left + scoreWidth + 2, y, { baseline: 'bottom' });
             y += 40;
 
-            // --- Section: Pillar Performance ---
             doc.setFontSize(16).setFont(PDF_SETTINGS.font.family, 'bold').setTextColor(PDF_SETTINGS.colors.text);
             doc.text('Pillar Performance', PDF_SETTINGS.margin.left, y);
             y += 20;
             y = drawPillarChart(doc, y, lastResults.pillars);
 
-            // --- Move to Page 2 for Findings and Recommendations ---
             addPdfPage(doc, 'Executive Summary');
             y = PDF_SETTINGS.margin.top;
 
-            // --- Section: Key Findings ---
             const alertText = document.querySelector('#alertContainer .alert').textContent.replace(/✅|⚠️|🚨/g, '').trim();
             doc.setFontSize(16).setFont(PDF_SETTINGS.font.family, 'bold').setTextColor(PDF_SETTINGS.colors.text);
             doc.text('Key Findings', PDF_SETTINGS.margin.left, y);
@@ -1901,7 +1679,6 @@
             doc.text(findingLines, PDF_SETTINGS.margin.left, y);
             y += doc.getTextDimensions(findingLines).h + 25;
             
-            // --- Section: Top 3 Improvement Areas ---
             doc.setFontSize(16).setFont(PDF_SETTINGS.font.family, 'bold').setTextColor(PDF_SETTINGS.colors.text);
             doc.text('Top Improvement Areas', PDF_SETTINGS.margin.left, y);
             y += 15;
@@ -1927,7 +1704,6 @@
                 const congratsLines = doc.setFontSize(PDF_SETTINGS.font.size).setFont(PDF_SETTINGS.font.family, 'normal').setTextColor(PDF_SETTINGS.colors.text).splitTextToSize(congratsText, getDrawableWidth(doc));
                 doc.text(congratsLines, PDF_SETTINGS.margin.left, y);
             }
-
 
             addPdfFooter(doc);
             doc.save('ASMAF_Executive_Summary.pdf');
@@ -1957,7 +1733,6 @@
                     };
                     const color = priorityColors[priorityText] || '#22c55e';
 
-                    // Calculate height of the entire block before drawing
                     const titleLines = doc.setFontSize(14).setFont(PDF_SETTINGS.font.family, 'bold').splitTextToSize(title, getDrawableWidth(doc));
                     const descLines = doc.setFontSize(PDF_SETTINGS.font.size).setFont(PDF_SETTINGS.font.family, 'normal').splitTextToSize(description, getDrawableWidth(doc));
                     const itemHeight = 20 + 5 + doc.getTextDimensions(titleLines).h + 5 + doc.getTextDimensions(descLines).h + 15;
@@ -1988,7 +1763,6 @@
             const doc = new jsPDF();
             
             Object.keys(lastResults.domains).forEach((domainName, index) => {
-                // Start a new page for each domain
                 if (index === 0) {
                     addPdfHeader(doc, 'Technical Report');
                 } else {
@@ -2064,7 +1838,6 @@
                 }
             };
 
-            // --- Create all chart images first ---
             const chartImages = [];
             for (const industry of industries) {
                 const offscreenCanvas = document.createElement('canvas');
@@ -2115,7 +1888,6 @@
                 chartImages.push({ industry, image: dataUrl });
             }
 
-            // --- Front Page ---
             addPdfHeader(doc, 'Benchmark Comparison', [15, 15, 35]);
             
             doc.saveGraphicsState();
@@ -2133,7 +1905,6 @@
             const introText = "This report visualizes your SOC maturity scores against various industry benchmarks, providing context for your performance and identifying areas for strategic improvement.";
             doc.text(introText, pageW / 2, pageH / 2, { align: 'center', maxWidth: getDrawableWidth(doc) - 100 });
 
-            // --- Content Pages (One per sector) ---
             for (let i = 0; i < chartImages.length; i++) {
                 const chart = chartImages[i];
                 
@@ -2142,19 +1913,16 @@
 
                 let yPos = PDF_SETTINGS.margin.top + 20;
 
-                // Add Chart
                 const chartHeight = 280;
                 doc.addImage(chart.image, 'JPEG', (pageW - chartHeight) / 2, yPos, chartHeight, chartHeight);
                 yPos += chartHeight + 20;
 
-                // Add Chart Description
                 doc.setFontSize(9).setTextColor(PDF_SETTINGS.colors.faint);
                 const chartDesc = `The radar chart above illustrates a direct comparison of your maturity scores (purple) against the average scores for the ${chart.industry} sector (pink).`;
                 const chartDescLines = doc.splitTextToSize(chartDesc, getDrawableWidth(doc));
                 doc.text(chartDescLines, PDF_SETTINGS.margin.left, yPos);
                 yPos += doc.getTextDimensions(chartDescLines).h + 25;
 
-                // Add Table
                 const benchmarkValues = questionsData.benchmarks[chart.industry];
                 const tableBody = Object.keys(lastResults.domains).map(domainName => {
                     const yourScore = lastResults.domains[domainName];
@@ -2180,7 +1948,6 @@
                 });
                 let finalY = doc.autoTable.previous.finalY;
 
-                // Add Table Description
                 doc.setFontSize(9).setTextColor(PDF_SETTINGS.colors.faint);
                 const tableDesc = `The table above provides a detailed breakdown of the scores. The 'Delta' column highlights the variance between your score and the industry average.`;
                 const tableDescLines = doc.splitTextToSize(tableDesc, getDrawableWidth(doc));
@@ -2214,7 +1981,7 @@
     });
     </script>
     <script>
-        // Aggressive layout correction script
+        // Layout correction script (unchanged)
         const correctLayout = () => {
             const bodyWidth = document.body.getBoundingClientRect().width;
             const windowWidth = window.innerWidth;
