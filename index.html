@@ -509,7 +509,7 @@
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(4, minmax(220px, 1fr));
+            grid-template-columns: repeat(4, minmax(0, 1fr));
             gap: 20px;
             margin: 40px 0;
         }
@@ -522,6 +522,7 @@
             text-align: center;
             position: relative;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            min-width: 0;
         }
 
         .stat-card:hover {
@@ -754,7 +755,7 @@
             width: 100%;
             max-width: 360px;
         }
-        #benchmarkChartContainer { position: relative; width: 100%; max-width: 700px; margin: 0 auto; min-height: 420px; overflow: hidden; }
+        #benchmarkChartContainer { position: relative; width: 100%; max-width: 700px; margin: 0 auto; height: clamp(360px, 90vw, 560px); overflow: hidden; }
         #benchmarkChart { display: block; width: 100% !important; height: 100% !important; }
         #benchmarkData option {
             background: #0f0f23 !important; /* Dark background for options */
@@ -901,7 +902,7 @@
                 font-size: 1.5rem;
             }
             #benchmarkChartContainer {
-                min-height: 350px; /* FIX: Adjusted height for mobile */
+                height: clamp(360px, 95vw, 560px); /* FIX: Adjusted height for mobile */
                 max-width: 100%; /* FIX: Use full width */
                 padding: 0; /* FIX: Remove padding to give chart space */
             }
@@ -912,17 +913,7 @@
                 width: calc(50% - 10px);
             }
         }
-        #assessment,
-        #results,
-        #recommendations,
-        #benchmarks {
-          padding: 40px;
-          border-radius: 20px;
-          background: rgba(240,240,255,0.03);
-          backdrop-filter: blur(20px);
-          border: 1px solid rgba(255,255,255,0.08);
-        }
-
+        
         @media (max-width: 480px) {
             .assessment-grid {
                 grid-template-columns: 1fr;
@@ -1010,6 +1001,7 @@
                 font-size: 0.85rem;
             }
         }
+    #domainBreakdownContainer { text-align: left; }
     </style>
 </head>
 <body>
@@ -1729,6 +1721,18 @@
                     }
                 }
             });
+            // post-create tweaks
+            benchmarkChart.options.layout = { padding: 18 };
+            benchmarkChart.options.plugins.legend = { position: 'bottom', labels: { color: 'white' } };
+            if (benchmarkChart.options.scales && benchmarkChart.options.scales.r) {
+              const r = benchmarkChart.options.scales.r;
+              r.pointLabels = Object.assign({}, r.pointLabels, {
+                font: { size: isMobile() ? 11 : 13 },
+                padding: isMobile() ? 12 : 6
+              });
+              if (r.ticks) r.ticks.backdropColor = 'transparent';
+            }
+            benchmarkChart.update();
         }
         
         // --- Test Mode Functionality ---
