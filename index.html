@@ -242,10 +242,16 @@
         }
         
         .content-container {
-            max-width: 960px;
+            max-width: 840px;
             margin-left: auto;
             margin-right: auto;
             padding: 40px;
+        }
+
+        .assessment-wrapper {
+            max-width: 1024px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
 
@@ -739,6 +745,10 @@
         }
         
         /* Dropdown menu styling */
+        #benchmarkData {
+            text-align: center;
+            margin-bottom: 20px;
+        }
         #benchmarkData select {
             padding: 10px 15px;
             background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(236, 72, 153, 0.2));
@@ -764,7 +774,7 @@
             max-width: 100%;
             height: 500px;
             max-height: 70vh;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         #benchmarkData option {
@@ -775,9 +785,13 @@
         
         .benchmark-header {
             margin-bottom: 24px;
-            color: #a855f7;
             font-size: 2rem;
+            font-weight: 800;
             text-align: center;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         /* --- Mobile Responsiveness --- */
@@ -900,7 +914,7 @@
             .glass-card {
                 border-radius: 16px;
             }
-            .content-container {
+            .content-container, .assessment-wrapper {
                 padding: 25px !important;
             }
             .intro-content h3, .references-content h3 {
@@ -921,10 +935,9 @@
             #benchmarkChart {
                 height: 450px;
                 max-height: 60vh;
-                margin-top: 10px;
             }
             #benchmarkData {
-                text-align: center;
+                margin-bottom: 10px;
             }
             #benchmarkData select {
                 margin-bottom: 0;
@@ -1088,7 +1101,7 @@
 
         <!-- Assessment Section -->
         <div id="assessment" class="section">
-            <div class="glass-card content-container">
+            <div class="assessment-wrapper">
                 <div class="progress-container">
                     <div class="progress-bar">
                         <div class="progress-fill" id="progressFill" style="width: 0%"></div>
@@ -1110,7 +1123,7 @@
 
         <!-- Results Section -->
         <div id="results" class="section">
-            <div class="content-container" style="background:none; border:none; box-shadow:none; backdrop-filter:none; padding:0;">
+            <div class="content-container" style="background:none; border:none; box-shadow:none; backdrop-filter:none; padding-top:0; padding-bottom: 0;">
                 <div class="vulnerability-dashboard">
                     <div class="vuln-meter-container">
                         <div class="vuln-meter">
@@ -1655,6 +1668,7 @@
 
             benchmarkChartEl.style.display = 'block';
             
+            selector.removeEventListener('change', (e) => drawBenchmarkChart(results, e.target.value));
             selector.addEventListener('change', (e) => drawBenchmarkChart(results, e.target.value));
 
             chartObserver = new IntersectionObserver((entries, observer) => {
