@@ -779,6 +779,19 @@
             font-size: 1rem !important;
         }
 
+        /* --- Desktop & Wider Screen Adjustments --- */
+        @media (min-width: 769px) {
+             #intro > .glass-card,
+            #results > .vulnerability-dashboard,
+            #recommendations > .glass-card,
+            #benchmarks > .glass-card,
+            #reports > .glass-card,
+            #references > .glass-card {
+                max-width: 960px;
+            }
+        }
+
+
         /* --- Mobile Responsiveness --- */
         @media (max-width: 900px) {
             .assessment-grid {
@@ -1716,14 +1729,12 @@
                                 color: 'rgba(255, 255, 255, 0.8)', 
                                 font: { size: isMobile() ? 10 : 12 },
                                 callback: function(label) {
-                                    if (isMobile()) {
-                                        const words = label.split(' ');
-                                        if (words.length > 1) {
-                                            const mid = Math.ceil(words.length / 2);
-                                            const line1 = words.slice(0, mid).join(' ');
-                                            const line2 = words.slice(mid).join(' ');
-                                            return [line1, line2];
-                                        }
+                                    const words = label.split(' ');
+                                    if (words.length > 1) {
+                                        const mid = Math.ceil(words.length / 2);
+                                        const line1 = words.slice(0, mid).join(' ');
+                                        const line2 = words.slice(mid).join(' ');
+                                        return [line1, line2];
                                     }
                                     return label;
                                 }
@@ -1739,16 +1750,16 @@
                     },
                     plugins: { 
                         legend: { 
-                            position: isMobile() ? 'top' : 'bottom',
+                            position: 'bottom',
                             labels: { 
                                 color: 'white',
-                                padding: 20,
+                                padding: isMobile() ? 10 : 20,
                                 font: { size: 12 }
                             } 
                         } 
                     },
                     layout: {
-                        padding: isMobile() ? 10 : 20
+                        padding: isMobile() ? { top: 0, right: 5, bottom: 0, left: 5 } : 20
                     }
                 }
             });
