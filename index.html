@@ -1173,9 +1173,8 @@
             <div class="glass-card content-container">
                 <h3 class="benchmark-header">Industry Benchmarks</h3>
                 <div id="benchmarkData">
-                    <div style="text-align: center;">
-                        <p style="color: rgba(255,255,255,0.6); font-size: 1.1rem;">Complete the assessment to see your benchmark comparison.</p>
-                    </div>
+                    <p style="color: rgba(255,255,255,0.6); font-size: 1.1rem; text-align:center;">Complete the assessment to see your benchmark comparison.</p>
+                    <select id="industrySelector" style="display: none;"></select>
                 </div>
                 <canvas id="benchmarkChart"></canvas>
             </div>
@@ -1649,15 +1648,13 @@
             if (benchmarkChart) benchmarkChart.destroy();
             benchmarkChart = null;
             
-            const benchmarkContentEl = document.querySelector('#benchmarkData > div');
-            benchmarkContentEl.querySelector('p').style.display = 'none';
-            if(!document.getElementById('industrySelector')) {
-                benchmarkContentEl.insertAdjacentHTML('afterbegin', `<select id="industrySelector">${Object.keys(questionsData.benchmarks).map(ind => `<option value="${ind}">${ind}</option>`).join('')}</select>`);
-            }
+            const selector = document.getElementById('industrySelector');
+            selector.innerHTML = Object.keys(questionsData.benchmarks).map(ind => `<option value="${ind}">${ind}</option>`).join('');
+            selector.style.display = 'block';
+            benchmarkDataEl.querySelector('p').style.display = 'none';
 
             benchmarkChartEl.style.display = 'block';
             
-            const selector = document.getElementById('industrySelector');
             selector.addEventListener('change', (e) => drawBenchmarkChart(results, e.target.value));
 
             chartObserver = new IntersectionObserver((entries, observer) => {
