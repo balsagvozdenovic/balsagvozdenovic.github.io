@@ -247,11 +247,11 @@
             margin-right: auto;
             padding: 40px;
         }
-
-        .assessment-wrapper {
-            max-width: 1024px;
-            margin-left: auto;
-            margin-right: auto;
+        
+        .assessment-container {
+             max-width: 1024px;
+             margin-left: auto;
+             margin-right: auto;
         }
 
 
@@ -745,11 +745,11 @@
         }
         
         /* Dropdown menu styling */
-        #benchmarkData {
+        .benchmark-dropdown-wrapper {
             text-align: center;
             margin-bottom: 20px;
         }
-        #benchmarkData select {
+        #industrySelector {
             padding: 10px 15px;
             background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(236, 72, 153, 0.2));
             color: white;
@@ -777,7 +777,7 @@
             margin-top: 10px;
         }
 
-        #benchmarkData option {
+        #industrySelector option {
             background: #0f0f23 !important; /* Dark background for options */
             color: white !important; /* White text for options */
             font-size: 1rem !important;
@@ -914,7 +914,7 @@
             .glass-card {
                 border-radius: 16px;
             }
-            .content-container, .assessment-wrapper {
+            .content-container, .assessment-container {
                 padding: 25px !important;
             }
             .intro-content h3, .references-content h3 {
@@ -936,10 +936,10 @@
                 height: 450px;
                 max-height: 60vh;
             }
-            #benchmarkData {
+            .benchmark-dropdown-wrapper {
                 margin-bottom: 10px;
             }
-            #benchmarkData select {
+            #industrySelector {
                 margin-bottom: 0;
             }
             #reports h3 {
@@ -1101,7 +1101,7 @@
 
         <!-- Assessment Section -->
         <div id="assessment" class="section">
-            <div class="assessment-wrapper">
+            <div class="assessment-container">
                 <div class="progress-container">
                     <div class="progress-bar">
                         <div class="progress-fill" id="progressFill" style="width: 0%"></div>
@@ -1185,10 +1185,10 @@
         <div id="benchmarks" class="section">
             <div class="glass-card content-container">
                 <h3 class="benchmark-header">Industry Benchmarks</h3>
-                <div id="benchmarkData">
-                    <p style="color: rgba(255,255,255,0.6); font-size: 1.1rem; text-align:center;">Complete the assessment to see your benchmark comparison.</p>
+                <div class="benchmark-dropdown-wrapper">
                     <select id="industrySelector" style="display: none;"></select>
                 </div>
+                <p id="benchmarkPlaceholder" style="color: rgba(255,255,255,0.6); font-size: 1.1rem; text-align:center;">Complete the assessment to see your benchmark comparison.</p>
                 <canvas id="benchmarkChart"></canvas>
             </div>
         </div>
@@ -1338,8 +1338,9 @@
         const domainBreakdownEl = document.getElementById('domainBreakdown');
         const recommendationsListEl = document.getElementById('recommendationsList');
         const recommendationsSubtitleEl = document.getElementById('recommendationsSubtitle');
-        const benchmarkDataEl = document.getElementById('benchmarkData');
         const benchmarkChartEl = document.getElementById('benchmarkChart');
+        const benchmarkPlaceholder = document.getElementById('benchmarkPlaceholder');
+        const industrySelector = document.getElementById('industrySelector');
         const pdfLoader = document.getElementById('pdf-loader');
         
         // --- App State ---
@@ -1661,20 +1662,22 @@
             if (benchmarkChart) benchmarkChart.destroy();
             benchmarkChart = null;
             
-            const selector = document.getElementById('industrySelector');
-            selector.innerHTML = Object.keys(questionsData.benchmarks).map(ind => `<option value="${ind}">${ind}</option>`).join('');
-            selector.style.display = 'block';
-            benchmarkDataEl.querySelector('p').style.display = 'none';
+            industrySelector.innerHTML = Object.keys(questionsData.benchmarks).map(ind => `<option value="${ind}">${ind}</option>`).join('');
+            industrySelector.style.display = 'block';
+            benchmarkPlaceholder.style.display = 'none';
 
             benchmarkChartEl.style.display = 'block';
             
-            selector.removeEventListener('change', (e) => drawBenchmarkChart(results, e.target.value));
-            selector.addEventListener('change', (e) => drawBenchmarkChart(results, e.target.value));
+            industrySelector.removeEventListener('change', handleSelectorChange);
+            function handleSelectorChange(e) {
+                drawBenchmarkChart(results, e.target.value);
+            }
+            industrySelector.addEventListener('change', handleSelectorChange);
 
             chartObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        drawBenchmarkChart(results, selector.value);
+                        drawBenchmarkChart(results, industrySelector.value);
                         observer.unobserve(entry.target);
                     }
                 });
