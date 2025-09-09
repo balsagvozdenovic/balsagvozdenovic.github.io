@@ -242,7 +242,6 @@
             display: block;
         }
         
-        /* FIX: Unify content container widths */
         #intro > .glass-card,
         #results > .vulnerability-dashboard,
         #recommendations > .glass-card,
@@ -822,7 +821,7 @@
                 justify-content: center;
                 min-height: 70px;
                 text-align: center;
-                background: rgba(15, 15, 35, 0.85);
+                background: rgba(30, 30, 55, 0.85);
                 backdrop-filter: blur(10px);
                 z-index: 100;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -902,7 +901,7 @@
                 padding: 16px 32px;
             }
             .glass-card {
-                border-radius: 16px; /* FIX: Slightly smaller radius for mobile */
+                border-radius: 16px;
             }
             .glass-card[style*="padding: 40px"] {
                 padding: 25px !important;
@@ -922,7 +921,7 @@
                 font-size: 1.5rem;
             }
             #benchmarkChartContainer {
-                height: clamp(380px, 100vw, 420px);
+                height: clamp(400px, 100vw, 450px);
                 max-width: 100%;
                 padding: 0;
             }
@@ -1664,20 +1663,40 @@
             chartObserver.observe(benchmarkChartContainer);
         }
 
+        function formatLabel(str, maxLen = 15) {
+            if (isMobile() && str.length > maxLen) {
+                const words = str.split(' ');
+                const lines = [];
+                let currentLine = '';
+                for (const word of words) {
+                    if ((currentLine + word).length > maxLen) {
+                        lines.push(currentLine.trim());
+                        currentLine = '';
+                    }
+                    currentLine += `${word} `;
+                }
+                lines.push(currentLine.trim());
+                return lines.filter(l => l.length > 0);
+            }
+            return str;
+        }
+
         function drawBenchmarkChart(results, industry) {
             const canvas = document.getElementById('benchmarkChart');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
             const benchmarkValues = questionsData.benchmarks[industry];
             
-            const labels = Object.keys(results.domains);
-            const userData = labels.map(label => results.domains[label]);
-            const benchmarkData = labels.map(label => benchmarkValues[label] || 0);
+            const labels = Object.keys(results.domains).map(label => formatLabel(label));
+            const userData = Object.values(results.domains);
+            const benchmarkData = Object.keys(results.domains).map(label => benchmarkValues[label] || 0);
 
             if (benchmarkChart) {
+                benchmarkChart.data.labels = labels;
                 benchmarkChart.data.datasets[0].data = userData;
                 benchmarkChart.data.datasets[1].data = benchmarkData;
                 benchmarkChart.data.datasets[1].label = `${industry} Average`;
+                benchmarkChart.options.plugins.legend.position = isMobile() ? 'top' : 'bottom';
                 benchmarkChart.update();
                 return;
             }
@@ -1721,7 +1740,7 @@
                             pointLabels: { 
                                 color: 'rgba(255, 255, 255, 0.8)', 
                                 font: { size: isMobile() ? 10 : 12 },
-                                padding: isMobile() ? 15 : 5
+                                padding: isMobile() ? 5 : 0
                             },
                             ticks: { 
                                 backdropColor: 'rgba(0, 0, 0, 0)', 
@@ -1737,12 +1756,13 @@
                             position: isMobile() ? 'top' : 'bottom',
                             labels: { 
                                 color: 'white',
-                                padding: 20
+                                padding: 20,
+                                font: { size: 12 }
                             } 
                         } 
                     },
                     layout: {
-                        padding: isMobile() ? { top: 0, right: 15, bottom: 10, left: 15 } : 20
+                        padding: isMobile() ? { top: 5, right: 5, bottom: 5, left: 5 } : 20
                     }
                 }
             });
