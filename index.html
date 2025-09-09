@@ -755,7 +755,7 @@
             width: 100%;
             max-width: 360px;
         }
-        #benchmarkChartContainer { position: relative; width: 100%; max-width: 700px; margin: 0 auto; height: clamp(360px, 90vw, 560px); overflow: hidden; }
+        #benchmarkChartContainer { position: relative; width: 100%; max-width: 800px; margin: 0 auto; height: clamp(360px, 90vw, 560px); overflow: hidden; }
         #benchmarkChart { display: block; width: 100% !important; height: 100% !important; }
         #benchmarkData option {
             background: #0f0f23 !important; /* Dark background for options */
@@ -813,7 +813,7 @@
                 display: none;
             }
             body.mobile-content-view .header h1 {
-                font-size: 1.8rem;
+                font-size: 1.6rem;
             }
             body.mobile-content-view .title-container {
                 padding: 8px 20px;
@@ -902,9 +902,9 @@
                 font-size: 1.5rem;
             }
             #benchmarkChartContainer {
-                height: clamp(360px, 95vw, 560px); /* FIX: Adjusted height for mobile */
-                max-width: 100%; /* FIX: Use full width */
-                padding: 0; /* FIX: Remove padding to give chart space */
+                height: clamp(380px, 100vw, 420px);
+                max-width: 100%;
+                padding: 0;
             }
             #reports h3 {
                 font-size: 1.5rem;
@@ -1150,7 +1150,7 @@
                         <p style="color: rgba(255,255,255,0.6); font-size: 1.1rem;">Complete the assessment to see your benchmark comparison.</p>
                     </div>
                 </div>
-                <div id="benchmarkChartContainer" style="position: relative; padding:20px; display: none; max-width: 700px; margin: 0 auto; min-height: 500px;"><canvas id="benchmarkChart"></canvas></div>
+                <div id="benchmarkChartContainer" style="position: relative; padding:20px; display: none; max-width: 800px; margin: 0 auto; min-height: 500px;"><canvas id="benchmarkChart"></canvas></div>
             </div>
         </div>
 
@@ -1700,11 +1700,11 @@
                             grid: { color: 'rgba(255, 255, 255, 0.2)', circular: true },
                             pointLabels: { 
                                 color: 'rgba(255, 255, 255, 0.8)', 
-                                font: { size: isMobile() ? 9 : 12 },
-                                padding: isMobile() ? 10 : 0
+                                font: { size: isMobile() ? 10 : 12 },
+                                padding: isMobile() ? 15 : 5
                             },
                             ticks: { 
-                                backdropColor: 'rgba(0, 0, 0, 0.5)', 
+                                backdropColor: 'rgba(0, 0, 0, 0)', 
                                 color: 'white', 
                                 stepSize: 20, 
                                 beginAtZero: true, 
@@ -1714,25 +1714,18 @@
                     },
                     plugins: { 
                         legend: { 
+                            position: isMobile() ? 'top' : 'bottom',
                             labels: { 
-                                color: 'white' 
+                                color: 'white',
+                                padding: 20
                             } 
                         } 
+                    },
+                    layout: {
+                        padding: isMobile() ? { top: 0, right: 15, bottom: 10, left: 15 } : 20
                     }
                 }
             });
-            // post-create tweaks
-            benchmarkChart.options.layout = { padding: 18 };
-            benchmarkChart.options.plugins.legend = { position: 'bottom', labels: { color: 'white' } };
-            if (benchmarkChart.options.scales && benchmarkChart.options.scales.r) {
-              const r = benchmarkChart.options.scales.r;
-              r.pointLabels = Object.assign({}, r.pointLabels, {
-                font: { size: isMobile() ? 11 : 13 },
-                padding: isMobile() ? 12 : 6
-              });
-              if (r.ticks) r.ticks.backdropColor = 'transparent';
-            }
-            benchmarkChart.update();
         }
         
         // --- Test Mode Functionality ---
@@ -2210,4 +2203,3 @@
     </script>
 </body>
 </html>
-
