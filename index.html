@@ -83,6 +83,7 @@
         }
 
         .container {
+            width: 100%;
             max-width: 1100px;
             margin: 0 auto;
             padding: 20px;
@@ -240,8 +241,8 @@
             display: block;
         }
         
-        .content-wrapper {
-            max-width: 840px;
+        .content-container {
+            max-width: 960px;
             margin-left: auto;
             margin-right: auto;
             padding: 40px;
@@ -296,7 +297,6 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
             gap: 28px;
-            margin: 40px 0;
         }
 
         .domain-card {
@@ -455,7 +455,6 @@
         .level-4 { background: #06d6a0; }
 
         .vulnerability-dashboard {
-            margin: 50px 0;
             text-align: center;
         }
 
@@ -596,7 +595,7 @@
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             background: linear-gradient(135deg, #a855f7, #ec4899);
             color: white;
-            margin: 40px 0;
+            margin-top: 40px;
             position: relative;
             overflow: hidden;
         }
@@ -747,7 +746,6 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 12px;
             font-size: 1rem;
-            margin-bottom: 30px;
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
@@ -775,17 +773,12 @@
             font-size: 1rem !important;
         }
         
-        #benchmarks .content-wrapper h3 {
+        .benchmark-header {
+            margin-bottom: 24px;
+            color: #a855f7;
+            font-size: 2rem;
             text-align: center;
         }
-
-        /* --- Desktop & Wider Screen Adjustments --- */
-        @media (min-width: 769px) {
-            .content-wrapper {
-                max-width: 960px;
-            }
-        }
-
 
         /* --- Mobile Responsiveness --- */
         @media (max-width: 900px) {
@@ -907,7 +900,7 @@
             .glass-card {
                 border-radius: 16px;
             }
-            .content-wrapper {
+            .content-container {
                 padding: 25px !important;
             }
             .intro-content h3, .references-content h3 {
@@ -921,13 +914,17 @@
             #recommendations h2 {
                 font-size: 2rem;
             }
-            #benchmarks .content-wrapper h3 {
+            .benchmark-header {
                 font-size: 1.6rem;
+                margin-bottom: 20px;
             }
             #benchmarkChart {
                 height: 450px;
                 max-height: 60vh;
                 margin-top: 10px;
+            }
+            #benchmarkData {
+                text-align: center;
             }
             #benchmarkData select {
                 margin-bottom: 0;
@@ -1065,7 +1062,7 @@
 
         <!-- Intro Section -->
         <div id="intro" class="section active">
-            <div class="glass-card content-wrapper">
+            <div class="glass-card content-container">
                 <div class="intro-content">
                     <h3>Welcome to ASMAF</h3>
                     <ul>
@@ -1091,7 +1088,7 @@
 
         <!-- Assessment Section -->
         <div id="assessment" class="section">
-            <div class="glass-card content-wrapper">
+            <div class="glass-card content-container">
                 <div class="progress-container">
                     <div class="progress-bar">
                         <div class="progress-fill" id="progressFill" style="width: 0%"></div>
@@ -1113,7 +1110,7 @@
 
         <!-- Results Section -->
         <div id="results" class="section">
-            <div class="content-wrapper" style="background:none; border:none; box-shadow:none; backdrop-filter:none;">
+            <div class="content-container" style="background:none; border:none; box-shadow:none; backdrop-filter:none; padding:0;">
                 <div class="vulnerability-dashboard">
                     <div class="vuln-meter-container">
                         <div class="vuln-meter">
@@ -1147,7 +1144,7 @@
                         </div>
                     </div>
 
-                    <div class="glass-card" style="padding: 40px; margin: 40px 0;" id="domainBreakdownContainer">
+                    <div class="glass-card" style="padding: 40px; margin-top: 40px;" id="domainBreakdownContainer">
                         <h3 style="margin-bottom: 24px; color: #a855f7; font-size: 1.5rem;">Domain Breakdown</h3>
                         <div id="domainBreakdown"></div>
                     </div>
@@ -1157,7 +1154,7 @@
 
         <!-- Recommendations Section -->
         <div id="recommendations" class="section">
-            <div class="glass-card content-wrapper">
+            <div class="glass-card content-container">
                 <div style="text-align: center; margin-bottom: 40px;">
                     <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 16px; background: linear-gradient(135deg, #a855f7, #ec4899); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
                         Maturity Analysis
@@ -1173,11 +1170,11 @@
 
         <!-- Benchmarks Section -->
         <div id="benchmarks" class="section">
-            <div class="glass-card content-wrapper">
-                <h3>Industry Benchmarks</h3>
+            <div class="glass-card content-container">
+                <h3 class="benchmark-header">Industry Benchmarks</h3>
                 <div id="benchmarkData">
                     <div style="text-align: center;">
-                        <p style="color: rgba(255,255,255,0.6); font-size: 1.1rem; display:none;">Complete the assessment to see your benchmark comparison.</p>
+                        <p style="color: rgba(255,255,255,0.6); font-size: 1.1rem;">Complete the assessment to see your benchmark comparison.</p>
                     </div>
                 </div>
                 <canvas id="benchmarkChart"></canvas>
@@ -1186,7 +1183,7 @@
 
         <!-- Reports Section -->
         <div id="reports" class="section">
-            <div class="glass-card content-wrapper" style="text-align: center;">
+            <div class="glass-card content-container" style="text-align: center;">
                 <h3 style="margin-bottom: 40px; color: #a855f7; font-size: 2rem;">Generate Reports</h3>
                 <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
                     <button class="action-button" onclick="generateReport('executive')" disabled>Executive Summary</button>
@@ -1199,7 +1196,7 @@
 
         <!-- References Section -->
         <div id="references" class="section">
-            <div class="glass-card content-wrapper">
+            <div class="glass-card content-container">
                 <div class="references-content">
                     <h3>Sources Behind the SOC Maturity Grading Framework</h3>
                     <p style="margin-bottom: 24px; color: rgba(255, 255, 255, 0.7);">
@@ -1253,7 +1250,6 @@
         .rec-grid {
             display: grid;
             gap: 24px;
-            margin: 40px 0;
         }
 
         .rec-item {
@@ -1655,7 +1651,9 @@
             
             const benchmarkContentEl = document.querySelector('#benchmarkData > div');
             benchmarkContentEl.querySelector('p').style.display = 'none';
-            benchmarkContentEl.insertAdjacentHTML('afterbegin', `<select id="industrySelector">${Object.keys(questionsData.benchmarks).map(ind => `<option value="${ind}">${ind}</option>`).join('')}</select>`);
+            if(!document.getElementById('industrySelector')) {
+                benchmarkContentEl.insertAdjacentHTML('afterbegin', `<select id="industrySelector">${Object.keys(questionsData.benchmarks).map(ind => `<option value="${ind}">${ind}</option>`).join('')}</select>`);
+            }
 
             benchmarkChartEl.style.display = 'block';
             
