@@ -832,7 +832,7 @@
                 display: none;
             }
             body.mobile-content-view .header h1 {
-                font-size: 1.8rem;
+                font-size: 2.0rem;
             }
             body.mobile-content-view .title-container {
                 padding: 8px 20px;
@@ -921,7 +921,7 @@
                 font-size: 1.5rem;
             }
             #benchmarkChartContainer {
-                height: clamp(400px, 100vw, 450px);
+                height: clamp(420px, 110vw, 480px);
                 max-width: 100%;
                 padding: 0;
             }
@@ -944,7 +944,7 @@
                 font-size: 2.8rem;
             }
             body.mobile-content-view .header h1 {
-                font-size: 1.4rem;
+                font-size: 1.6rem;
             }
             .header::before {
                 width: 100%;
@@ -1730,7 +1730,7 @@
                     devicePixelRatio: 2,
                     animation: {
                         duration: 1200,
-                        easing: 'cubic-bezier(0.25, 1, 0.5, 1)'
+                        easing: 'easeInOutCubic'
                     },
                     scales: { 
                         r: {
@@ -1739,8 +1739,8 @@
                             grid: { color: 'rgba(255, 255, 255, 0.2)', circular: true },
                             pointLabels: { 
                                 color: 'rgba(255, 255, 255, 0.8)', 
-                                font: { size: isMobile() ? 10 : 12 },
-                                padding: isMobile() ? 5 : 0
+                                font: { size: isMobile() ? 11 : 12 },
+                                padding: isMobile() ? 8 : 5
                             },
                             ticks: { 
                                 backdropColor: 'rgba(0, 0, 0, 0)', 
@@ -1762,7 +1762,7 @@
                         } 
                     },
                     layout: {
-                        padding: isMobile() ? { top: 5, right: 5, bottom: 5, left: 5 } : 20
+                        padding: { top: 5, right: 5, bottom: 5, left: 5 }
                     }
                 }
             });
