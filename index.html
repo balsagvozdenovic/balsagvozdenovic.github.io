@@ -240,15 +240,11 @@
             display: block;
         }
         
-        #intro > .glass-card,
-        #results > .vulnerability-dashboard,
-        #recommendations > .glass-card,
-        #benchmarks > .glass-card,
-        #reports > .glass-card,
-        #references > .glass-card {
+        .content-wrapper {
             max-width: 840px;
             margin-left: auto;
             margin-right: auto;
+            padding: 40px;
         }
 
 
@@ -778,15 +774,14 @@
             color: white !important; /* White text for options */
             font-size: 1rem !important;
         }
+        
+        #benchmarks .content-wrapper h3 {
+            text-align: center;
+        }
 
         /* --- Desktop & Wider Screen Adjustments --- */
         @media (min-width: 769px) {
-             #intro > .glass-card,
-            #results > .vulnerability-dashboard,
-            #recommendations > .glass-card,
-            #benchmarks > .glass-card,
-            #reports > .glass-card,
-            #references > .glass-card {
+            .content-wrapper {
                 max-width: 960px;
             }
         }
@@ -912,7 +907,7 @@
             .glass-card {
                 border-radius: 16px;
             }
-            .glass-card[style*="padding: 40px"] {
+            .content-wrapper {
                 padding: 25px !important;
             }
             .intro-content h3, .references-content h3 {
@@ -926,12 +921,16 @@
             #recommendations h2 {
                 font-size: 2rem;
             }
-            #benchmarks h3 {
-                font-size: 1.5rem;
+            #benchmarks .content-wrapper h3 {
+                font-size: 1.6rem;
             }
             #benchmarkChart {
                 height: 450px;
                 max-height: 60vh;
+                margin-top: 10px;
+            }
+            #benchmarkData select {
+                margin-bottom: 0;
             }
             #reports h3 {
                 font-size: 1.5rem;
@@ -1066,7 +1065,7 @@
 
         <!-- Intro Section -->
         <div id="intro" class="section active">
-            <div class="glass-card" style="padding: 40px;">
+            <div class="glass-card content-wrapper">
                 <div class="intro-content">
                     <h3>Welcome to ASMAF</h3>
                     <ul>
@@ -1092,69 +1091,73 @@
 
         <!-- Assessment Section -->
         <div id="assessment" class="section">
-            <div class="progress-container">
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            <div class="glass-card content-wrapper">
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">0 of 0 questions completed</div>
                 </div>
-                <div class="progress-text" id="progressText">0 of 0 questions completed</div>
-            </div>
-            
-            <div class="assessment-grid" id="assessmentGrid">
-                <!-- Assessment questions will be loaded here -->
-            </div>
+                
+                <div class="assessment-grid" id="assessmentGrid">
+                    <!-- Assessment questions will be loaded here -->
+                </div>
 
-            <div style="text-align: center;">
-                <button class="cta-button" data-action="calculate" id="calculateBtn" disabled>
-                    Calculate Maturity Assessment
-                </button>
+                <div style="text-align: center;">
+                    <button class="cta-button" data-action="calculate" id="calculateBtn" disabled>
+                        Calculate Maturity Assessment
+                    </button>
+                </div>
             </div>
         </div>
 
         <!-- Results Section -->
         <div id="results" class="section">
-            <div class="vulnerability-dashboard">
-                <div class="vuln-meter-container">
-                    <div class="vuln-meter">
-                        <div class="vuln-meter-inner">
-                            <div class="vuln-score" id="maturityScore">--</div>
-                            <div class="vuln-level" id="maturityLevel">Calculating...</div>
+            <div class="content-wrapper" style="background:none; border:none; box-shadow:none; backdrop-filter:none;">
+                <div class="vulnerability-dashboard">
+                    <div class="vuln-meter-container">
+                        <div class="vuln-meter">
+                            <div class="vuln-meter-inner">
+                                <div class="vuln-score" id="maturityScore">--</div>
+                                <div class="vuln-level" id="maturityLevel">Calculating...</div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="alert-container" id="alertContainer" style="display: none;">
-                    <!-- Alert will be inserted here -->
-                </div>
+                    <div class="alert-container" id="alertContainer" style="display: none;">
+                        <!-- Alert will be inserted here -->
+                    </div>
 
-                <div class="stats-grid">
-                    <div class="stat-card glass-card">
-                        <div class="stat-value" id="outcomesScore">--</div>
-                        <div class="stat-label">Outcomes</div>
+                    <div class="stats-grid">
+                        <div class="stat-card glass-card">
+                            <div class="stat-value" id="outcomesScore">--</div>
+                            <div class="stat-label">Outcomes</div>
+                        </div>
+                        <div class="stat-card glass-card">
+                            <div class="stat-value" id="coverageScore">--</div>
+                            <div class="stat-label">Coverage & Automation</div>
+                        </div>
+                        <div class="stat-card glass-card">
+                            <div class="stat-value" id="governanceScore">--</div>
+                            <div class="stat-label">Governance & Process</div>
+                        </div>
+                        <div class="stat-card glass-card">
+                            <div class="stat-value" id="overallScore">--</div>
+                            <div class="stat-label">Overall Score</div>
+                        </div>
                     </div>
-                    <div class="stat-card glass-card">
-                        <div class="stat-value" id="coverageScore">--</div>
-                        <div class="stat-label">Coverage & Automation</div>
-                    </div>
-                    <div class="stat-card glass-card">
-                        <div class="stat-value" id="governanceScore">--</div>
-                        <div class="stat-label">Governance & Process</div>
-                    </div>
-                    <div class="stat-card glass-card">
-                        <div class="stat-value" id="overallScore">--</div>
-                        <div class="stat-label">Overall Score</div>
-                    </div>
-                </div>
 
-                <div class="glass-card" style="padding: 40px; margin: 40px 0;" id="domainBreakdownContainer">
-                    <h3 style="margin-bottom: 24px; color: #a855f7; font-size: 1.5rem;">Domain Breakdown</h3>
-                    <div id="domainBreakdown"></div>
+                    <div class="glass-card" style="padding: 40px; margin: 40px 0;" id="domainBreakdownContainer">
+                        <h3 style="margin-bottom: 24px; color: #a855f7; font-size: 1.5rem;">Domain Breakdown</h3>
+                        <div id="domainBreakdown"></div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Recommendations Section -->
         <div id="recommendations" class="section">
-            <div class="glass-card" style="padding: 40px;">
+            <div class="glass-card content-wrapper">
                 <div style="text-align: center; margin-bottom: 40px;">
                     <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 16px; background: linear-gradient(135deg, #a855f7, #ec4899); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
                         Maturity Analysis
@@ -1170,11 +1173,11 @@
 
         <!-- Benchmarks Section -->
         <div id="benchmarks" class="section">
-            <div class="glass-card" style="padding: 40px;">
-                <h3 style="margin-bottom: 24px; color: #a855f7; font-size: 2rem;">Industry Benchmarks</h3>
+            <div class="glass-card content-wrapper">
+                <h3>Industry Benchmarks</h3>
                 <div id="benchmarkData">
-                    <div style="text-align: center; padding: 40px;">
-                        <p style="color: rgba(255,255,255,0.6); font-size: 1.1rem;">Complete the assessment to see your benchmark comparison.</p>
+                    <div style="text-align: center;">
+                        <p style="color: rgba(255,255,255,0.6); font-size: 1.1rem; display:none;">Complete the assessment to see your benchmark comparison.</p>
                     </div>
                 </div>
                 <canvas id="benchmarkChart"></canvas>
@@ -1183,7 +1186,7 @@
 
         <!-- Reports Section -->
         <div id="reports" class="section">
-            <div class="glass-card" style="padding: 40px; text-align: center;">
+            <div class="glass-card content-wrapper" style="text-align: center;">
                 <h3 style="margin-bottom: 40px; color: #a855f7; font-size: 2rem;">Generate Reports</h3>
                 <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
                     <button class="action-button" onclick="generateReport('executive')" disabled>Executive Summary</button>
@@ -1196,7 +1199,7 @@
 
         <!-- References Section -->
         <div id="references" class="section">
-            <div class="glass-card" style="padding: 40px;">
+            <div class="glass-card content-wrapper">
                 <div class="references-content">
                     <h3>Sources Behind the SOC Maturity Grading Framework</h3>
                     <p style="margin-bottom: 24px; color: rgba(255, 255, 255, 0.7);">
@@ -1649,11 +1652,11 @@
             if (chartObserver) chartObserver.disconnect();
             if (benchmarkChart) benchmarkChart.destroy();
             benchmarkChart = null;
+            
+            const benchmarkContentEl = document.querySelector('#benchmarkData > div');
+            benchmarkContentEl.querySelector('p').style.display = 'none';
+            benchmarkContentEl.insertAdjacentHTML('afterbegin', `<select id="industrySelector">${Object.keys(questionsData.benchmarks).map(ind => `<option value="${ind}">${ind}</option>`).join('')}</select>`);
 
-            benchmarkDataEl.innerHTML = `
-                <div style="text-align: center;">
-                    <select id="industrySelector">${Object.keys(questionsData.benchmarks).map(ind => `<option value="${ind}">${ind}</option>`).join('')}</select>
-                </div>`;
             benchmarkChartEl.style.display = 'block';
             
             const selector = document.getElementById('industrySelector');
@@ -1759,7 +1762,7 @@
                         } 
                     },
                     layout: {
-                        padding: isMobile() ? { top: 0, right: 5, bottom: 0, left: 5 } : 20
+                        padding: isMobile() ? { top: 5, right: 5, bottom: 5, left: 5 } : 20
                     }
                 }
             });
