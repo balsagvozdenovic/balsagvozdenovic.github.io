@@ -795,7 +795,6 @@
             }
             .header {
                 padding: 40px 0 30px;
-                /* Mobile transition */
                 transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             }
             .header h1 { 
@@ -944,7 +943,7 @@
                 font-size: 2.8rem;
             }
             body.mobile-content-view .header h1 {
-                font-size: 1.6rem;
+                font-size: 2.0rem;
             }
             .header::before {
                 width: 100%;
@@ -1663,40 +1662,20 @@
             chartObserver.observe(benchmarkChartContainer);
         }
 
-        function formatLabel(str, maxLen = 15) {
-            if (isMobile() && str.length > maxLen) {
-                const words = str.split(' ');
-                const lines = [];
-                let currentLine = '';
-                for (const word of words) {
-                    if ((currentLine + word).length > maxLen) {
-                        lines.push(currentLine.trim());
-                        currentLine = '';
-                    }
-                    currentLine += `${word} `;
-                }
-                lines.push(currentLine.trim());
-                return lines.filter(l => l.length > 0);
-            }
-            return str;
-        }
-
         function drawBenchmarkChart(results, industry) {
             const canvas = document.getElementById('benchmarkChart');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
             const benchmarkValues = questionsData.benchmarks[industry];
             
-            const labels = Object.keys(results.domains).map(label => formatLabel(label));
+            const originalLabels = Object.keys(results.domains);
             const userData = Object.values(results.domains);
-            const benchmarkData = Object.keys(results.domains).map(label => benchmarkValues[label] || 0);
+            const benchmarkData = originalLabels.map(label => benchmarkValues[label] || 0);
 
             if (benchmarkChart) {
-                benchmarkChart.data.labels = labels;
                 benchmarkChart.data.datasets[0].data = userData;
                 benchmarkChart.data.datasets[1].data = benchmarkData;
                 benchmarkChart.data.datasets[1].label = `${industry} Average`;
-                benchmarkChart.options.plugins.legend.position = isMobile() ? 'top' : 'bottom';
                 benchmarkChart.update();
                 return;
             }
@@ -1704,7 +1683,7 @@
             benchmarkChart = new Chart(ctx, {
                 type: 'radar',
                 data: { 
-                    labels: labels, 
+                    labels: originalLabels, 
                     datasets: [
                         { 
                             label: 'Your Score', 
@@ -1739,8 +1718,16 @@
                             grid: { color: 'rgba(255, 255, 255, 0.2)', circular: true },
                             pointLabels: { 
                                 color: 'rgba(255, 255, 255, 0.8)', 
-                                font: { size: isMobile() ? 11 : 12 },
-                                padding: isMobile() ? 8 : 5
+                                font: { size: isMobile() ? 10 : 12 },
+                                callback: function(label) {
+                                    // Manual wrapping for specific long labels on mobile
+                                    if (isMobile()) {
+                                        if (label === 'Architecture & Resilience') return ['Architecture', '& Resilience'];
+                                        if (label === 'Investigation & Case Management') return ['Investigation &', 'Case Management'];
+                                        if (label === 'Incident Response & Recovery') return ['Incident Response', '& Recovery'];
+                                    }
+                                    return label;
+                                }
                             },
                             ticks: { 
                                 backdropColor: 'rgba(0, 0, 0, 0)', 
@@ -1762,7 +1749,7 @@
                         } 
                     },
                     layout: {
-                        padding: { top: 5, right: 5, bottom: 5, left: 5 }
+                        padding: isMobile() ? 5 : 20
                     }
                 }
             });
