@@ -765,17 +765,15 @@
             width: 100%;
             max-width: 360px;
         }
-        #benchmarkChartContainer { 
-            position: relative; 
-            width: 100%; 
-            height: clamp(360px, 90vw, 560px); 
-            overflow: hidden; 
+
+        #benchmarkChart {
+            display: none;
+            width: 100%;
+            max-width: 100%;
+            height: 400px;
+            margin-top: 20px;
         }
-        #benchmarkChart { 
-            display: block; 
-            width: 100% !important; 
-            height: 100% !important; 
-        }
+
         #benchmarkData option {
             background: #0f0f23 !important; /* Dark background for options */
             color: white !important; /* White text for options */
@@ -919,10 +917,8 @@
             #benchmarks h3 {
                 font-size: 1.5rem;
             }
-            #benchmarkChartContainer {
-                height: clamp(420px, 110vw, 480px);
-                max-width: 100%;
-                padding: 0;
+            #benchmarkChart {
+                height: 450px;
             }
             #reports h3 {
                 font-size: 1.5rem;
@@ -1168,7 +1164,7 @@
                         <p style="color: rgba(255,255,255,0.6); font-size: 1.1rem;">Complete the assessment to see your benchmark comparison.</p>
                     </div>
                 </div>
-                <div id="benchmarkChartContainer" style="position: relative; padding:20px; display: none; min-height: 500px;"><canvas id="benchmarkChart"></canvas></div>
+                <canvas id="benchmarkChart"></canvas>
             </div>
         </div>
 
@@ -1319,7 +1315,7 @@
         const recommendationsListEl = document.getElementById('recommendationsList');
         const recommendationsSubtitleEl = document.getElementById('recommendationsSubtitle');
         const benchmarkDataEl = document.getElementById('benchmarkData');
-        const benchmarkChartContainer = document.getElementById('benchmarkChartContainer');
+        const benchmarkChartEl = document.getElementById('benchmarkChart');
         const pdfLoader = document.getElementById('pdf-loader');
         
         // --- App State ---
@@ -1645,7 +1641,7 @@
                 <div style="text-align: center;">
                     <select id="industrySelector">${Object.keys(questionsData.benchmarks).map(ind => `<option value="${ind}">${ind}</option>`).join('')}</select>
                 </div>`;
-            benchmarkChartContainer.style.display = 'block';
+            benchmarkChartEl.style.display = 'block';
             
             const selector = document.getElementById('industrySelector');
             selector.addEventListener('change', (e) => drawBenchmarkChart(results, e.target.value));
@@ -1659,7 +1655,7 @@
                 });
             }, { threshold: 0.1 });
 
-            chartObserver.observe(benchmarkChartContainer);
+            chartObserver.observe(benchmarkChartEl);
         }
 
         function drawBenchmarkChart(results, industry) {
@@ -1720,11 +1716,12 @@
                                 color: 'rgba(255, 255, 255, 0.8)', 
                                 font: { size: isMobile() ? 10 : 12 },
                                 callback: function(label) {
-                                    // Manual wrapping for specific long labels on mobile
-                                    if (isMobile()) {
-                                        if (label === 'Architecture & Resilience') return ['Architecture', '& Resilience'];
-                                        if (label === 'Investigation & Case Management') return ['Investigation &', 'Case Management'];
-                                        if (label === 'Incident Response & Recovery') return ['Incident Response', '& Recovery'];
+                                    const words = label.split(' ');
+                                    if (words.length > 1) {
+                                        const mid = Math.ceil(words.length / 2);
+                                        const line1 = words.slice(0, mid).join(' ');
+                                        const line2 = words.slice(mid).join(' ');
+                                        return [line1, line2];
                                     }
                                     return label;
                                 }
@@ -1749,7 +1746,7 @@
                         } 
                     },
                     layout: {
-                        padding: isMobile() ? 5 : 20
+                        padding: isMobile() ? 10 : 20
                     }
                 }
             });
