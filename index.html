@@ -214,8 +214,6 @@
             position: relative;
             overflow: hidden;
             white-space: nowrap;
-            text-align: center;
-            min-width: 110px;
         }
 
         .nav-pill:disabled {
@@ -776,8 +774,9 @@
             display: none;
             width: 100%;
             max-width: 100%;
+            height: 500px;
+            max-height: 70vh;
             margin-top: 10px;
-            height: 300px;
         }
 
         #industrySelector option {
@@ -883,8 +882,8 @@
             .nav-pill {
                 font-size: 0.85rem;
                 padding: 10px 14px;
-                flex: 1 1 auto;
-                min-width: auto;
+                flex-grow: 1;
+                flex-basis: auto;
                 text-align: center;
             }
             .assessment-grid { 
@@ -939,8 +938,8 @@
                 margin-bottom: 20px;
             }
             #benchmarkChart {
-                margin-top: 10px;
-                height: 400px;
+                height: 450px;
+                max-height: 60vh;
             }
             .benchmark-dropdown-wrapper {
                 margin-bottom: 10px;
@@ -1753,7 +1752,7 @@
                                 font: { size: isMobile() ? 10 : 12 },
                                 callback: function(label) {
                                     const words = label.split(' ');
-                                    if (words.length > 1 && isMobile()) { // Only split on mobile
+                                    if (words.length > 1) {
                                         const mid = Math.ceil(words.length / 2);
                                         const line1 = words.slice(0, mid).join(' ');
                                         const line2 = words.slice(mid).join(' ');
@@ -1776,13 +1775,13 @@
                             position: 'bottom',
                             labels: { 
                                 color: 'white',
-                                padding: 15,
+                                padding: isMobile() ? 10 : 20,
                                 font: { size: 12 }
                             } 
                         } 
                     },
                     layout: {
-                        padding: isMobile() ? { top: 0, right: 5, bottom: 5, left: 5 } : 20
+                        padding: isMobile() ? { top: 5, right: 5, bottom: 5, left: 5 } : 20
                     }
                 }
             });
