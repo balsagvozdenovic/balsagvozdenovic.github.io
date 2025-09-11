@@ -868,10 +868,6 @@
             .nav-pill[data-section="home"] {
                 display: none;
             }
-            body.mobile-content-view .nav-pill[data-section="home"] {
-                display: block;
-                flex-basis: 100%; /* Ensure Home button takes full width when visible */
-            }
 
             .nav-container {
                 margin: 30px 0 40px;
@@ -886,7 +882,7 @@
             .nav-pill {
                 font-size: 0.85rem;
                 padding: 10px 14px;
-                flex: 1 1 auto;
+                flex: 1 1 0;
                 text-align: center;
             }
             .assessment-grid { 
@@ -1109,7 +1105,7 @@
 
         <!-- Assessment Section -->
         <div id="assessment" class="section">
-            <div class="assessment-container">
+            <div class="glass-card assessment-container">
                 <div class="progress-container">
                     <div class="progress-bar">
                         <div class="progress-fill" id="progressFill" style="width: 0%"></div>
