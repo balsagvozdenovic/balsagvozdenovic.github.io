@@ -202,7 +202,7 @@
         }
 
         .nav-pill {
-            padding: 10px 18px;
+            padding: 10px 14px;
             border: none;
             border-radius: 14px;
             font-size: 0.9rem;
@@ -885,7 +885,7 @@
             .nav-pill {
                 font-size: 0.85rem;
                 padding: 10px 14px;
-                flex-grow: 1;
+                flex: 1 1 auto;
                 text-align: center;
             }
             .assessment-grid { 
@@ -1383,6 +1383,7 @@
                 document.body.classList.remove('mobile-content-view');
                 document.querySelectorAll('.nav-pill.active').forEach(p => p.classList.remove('active'));
                 document.querySelectorAll('.section.active').forEach(s => s.classList.remove('active'));
+                document.querySelector('.nav-pill[data-section="home"]').style.display = 'block';
             } else {
                 // On desktop, "Intro" is the default starting page.
                 document.querySelector('.nav-pill[data-section="home"]').style.display = 'none';
