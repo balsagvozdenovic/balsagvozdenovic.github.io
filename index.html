@@ -938,10 +938,8 @@
                 margin-bottom: 20px;
             }
             #benchmarkChart {
-                display:block;
-                margin-top:0;
-                height:220px;
-                max-height:220px;
+                margin-top: 10px;
+                max-height: 300px;
             }
             .benchmark-dropdown-wrapper {
                 margin-bottom: 10px;
@@ -1739,7 +1737,7 @@
                 options: { 
                     responsive: true, 
                     maintainAspectRatio: false,
-                    aspectRatio: isMobile() ? 1.2 : 2,
+                    aspectRatio: isMobile() ? 1 : 2,
                     devicePixelRatio: 2,
                     animation: {
                         duration: 1200,
@@ -1784,7 +1782,7 @@
                         } 
                     },
                     layout: {
-                        padding: isMobile() ? 0 : 20
+                        padding: isMobile() ? { top: 0, right: 5, bottom: 5, left: 5 } : 20
                     }
                 }
             });
@@ -2265,5 +2263,3 @@
     </script>
 </body>
 </html>
-
-
