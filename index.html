@@ -776,9 +776,7 @@
             display: none;
             width: 100%;
             max-width: 100%;
-            height: 500px;
-            max-height: 70vh;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         #industrySelector option {
@@ -921,7 +919,7 @@
             .content-container, .assessment-container {
                 padding: 25px;
             }
-            #results .content-container {
+            #results .content-container, #assessment .assessment-container {
                 padding: 0;
             }
             .intro-content h3, .references-content h3 {
@@ -940,9 +938,8 @@
                 margin-bottom: 20px;
             }
             #benchmarkChart {
-                height: 400px;
-                max-height: 60vh;
                 margin-top: 10px;
+                max-height: 450px;
             }
             .benchmark-dropdown-wrapper {
                 margin-bottom: 10px;
@@ -1740,6 +1737,7 @@
                 options: { 
                     responsive: true, 
                     maintainAspectRatio: false,
+                    aspectRatio: isMobile() ? 1 : 2,
                     devicePixelRatio: 2,
                     animation: {
                         duration: 1200,
@@ -1784,7 +1782,7 @@
                         } 
                     },
                     layout: {
-                        padding: isMobile() ? { top: 0, right: 5, bottom: 0, left: 5 } : 20
+                        padding: isMobile() ? { top: 0, right: 5, bottom: 5, left: 5 } : 20
                     }
                 }
             });
