@@ -14,9 +14,13 @@ Each question is weighted according to its impact (e.g., logging coverage has hi
 Each response is graded 0-4, matching ASMAF’s maturity levels:
 
 0 = Not performed/ad hoc
+
 1 = Initial / compliance-driven
+
 2 = Documented / resourced
+
 3 = Policy-guided / measurable
+
 4 = Optimized / proactive
 
 Weighted answers roll up into domain scores. These are averaged and normalized to produce an overall SOC maturity percentage.
@@ -26,6 +30,7 @@ I didn’t want a static scoring table—so I added industry benchmarks for cont
 Benchmarks are included for Finance, Healthcare, and Tech sectors, normalized to a 0–100 scale for direct comparison on a radar chart.
 
 To build these, I synthesized:
+
   SOC-CMM community survey data and public results.
   Breach cost and dwell-time statistics from IBM/Ponemon.
   Studies by Wavestone, CYE, Cisco, SANS, and vendor SOAR adoption surveys.
@@ -43,6 +48,7 @@ The HTML code uses fetch() to read the JSON and drawBenchmarkChart() to render F
 5. Why Two Questions Were Removed
 
 The removed items were:
+
   “Do you maintain an updated runbook repository?” – Overlapped heavily with the collaboration & knowledge question.
   “Is enterprise risk formally tied to SOC use-case design?” – Already addressed by a more specific risk prioritization item.
 
