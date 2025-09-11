@@ -870,6 +870,7 @@
             }
             body.mobile-content-view .nav-pill[data-section="home"] {
                 display: block;
+                flex-basis: 100%; /* Ensure Home button takes full width when visible */
             }
 
             .nav-container {
@@ -919,7 +920,10 @@
                 border-radius: 16px;
             }
             .content-container, .assessment-container {
-                padding: 25px !important;
+                padding: 25px;
+            }
+            #results .content-container {
+                padding: 0;
             }
             .intro-content h3, .references-content h3 {
                 font-size: 1.3rem;
@@ -1127,7 +1131,7 @@
 
         <!-- Results Section -->
         <div id="results" class="section">
-            <div class="content-container" style="background:none; border:none; box-shadow:none; backdrop-filter:none; padding-top:0; padding-bottom: 0;">
+            <div class="content-container">
                 <div class="vulnerability-dashboard">
                     <div class="vuln-meter-container">
                         <div class="vuln-meter">
@@ -1378,15 +1382,14 @@
         }
 
         function setupInitialView() {
+            const homePill = document.querySelector('.nav-pill[data-section="home"]');
             if (isMobile()) {
-                // On mobile, start on the "Home" screen (which is empty)
                 document.body.classList.remove('mobile-content-view');
                 document.querySelectorAll('.nav-pill.active').forEach(p => p.classList.remove('active'));
                 document.querySelectorAll('.section.active').forEach(s => s.classList.remove('active'));
-                document.querySelector('.nav-pill[data-section="home"]').style.display = 'block';
+                homePill.style.display = 'none'; // Hide home button initially on mobile
             } else {
-                // On desktop, "Intro" is the default starting page.
-                document.querySelector('.nav-pill[data-section="home"]').style.display = 'none';
+                homePill.style.display = 'none'; // Hide on desktop
             }
         }
         
@@ -1399,15 +1402,17 @@
                     const sectionId = this.getAttribute('data-section');
 
                     if (isMobile()) {
+                        const homePill = document.querySelector('.nav-pill[data-section="home"]');
                         if (sectionId === 'home') {
                             document.body.classList.remove('mobile-content-view');
+                            homePill.style.display = 'none'; // Hide home button when returning home
                             // Hide all sections and remove active state from pills
                             navPills.forEach(p => p.classList.remove('active'));
                             sections.forEach(s => s.classList.remove('active'));
-                            // No section is active on the mobile home screen
                             return; 
                         } else {
                             document.body.classList.add('mobile-content-view');
+                            homePill.style.display = 'block'; // Show home button
                         }
                     }
 
