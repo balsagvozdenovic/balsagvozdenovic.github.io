@@ -499,10 +499,10 @@
       "Monitoring & Detection": 85,
       "Threat Hunting": 65,
       "Investigation & Case Management": 75,
-      "Incident Response": 88,
-      "Automation": 50,
-      "Workforce": 75,
-      "Architecture": 80
+      "Incident Response & Recovery": 88,
+      "Automation & SOAR": 50,
+      "Workforce & Training": 75,
+      "Architecture & Resilience": 80
     },
     "Healthcare": {
       "Program & Governance": 55,
@@ -531,3 +531,4 @@
   }
 
 }
+
