@@ -493,40 +493,41 @@
   },
   "benchmarks": {
     "Finance": {
-      "Program & Governance": 85,
-      "Risk & Threat Intelligence": 80,
-      "Telemetry & Engineering": 90,
-      "Monitoring & Detection": 75,
-      "Threat Hunting": 70,
-      "Investigation & Case Management": 80,
-      "Incident Response & Recovery": 85,
-      "Automation & SOAR": 65,
-      "Workforce & Training": 75,
-      "Architecture & Resilience": 90
+      "Program & Governance": 80,
+      "Risk & Threat Intelligence": 75,
+      "Telemetry & Engineering": 78,
+      "Monitoring & Detection": 85,
+      "Threat Hunting": 65,
+      "Investigation & Case Management": 75,
+      "Incident Response": 88,
+      "Automation": 50,
+      "Workforce": 75,
+      "Architecture": 80
     },
     "Healthcare": {
-      "Program & Governance": 70,
-      "Risk & Threat Intelligence": 75,
-      "Telemetry & Engineering": 80,
-      "Monitoring & Detection": 65,
-      "Threat Hunting": 55,
-      "Investigation & Case Management": 70,
-      "Incident Response & Recovery": 75,
-      "Automation & SOAR": 50,
-      "Workforce & Training": 65,
-      "Architecture & Resilience": 80
+      "Program & Governance": 55,
+      "Risk & Threat Intelligence": 40,
+      "Telemetry & Engineering": 50,
+      "Monitoring & Detection": 50,
+      "Threat Hunting": 25,
+      "Investigation & Case Management": 50,
+      "Incident Response & Recovery": 60,
+      "Automation & SOAR": 25,
+      "Workforce & Training": 45,
+      "Architecture & Resilience": 40
     },
     "Tech": {
-      "Program & Governance": 90,
-      "Risk & Threat Intelligence": 85,
-      "Telemetry & Engineering": 95,
-      "Monitoring & Detection": 85,
-      "Threat Hunting": 80,
-      "Investigation & Case Management": 85,
-      "Incident Response & Recovery": 90,
-      "Automation & SOAR": 80,
-      "Workforce & Training": 85,
-      "Architecture & Resilience": 95
+      "Program & Governance": 58,
+      "Risk & Threat Intelligence": 55,
+      "Telemetry & Engineering": 68,
+      "Monitoring & Detection": 65,
+      "Threat Hunting": 55,
+      "Investigation & Case Management": 65,
+      "Incident Response & Recovery": 70,
+      "Automation & SOAR": 60,
+      "Workforce & Training": 55,
+      "Architecture & Resilience": 60
     }
   }
+
 }
