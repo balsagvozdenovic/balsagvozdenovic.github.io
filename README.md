@@ -32,8 +32,11 @@ Benchmarks are included for Finance, Healthcare, and Tech sectors, normalized to
 To build these, I synthesized:
 
   SOC-CMM community survey data and public results.
+  
   Breach cost and dwell-time statistics from IBM/Ponemon.
+  
   Studies by Wavestone, CYE, Cisco, SANS, and vendor SOAR adoption surveys.
+  
   My own mapping of adoption rates, dwell times, and maturity levels to ASMAF’s 10 domains.
 
 This approach keeps the benchmarks evidence-backed while aligning them to the ASMAF format your HTML visualizations require.
@@ -49,17 +52,22 @@ The HTML code uses fetch() to read the JSON and drawBenchmarkChart() to render F
 
 The removed items were:
 
-  “Do you maintain an updated runbook repository?” – Overlapped heavily with the collaboration & knowledge question.
-  “Is enterprise risk formally tied to SOC use-case design?” – Already addressed by a more specific risk prioritization item.
+  “Do you maintain an updated runbook repository?”, as ito verlapped heavily with the collaboration & knowledge question.
+  
+  “Is enterprise risk formally tied to SOC use-case design?”, as it already addressed by a more specific risk prioritization item.
 
 By cutting these, I avoided double-weighting the same behaviors and streamlined the assessment to reduce fatigue without losing coverage.
 
 6. Key Takeaways for Users
 
 Transparent: Every question cites its evidence sources (program charters, KPI dashboards, hunt calendars, etc.).
+
 Weighted & Normalized: Scores are scaled to produce an accurate maturity percentage.
+
 Benchmark-Aware: Users can visually compare their SOC maturity to real-world industry baselines.
+
 Adaptable: The benchmark section can be extended for new sectors by adding keys in the JSON.
+
 Clear Output: The radar chart and percentage output provide an immediate picture of strengths, gaps, and priorities.
 
 7. How to Update Benchmarks
